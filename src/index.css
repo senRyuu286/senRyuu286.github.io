@@ -5,6 +5,10 @@
 
 @tailwind utilities;
 
+@theme {
+  --font-sans: "Poppins", sans-serif;
+}
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
@@ -40,9 +44,6 @@
   --noise: 0;
 }
 
-
-@theme {
-  --font-sans: "Poppins", sans-serif;
+html {
+  scroll-behavior: smooth;
 }
-
-

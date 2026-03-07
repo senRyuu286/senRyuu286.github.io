@@ -1,9 +1,9 @@
 import { Mail, Linkedin, Github, Facebook } from "lucide-react";
-import logo from '../../public/logo.svg';
+import logo from '/logo.svg';
 
 export default function NavigationBar() {
   return (
-    <div className="fixed top-0 left-0 w-full z-50 bg-neutral/60 backdrop-blur-md max-h-fit">
+    <div className="fixed top-0 left-0 w-full z-50 bg-neutral/30 backdrop-blur-sm max-h-fit">
       <div className="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
 
         {/* Left Links */}
@@ -18,10 +18,10 @@ export default function NavigationBar() {
 
         {/* Center Logo */}
         {/* <div className="absolute left-1/2 transform -translate-x-1/2 text-center"> */}
-        <div className="text-center">
+        <a href="#" className="text-center">
             <img src={logo} alt="Logo" className=" w-12 h-12 mx-auto" />
             <div className="text-2xl tracking-widest font-extralight text-base-300">Justin Ramas</div>
-        </div>
+        </a>
 
         {/* Right Icons */}
         <div className="flex gap-6 items-center text-base-300">
