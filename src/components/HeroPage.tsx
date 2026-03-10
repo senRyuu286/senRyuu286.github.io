@@ -22,9 +22,6 @@ export default function HeroPage() {
 
       {/* Centered Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full text-base-300 px-6">
-        {/* <h2 className="text-lg md:text-1xl max-w-3xl font-light mb-4 text-base-300">
-          IT Professional | Software Developer | Tech Enthusiast
-        </h2> */}
 
         <TypingAnimation />
 
@@ -40,7 +37,7 @@ export default function HeroPage() {
           skills and projects.
         </p>
 
-        <a href="#works" className="btn btn-base-300 rounded-full px-8 mt-6">
+        <a href="#works" className="btn btn-base-300 rounded-full px-8 mt-6 hover:btn-primary transition">
           See My Works
         </a>
       </div>
