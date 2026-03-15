@@ -1,5 +1,6 @@
 import NavigationBar from "../components/NavigationBar";
 import HeroPage from "../components/HeroPage";
+import WhatIDo from "../components/WhatIDo";
 import { motion } from "framer-motion";
 
 function Home() {
@@ -13,6 +14,7 @@ function Home() {
       <div>
         <NavigationBar />
         <HeroPage />
+        <WhatIDo />
       </div>
     </motion.div>
   );

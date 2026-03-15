@@ -3,7 +3,7 @@ import TypingAnimation from "../features/TypingAnimation";
 
 export default function HeroPage() {
   return (
-    <section className="relative w-screen h-screen overflow-hidden">
+    <section className="relative w-full h-screen overflow-hidden">
       {/* Background Video */}
       <video
         autoPlay
