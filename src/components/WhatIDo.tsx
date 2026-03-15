@@ -29,7 +29,7 @@ const reveal = {
 
 export default function WhatIDo() {
   return (
-    <section id="about" className="w-full bg-base-200 py-24 px-6">
+    <section id="about" className="w-full bg-base-200 pt-24 pb-8 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Scroll Float Header */}
         <motion.h2
