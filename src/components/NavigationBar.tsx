@@ -117,7 +117,7 @@ export default function NavigationBar() {
               <div
                 className="flex flex-col items-center gap-8 
                 text-2xl text-base-300 border-l border-b 
-                border-base-300/20 shadow-2xl rounded-bl-2xl pt-10 pb-10"
+                border-base-300/20 shadow-2xl rounded-bl-2xl pt-10 pb-10 bg-neutral/50 backdrop-blur-sm"
               >
                 <a
                   href="#works"

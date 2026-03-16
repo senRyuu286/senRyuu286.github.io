@@ -5,6 +5,33 @@
 
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+
+    scrollbar-width: thin;
+  scrollbar-color: rgba(120,120,120,0.35) transparent;
+}
+
+/* Custom Minimal Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120,120,120,0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120,120,120,0.65);
+}
+
 @theme {
   --font-sans: "Poppins", sans-serif;
 }
@@ -44,6 +71,4 @@
   --noise: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+

@@ -25,7 +25,7 @@ export default function HeroTyping() {
       Software Developer
     </span>
 
-    <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-300 tracking-wide">
+    <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-300 tracking-wide will-change-transform">
       <AnimatePresence mode="wait">
         <motion.span
           key={roles[index]}
