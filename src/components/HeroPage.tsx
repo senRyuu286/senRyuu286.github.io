@@ -6,6 +6,8 @@ export default function HeroPage() {
     <section className="relative w-full h-screen overflow-hidden">
       {/* Background Video */}
       <video
+        preload="metadata"
+        poster="/hero-poster.png"
         autoPlay
         loop
         muted
