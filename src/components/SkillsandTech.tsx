@@ -25,7 +25,7 @@ export default function SkillsandTech() {
   }, [isInView]);
 
   return (
-    <section ref={ref} className="relative pt-8 pb-24 px-6 bg-base-200 overflow-hidden">
+    <section ref={ref} className="relative pt-8 pb-12 px-6 bg-base-200 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h2 className={`text-4xl font-semibold mb-6 text-primary ${isVisible ? "fade-in-up" : "opacity-0 translate-y-6"}`}>
           Skills & Technologies

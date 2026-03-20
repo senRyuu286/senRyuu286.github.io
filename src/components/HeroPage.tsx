@@ -1,13 +1,13 @@
-import vidbg from "../assets/heropage.mp4";
+import vidbg from "../assets/heropage.mp4"
 import TypingAnimation from "../features/TypingAnimation";
 
 export default function HeroPage() {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full h-screen overflow-hidden" id="top">
       {/* Background Video */}
       <video
         preload="metadata"
-        poster="/hero-poster.png"
+        poster="../assets/hero-poster.png"
         autoPlay
         loop
         muted
