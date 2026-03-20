@@ -1,4 +1,13 @@
-import { Mail, Linkedin, Github, Facebook, Menu, X, Sun, Moon } from "lucide-react";
+import {
+  Mail,
+  Linkedin,
+  Github,
+  Facebook,
+  Menu,
+  X,
+  Sun,
+  Moon,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // 🔥 Added useLocation and useNavigate
@@ -9,12 +18,14 @@ export default function NavigationBar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  
+
   // 🔥 Setup hooks for routing
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark",
+  );
 
   useEffect(() => {
     localStorage.setItem("theme", theme as string);
@@ -38,7 +49,7 @@ export default function NavigationBar() {
 
     const observer = new IntersectionObserver(
       ([entry]) => setActive(entry.isIntersecting ? "works" : ""),
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
 
     observer.observe(section);
@@ -49,12 +60,13 @@ export default function NavigationBar() {
   const executeScroll = (targetId: string) => {
     const target = document.querySelector(targetId);
     if (target) {
-      const navbarOffset = 72; 
-      const elementPosition = target.getBoundingClientRect().top + window.scrollY;
-      
+      const navbarOffset = 72;
+      const elementPosition =
+        target.getBoundingClientRect().top + window.scrollY;
+
       window.scrollTo({
         top: elementPosition - navbarOffset,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
@@ -102,7 +114,9 @@ export default function NavigationBar() {
             Works
             <span
               className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary transform transition-transform duration-300 origin-center ${
-                active === "works" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                active === "works"
+                  ? "scale-x-100"
+                  : "scale-x-0 group-hover:scale-x-100"
               }`}
             />
           </a>
@@ -110,14 +124,18 @@ export default function NavigationBar() {
           <Link
             to="/about"
             className={`relative font-medium transition-colors group ${
-              location.pathname === "/about" ? "text-primary" : "hover:text-primary text-base-content"
+              location.pathname === "/about"
+                ? "text-primary"
+                : "hover:text-primary text-base-content"
             }`}
           >
             About
-            <span 
+            <span
               className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary transform transition-transform duration-300 origin-center ${
-                location.pathname === "/about" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-              }`} 
+                location.pathname === "/about"
+                  ? "scale-x-100"
+                  : "scale-x-0 group-hover:scale-x-100"
+              }`}
             />
           </Link>
         </div>
@@ -162,16 +180,21 @@ export default function NavigationBar() {
 
         <div className="hidden md:flex flex-1 justify-end gap-6 items-center text-base-content">
           {[Mail, Linkedin, Github, Facebook].map((Icon, i) => (
-            <a key={i} href="#" className="hover:text-primary transition hover:scale-110">
+            <a
+              key={i}
+              href="#"
+              className="hover:text-primary transition hover:scale-110"
+            >
               <Icon size={24} />
             </a>
           ))}
-          
+
           <div className="w-px h-6 bg-base-300 mx-2"></div>
-          
-          <motion.button 
+
+          <motion.button
+            aria-label="Toggle Dark Mode"
             onClick={handleToggle}
-            whileTap={{ scale: 0.8, rotate: 15 }} 
+            whileTap={{ scale: 0.8, rotate: 15 }}
             className="hover:text-primary transition"
           >
             {theme === "light" ? <Moon size={24} /> : <Sun size={24} />}
@@ -179,10 +202,13 @@ export default function NavigationBar() {
         </div>
 
         <div className="flex md:hidden items-center justify-between w-full">
-          <Link to="/" className="flex items-center gap-3 text-base-content group">
-            <motion.img 
+          <Link
+            to="/"
+            className="flex items-center gap-3 text-base-content group"
+          >
+            <motion.img
               src={theme === "light" ? logoDark : logoLight}
-              alt="Logo" 
+              alt="Logo"
               className="w-10 h-10"
               whileTap={{ scale: 0.9, rotate: -5 }}
             />
@@ -190,17 +216,22 @@ export default function NavigationBar() {
               Justin Ramas
             </div>
           </Link>
-          
+
           <div className="flex items-center gap-4">
-            <motion.button 
-              onClick={handleToggle} 
-              whileTap={{ scale: 0.8 }} 
+            <motion.button
+              aria-label="Toggle Dark Mode"
+              onClick={handleToggle}
+              whileTap={{ scale: 0.8 }}
               className="text-base-content hover:text-primary transition"
             >
               {theme === "light" ? <Moon size={26} /> : <Sun size={26} />}
             </motion.button>
-            
-            <button onClick={() => setOpen(true)} className="text-base-content hover:text-primary transition">
+
+            <button
+              aria-label="Open Navigation Menu"
+              onClick={() => setOpen(true)}
+              className="text-base-content hover:text-primary transition"
+            >
               <Menu size={30} />
             </button>
           </div>
@@ -227,31 +258,40 @@ export default function NavigationBar() {
             >
               <div className="flex justify-end p-7">
                 <button onClick={() => setOpen(false)}>
-                  <X size={40} className="text-base-content hover:text-primary transition" />
+                  <X
+                    size={40}
+                    className="text-base-content hover:text-primary transition"
+                  />
                 </button>
               </div>
 
               <div className="flex flex-col items-center gap-8 text-2xl text-base-content border-l border-b border-base-300 rounded-bl-2xl pt-10 pb-10 bg-base-200/50 backdrop-blur-sm">
                 {/* 🔥 Updated the mobile link too */}
-                <a 
+                <a
                   href="/#works"
                   onClick={handleWorksClick}
-                  className={`relative font-medium transition-colors ${active === "works" ? "text-primary" : ""}`} 
+                  className={`relative font-medium transition-colors ${active === "works" ? "text-primary" : ""}`}
                 >
                   Works
                 </a>
-                <Link 
-                  to="/about" 
+                <Link
+                  to="/about"
                   className={`transition font-medium ${
-                    location.pathname === "/about" ? "text-primary" : "text-base-content hover:text-primary"
-                  }`} 
+                    location.pathname === "/about"
+                      ? "text-primary"
+                      : "text-base-content hover:text-primary"
+                  }`}
                   onClick={() => setOpen(false)}
                 >
                   About
                 </Link>
                 <div className="flex gap-8 text-base-content">
                   {[Mail, Linkedin, Github, Facebook].map((Icon, i) => (
-                    <a key={i} href="#" className="hover:text-primary transition">
+                    <a
+                      key={i}
+                      href="#"
+                      className="hover:text-primary transition"
+                    >
                       <Icon size={28} />
                     </a>
                   ))}
