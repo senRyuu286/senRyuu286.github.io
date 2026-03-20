@@ -20,24 +20,24 @@ export default function HeroTyping() {
   }, []);
 
   return (
-  <div className="relative mb-4">
-    <span className="invisible text-lg md:text-xl font-light tracking-wide">
-      Software Developer
-    </span>
+    <div className="relative mb-4">
+      <span className="invisible text-lg md:text-xl font-light tracking-wide">
+        Software Developer
+      </span>
 
-    <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-300 tracking-wide will-change-transform">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={roles[index]}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.4 }}
-        >
-          {roles[index]}
-        </motion.span>
-      </AnimatePresence>
-    </h2>
-  </div>
-);
+      <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-content tracking-wide will-change-transform">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={roles[index]}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+          >
+            {roles[index]}
+          </motion.span>
+        </AnimatePresence>
+      </h2>
+    </div>
+  );
 }
