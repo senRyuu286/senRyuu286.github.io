@@ -1,7 +1,7 @@
 import { Mail, Linkedin, Github, Facebook, Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // 🔥 Added useLocation and useNavigate
 import logoDark from "/logo-dark.svg";
 import logoLight from "/logo-light.svg";
 
@@ -9,6 +9,10 @@ export default function NavigationBar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  
+  // 🔥 Setup hooks for routing
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark");
 
@@ -39,12 +43,11 @@ export default function NavigationBar() {
 
     observer.observe(section);
     return () => observer.disconnect();
-  }, []);
+  }, [location.pathname]); // 🔥 Re-run this if the path changes
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault(); 
+  // 🔥 Extracted the scroll math so we can reuse it
+  const executeScroll = (targetId: string) => {
     const target = document.querySelector(targetId);
-    
     if (target) {
       const navbarOffset = 72; 
       const elementPosition = target.getBoundingClientRect().top + window.scrollY;
@@ -54,8 +57,31 @@ export default function NavigationBar() {
         behavior: "smooth"
       });
     }
-    setOpen(false); 
   };
+
+  // 🔥 Smart click handler
+  const handleWorksClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setOpen(false);
+
+    if (location.pathname !== "/") {
+      // If we aren't on home, navigate there and append the hash
+      navigate("/#works");
+    } else {
+      // If we are on home, just do the smooth scroll
+      executeScroll("#works");
+    }
+  };
+
+  // 🔥 Catch the navigation from the About page and trigger the scroll
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash === "#works") {
+      // Small timeout ensures the Home page has fully rendered before we calculate the scroll position
+      setTimeout(() => {
+        executeScroll("#works");
+      }, 100);
+    }
+  }, [location]);
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-base-100/80 backdrop-blur-md border-b border-base-200/50">
@@ -64,11 +90,11 @@ export default function NavigationBar() {
           scrolled ? "h-18" : "h-24"
         }`}
       >
-        {/* 🔥 Desktop Links (Left Wing - added flex-1 and justify-start) */}
         <div className="hidden md:flex flex-1 justify-start gap-8 text-2xl text-base-content">
+          {/* 🔥 Updated the onClick to use our new handleWorksClick */}
           <a
-            href=""
-            onClick={(e) => scrollToSection(e, "#works")}
+            href="/#works"
+            onClick={handleWorksClick}
             className={`relative font-medium transition-colors cursor-pointer group ${
               active === "works" ? "text-primary" : "hover:text-primary"
             }`}
@@ -83,14 +109,19 @@ export default function NavigationBar() {
 
           <Link
             to="/about"
-            className="relative font-medium transition-colors group hover:text-primary text-base-content"
+            className={`relative font-medium transition-colors group ${
+              location.pathname === "/about" ? "text-primary" : "hover:text-primary text-base-content"
+            }`}
           >
             About
-            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 origin-center group-hover:scale-x-100" />
+            <span 
+              className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary transform transition-transform duration-300 origin-center ${
+                location.pathname === "/about" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+              }`} 
+            />
           </Link>
         </div>
 
-        {/* 🔥 Logo + Name (Center - added shrink-0 so it never gets squished) */}
         <Link
           to="/"
           className="hidden md:flex flex-col items-center justify-center group shrink-0"
@@ -129,7 +160,6 @@ export default function NavigationBar() {
           </motion.div>
         </Link>
 
-        {/* 🔥 Desktop Icons + Theme Toggle (Right Wing - added flex-1 and justify-end) */}
         <div className="hidden md:flex flex-1 justify-end gap-6 items-center text-base-content">
           {[Mail, Linkedin, Github, Facebook].map((Icon, i) => (
             <a key={i} href="#" className="hover:text-primary transition hover:scale-110">
@@ -148,7 +178,6 @@ export default function NavigationBar() {
           </motion.button>
         </div>
 
-        {/* Mobile Layout (unchanged) */}
         <div className="flex md:hidden items-center justify-between w-full">
           <Link to="/" className="flex items-center gap-3 text-base-content group">
             <motion.img 
@@ -178,7 +207,6 @@ export default function NavigationBar() {
         </div>
       </div>
 
-      {/* Mobile Sidebar (unchanged) */}
       <AnimatePresence>
         {open && (
           <>
@@ -204,14 +232,21 @@ export default function NavigationBar() {
               </div>
 
               <div className="flex flex-col items-center gap-8 text-2xl text-base-content border-l border-b border-base-300 rounded-bl-2xl pt-10 pb-10 bg-base-200/50 backdrop-blur-sm">
+                {/* 🔥 Updated the mobile link too */}
                 <a 
-                  href=""
-                  onClick={(e) => scrollToSection(e, "#works")}
+                  href="/#works"
+                  onClick={handleWorksClick}
                   className={`relative font-medium transition-colors ${active === "works" ? "text-primary" : ""}`} 
                 >
                   Works
                 </a>
-                <Link to="/about" className="hover:text-primary transition font-medium" onClick={() => setOpen(false)}>
+                <Link 
+                  to="/about" 
+                  className={`transition font-medium ${
+                    location.pathname === "/about" ? "text-primary" : "text-base-content hover:text-primary"
+                  }`} 
+                  onClick={() => setOpen(false)}
+                >
                   About
                 </Link>
                 <div className="flex gap-8 text-base-content">
