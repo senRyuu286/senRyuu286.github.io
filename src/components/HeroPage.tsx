@@ -9,6 +9,21 @@ import {
 } from "@tsparticles/engine";
 import TypingAnimation from "../features/TypingAnimation";
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const target = document.querySelector(targetId);
+    
+    if (target) {
+      const navbarOffset = 72; 
+      const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+      
+      window.scrollTo({
+        top: elementPosition - navbarOffset,
+        behavior: "smooth"
+      });
+    }
+  };
+
 export default function HeroPage() {
   const [initDone, setInitDone] = useState(false);
 
@@ -25,7 +40,6 @@ export default function HeroPage() {
   const options: ISourceOptions = useMemo(
     () => ({
       fullScreen: { enable: false },
-      // Set to transparent so the DaisyUI bg-base-100 class handles the background color
       background: { color: { value: "transparent" } },
       fpsLimit: 60,
       interactivity: {
@@ -33,9 +47,9 @@ export default function HeroPage() {
         modes: { repulse: { distance: 120, duration: 0.6 } },
       },
       particles: {
-        number: { value: 60, density: { enable: true } },
+        number: { value: 50, density: { enable: true } },
         color: {
-          value: ["#ff3cac", "#ff7eb9", "#6a0dad", "#3f51b5"], // These will pop nicely on a light background
+          value: ["#ff3cac", "#ff7eb9", "#6a0dad", "#3f51b5"], 
         },
         shape: { type: "circle" },
         opacity: { value: 0.7 },
@@ -57,39 +71,36 @@ export default function HeroPage() {
         },
       },
       detectRetina: true,
+      pauseOnBlur: true,
+      pauseOnOutsideViewport: true,
     }),
     [],
   );
 
-  if (!initDone) return null;
-
   return (
-    // Changed bg-[#0d0d0d] to bg-base-100 to utilize your DaisyUI theme background
     <section
       id="top"
       className="relative w-full h-screen overflow-hidden bg-base-100"
     >
-      <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={options}
-        className="absolute inset-0 z-0"
-      />
+      {initDone && (
+        <Particles
+          id="tsparticles"
+          particlesLoaded={particlesLoaded}
+          options={options}
+          className="absolute inset-0 z-0"
+        />
+      )}
 
-      {/* Changed the black gradient to a subtle light gradient using your theme colors, 
-          otherwise a black gradient on a white background looks like a dirty smudge */}
       <div className="absolute inset-0 bg-linear-to-b from-base-100/20 via-base-200/40 to-base-300/60 z-10 pointer-events-none"></div>
 
       <div className="relative z-20 flex flex-col items-center justify-center text-center w-full h-full px-6 pointer-events-none">
         <div className="pointer-events-auto flex flex-col items-center">
           <TypingAnimation />
 
-          {/* Changed text-base-300 to text-base-content (dark text) so it's readable on the light background */}
           <h1 className="text-2xl md:text-4xl font-bold mb-4 text-base-content">
             Justin Ramas
           </h1>
 
-          {/* Changed text-base-300 to text-base-content */}
           <p className="text-lg md:text-xl max-w-3xl font-light text-base-content/80">
             An aspiring IT professional passionate about creating innovative and
             practical technology solutions. I value research, data, and
@@ -99,8 +110,8 @@ export default function HeroPage() {
           </p>
 
           <a
-            href="#works"
-            // Swapped to btn-primary to make the call-to-action pop with your theme's primary color
+            href=""
+                  onClick={(e) => scrollToSection(e, "#works")}
             className="btn btn-primary rounded-full px-8 mt-6 hover:scale-105 transition-transform"
           >
             See My Works

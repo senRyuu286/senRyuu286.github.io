@@ -51,6 +51,41 @@ html {
   --noise: 0;
 }
 
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: oklch(18% 0 0);
+  --color-base-200: oklch(22% 0 0);
+  --color-base-300: oklch(26% 0 0);
+  --color-base-content: oklch(92% 0 0);
+  --color-primary: oklch(64% 0.2 131.684);
+  --color-primary-content: oklch(98% 0.031 120.757);
+  --color-secondary: oklch(54% 0.281 293.009);
+  --color-secondary-content: oklch(96% 0.016 293.756);
+  --color-accent: oklch(64% 0.222 41.116);
+  --color-accent-content: oklch(98% 0.016 73.684);
+  --color-neutral: oklch(30% 0 0);
+  --color-neutral-content: oklch(92% 0 0);
+  --color-info: oklch(70% 0.165 254.624);
+  --color-info-content: oklch(28% 0.091 267.935);
+  --color-success: oklch(77% 0.152 181.912);
+  --color-success-content: oklch(27% 0.046 192.524);
+  --color-warning: oklch(85% 0.199 91.936);
+  --color-warning-content: oklch(28% 0.066 53.813);
+  --color-error: oklch(71% 0.202 349.761);
+  --color-error-content: oklch(28% 0.109 3.907);
+  --radius-selector: 2rem;
+  --radius-field: 0rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }

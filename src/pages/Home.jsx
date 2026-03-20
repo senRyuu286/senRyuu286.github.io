@@ -18,9 +18,9 @@ function Home() {
         <NavigationBar />
         <HeroPage />
         <WhatIDo />
-        {/* <SkillsandTech />
+        <SkillsandTech />
         <SelectedWorks />
-        <Footer /> */}
+        <Footer />
       </div>
     </motion.div>
   );

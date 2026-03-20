@@ -1,53 +1,64 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, type Variants } from "framer-motion";
 import { useRef } from "react";
 import sample from "../assets/sample.svg";
 
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 100, damping: 20 },
+  },
+};
+
 export default function SelectedWorks() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // subtle parallax for image ONLY
   const imageY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const parallaxY = shouldReduceMotion ? 0 : imageY;
 
   return (
     <section
       id="works"
       ref={ref}
-      className="relative bg-base-200 py-12 px-6 overflow-hidden"
+      className="relative bg-base-200 py-16 px-6 overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto">
-
+      <motion.div 
+        className="max-w-6xl mx-auto"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: { opacity: 0 },
+          show: { 
+            opacity: 1, // typo fix kept from last turn
+            transition: { staggerChildren: 0.15 } 
+          }
+        }}
+      >
         {/* Header */}
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="text-3xl md:text-4xl font-semibold text-primary mb-8"
+          variants={fadeUp}
+          className="text-3xl md:text-4xl font-semibold text-primary mb-12"
         >
           Selected Works
         </motion.h2>
 
         {/* Project */}
         <div className="grid md:grid-cols-2 gap-16 items-center">
-
           {/* LEFT: TEXT */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.4 }}
-            className="space-y-6"
-          >
+          <motion.div variants={fadeUp} className="space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold mb-2">
+              <h3 className="text-2xl font-semibold mb-1 text-base-content">
                 CPU Scheduling Simulator
               </h3>
-              <p className="text-sm text-base-content/60">
+              <p className="text-sm font-medium text-primary">
                 Python Scheduling Simulator
               </p>
             </div>
@@ -61,50 +72,55 @@ export default function SelectedWorks() {
 
             {/* Meta Info */}
             <div className="space-y-4 text-sm">
-
               <div>
-                <p className="text-base-content/50">Role</p>
-                <p className="font-medium">Simulation Programmer</p>
+                <p className="text-base-content/50 uppercase tracking-wider text-xs font-semibold mb-1">Role</p>
+                <p className="font-medium text-base-content">Simulation Programmer</p>
               </div>
 
               <div>
-                <p className="text-base-content/50">Duration</p>
-                <p className="font-medium">
+                <p className="text-base-content/50 uppercase tracking-wider text-xs font-semibold mb-1">Duration</p>
+                <p className="font-medium text-base-content">
                   July 14, 2025 — July 18, 2025
                 </p>
               </div>
 
-              <div>
-                <p className="text-base-content/50">Links</p>
+              <div className="pt-2">
                 <a
                   href="#"
-                  className="inline-flex items-center gap-2 hover:text-primary transition"
+                  className="inline-flex items-center gap-2 font-semibold text-base-content hover:text-primary transition-colors group"
                 >
-                  GitHub →
+                  GitHub 
+                  <span className="transform group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               </div>
-
             </div>
           </motion.div>
 
           {/* RIGHT: IMAGE */}
           <motion.div
-            style={{ y: imageY }}
-            className="relative"
+            variants={fadeUp}
+            style={{ y: parallaxY }}
+            // 🔥 Added 'group' here so hovering the image area triggers the scale animation below
+            className="relative transform-gpu will-change-transform group"
           >
-            <div className="rounded-2xl overflow-hidden shadow-xl bg-base-100/40 backdrop-blur-sm">
+            {/* 🔥 Optimized Image Wrapper:
+                Removed: shadow-xl, border, border-base-300, bg-base-100, group (moved to parent)
+                Added: A direct wrapper without card styling
+            */}
+            <div className="relative w-full h-auto">
               <img
                 src={sample}
                 alt="CPU Scheduling Simulator"
-                className="w-full h-auto object-cover"
+                // 🔥 Added rounded corners directly to the img, kept the scale animation
+                className="w-full h-auto object-cover rounded-2xl transform transition-transform duration-700 group-hover:scale-105"
               />
             </div>
 
             {/* subtle glow */}
-            <div className="absolute -z-10 inset-0 blur-3xl opacity-20 bg-primary/20" />
+            <div className="absolute -z-10 inset-0 blur-3xl opacity-30 bg-primary/20 rounded-full" />
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

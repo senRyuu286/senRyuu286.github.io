@@ -1,23 +1,54 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { Mail, Linkedin, Github, Facebook } from "lucide-react";
 
 export default function Footer() {
+  const shouldReduceMotion = useReducedMotion();
+
+  // 🔥 Performance Fix: One parent observer controls the timing of all children
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Automatically triggers one after the other
+      },
+    },
+  };
+
+  // Kept your exact animation distances and timings!
+  const topVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  };
+
+  const middleVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  };
+
+  const bottomVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.4 } },
+  };
+
   return (
-    <footer className="bg-base-200 px-6 py-20">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-base-200 px-6 py-20 overflow-hidden">
+      {/* This single wrapper handles the scroll detection for the entire footer.
+        It triggers the "show" variant on all its children sequentially.
+      */}
+      <motion.div 
+        className="max-w-6xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
 
         {/* Top Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mb-12"
-        >
+        <motion.div variants={topVariants} className="mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-primary">
             Let’s build something meaningful.
           </h2>
-
           <p className="text-base-content/60 max-w-md">
             I’m currently learning and exploring opportunities. Feel free to
             reach out for collaborations or projects.
@@ -29,19 +60,15 @@ export default function Footer() {
 
         {/* Middle Section */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1, duration: 0.4 }}
+          variants={middleVariants}
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
         >
-
           {/* Contact */}
           <div className="flex items-center gap-3 text-base-content/70">
             <Mail size={18} />
             <a
               href="mailto:youremail@email.com"
-              className="hover:text-primary transition"
+              className="hover:text-primary transition-colors"
             >
               youremail@email.com
             </a>
@@ -49,70 +76,42 @@ export default function Footer() {
 
           {/* Socials (Right) */}
           <div className="flex items-center gap-5 text-base-content/60 md:ml-auto">
-            <a href="#" className="hover:text-primary transition">
+
+            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
               <Linkedin size={20} />
             </a>
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
               <Github size={20} />
             </a>
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
               <Facebook size={20} />
             </a>
           </div>
         </motion.div>
 
-        {/* Bottom Section */}
+
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          variants={bottomVariants}
           className="mt-12 flex flex-col items-center gap-4"
         >
-          {/* Back to Top (Centered) */}
           <button
             onClick={() => {
               document
                 .querySelector("#top")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="text-sm text-base-content/60 hover:text-primary transition"
+            className="text-sm text-base-content/60 hover:text-primary transition-colors group"
           >
-            Back to top ↑
+            Back to top 
+            <span className="inline-block transform group-hover:-translate-y-1 transition-transform ml-1">↑</span>
           </button>
 
-          {/* Copyright */}
           <p className="text-sm text-base-content/40 text-center">
             © {new Date().getFullYear()} Justin Ramas. All rights reserved.
           </p>
         </motion.div>
 
-      </div>
+      </motion.div>
     </footer>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
