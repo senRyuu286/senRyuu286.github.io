@@ -1,49 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 | Justin Ramas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #030712; color: #f9fafb; overflow: hidden; }
-        .gradient-bg {
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030712 100%);
-        }
-    </style>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Page Not Found | Justin Ramas</title>
     
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <script type="text/javascript">
-        var pathSegmentsToKeep = 0;
-        var l = window.location;
-        // This will trigger after a brief delay so the user can see the cool 404 page
-        setTimeout(function() {
-            l.replace(
-                l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-                l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
-                l.pathname.split('/').slice(1 + pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-                (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-                l.hash
-            );
-        }, 2500); // 2.5 second delay so they see the 404 UI
+      // 2. THE REDIRECT LOGIC
+      // This script takes the current URL (e.g., /about) and turns it into a 
+      // parameter (e.g., /?p=/about) before redirecting to the homepage.
+      
+      var segmentCount = 0; // Set to 0 for username.github.io
+      
+      var l = window.location;
+
+      // We use a small timeout (2 seconds) so the user can actually 
+      // see your custom 404 message before being whisked away.
+      setTimeout(function() {
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+          l.pathname.split('/').slice(1 + segmentCount).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+        );
+      }, 2000); 
     </script>
-</head>
-<body class="gradient-bg min-h-screen flex items-center justify-center font-sans">
 
-    <div class="text-center px-4">
-        <h1 class="text-9xl font-bold text-indigo-500 opacity-20 animate-pulse">404</h1>
-        
-        <div class="relative -mt-20">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Lost in space?</h2>
-            <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">
-                The page you are looking for doesn't exist or has been moved. 
-                <span class="text-indigo-400">Redirecting you home...</span>
-            </p>
+    <style>
+      body { background-color: #030712; color: #f9fafb; }
+      .glow { box-shadow: 0 0 50px -12px rgba(99, 102, 241, 0.5); }
+    </style>
+  </head>
+  
+  <body class="min-h-screen flex items-center justify-center font-sans overflow-hidden">
+    <div class="text-center px-6 relative">
+      <div class="absolute inset-0 -z-10 bg-indigo-500/10 blur-[120px] rounded-full"></div>
 
-            <div class="flex justify-center">
-                <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
+      <h1 class="text-9xl font-black text-indigo-500/20 select-none animate-pulse">404</h1>
+      
+      <div class="relative -mt-16">
+        <h2 class="text-4xl font-bold mb-2">Whoops! You're off-track.</h2>
+        <p class="text-gray-400 text-lg mb-8">
+            I couldn't find that page, but hang tight... <br/>
+            <span class="text-indigo-400 font-medium">I'm taking you back to the main site.</span>
+        </p>
+
+        <div class="flex justify-center">
+          <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin glow"></div>
         </div>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>
