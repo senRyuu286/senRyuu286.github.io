@@ -4,18 +4,16 @@ import { Mail, Linkedin, Github, Facebook } from "lucide-react";
 export default function Footer() {
   const shouldReduceMotion = useReducedMotion();
 
-  // 🔥 Performance Fix: One parent observer controls the timing of all children
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15, // Automatically triggers one after the other
+        staggerChildren: 0.15,
       },
     },
   };
 
-  // Kept your exact animation distances and timings!
   const topVariants: Variants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
@@ -33,18 +31,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-base-200 px-6 py-20 overflow-hidden">
-      {/* This single wrapper handles the scroll detection for the entire footer.
-        It triggers the "show" variant on all its children sequentially.
-      */}
-      <motion.div 
+      <motion.div
         className="max-w-6xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
-
-        {/* Top Section */}
         <motion.div variants={topVariants} className="mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-primary">
             Let’s build something meaningful.
@@ -55,15 +48,12 @@ export default function Footer() {
           </p>
         </motion.div>
 
-        {/* Divider */}
         <div className="h-px bg-base-300/50 mb-8" />
 
-        {/* Middle Section */}
         <motion.div
           variants={middleVariants}
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
         >
-          {/* Contact */}
           <div className="flex items-center gap-3 text-base-content/70">
             <Mail size={18} />
             <a
@@ -74,21 +64,27 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Socials (Right) */}
           <div className="flex items-center gap-5 text-base-content/60 md:ml-auto">
-
-            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
+            <a
+              href="#"
+              className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
+            >
               <Linkedin size={20} />
             </a>
-            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
+            <a
+              href="#"
+              className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
+            >
               <Github size={20} />
             </a>
-            <a href="#" className="hover:text-primary transition-all duration-300 hover:-translate-y-1">
+            <a
+              href="#"
+              className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
+            >
               <Facebook size={20} />
             </a>
           </div>
         </motion.div>
-
 
         <motion.div
           variants={bottomVariants}
@@ -102,15 +98,16 @@ export default function Footer() {
             }}
             className="text-sm text-base-content/60 hover:text-primary transition-colors group"
           >
-            Back to top 
-            <span className="inline-block transform group-hover:-translate-y-1 transition-transform ml-1">↑</span>
+            Back to top
+            <span className="inline-block transform group-hover:-translate-y-1 transition-transform ml-1">
+              ↑
+            </span>
           </button>
 
           <p className="text-sm text-base-content/40 text-center">
             © {new Date().getFullYear()} Justin Ramas. All rights reserved.
           </p>
         </motion.div>
-
       </motion.div>
     </footer>
   );

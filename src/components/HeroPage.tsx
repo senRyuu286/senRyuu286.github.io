@@ -2,27 +2,29 @@ import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import {
-  type Container,
   type ISourceOptions,
   MoveDirection,
   OutMode,
 } from "@tsparticles/engine";
 import TypingAnimation from "../features/TypingAnimation";
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    const target = document.querySelector(targetId);
-    
-    if (target) {
-      const navbarOffset = 72; 
-      const elementPosition = target.getBoundingClientRect().top + window.scrollY;
-      
-      window.scrollTo({
-        top: elementPosition - navbarOffset,
-        behavior: "smooth"
-      });
-    }
-  };
+const scrollToSection = (
+  e: React.MouseEvent<HTMLAnchorElement>,
+  targetId: string,
+) => {
+  e.preventDefault();
+  const target = document.querySelector(targetId);
+
+  if (target) {
+    const navbarOffset = 72;
+    const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({
+      top: elementPosition - navbarOffset,
+      behavior: "smooth",
+    });
+  }
+};
 
 export default function HeroPage() {
   const [initDone, setInitDone] = useState(false);
@@ -32,10 +34,6 @@ export default function HeroPage() {
       await loadSlim(engine);
     }).then(() => setInitDone(true));
   }, []);
-
-  const particlesLoaded = async (container?: Container) => {
-    console.log("Particles loaded", container);
-  };
 
   const options: ISourceOptions = useMemo(
     () => ({
@@ -49,7 +47,7 @@ export default function HeroPage() {
       particles: {
         number: { value: 50, density: { enable: true } },
         color: {
-          value: ["#ff3cac", "#ff7eb9", "#6a0dad", "#3f51b5"], 
+          value: ["#ff3cac", "#ff7eb9", "#6a0dad", "#3f51b5"],
         },
         shape: { type: "circle" },
         opacity: { value: 0.7 },
@@ -85,7 +83,6 @@ export default function HeroPage() {
       {initDone && (
         <Particles
           id="tsparticles"
-          particlesLoaded={particlesLoaded}
           options={options}
           className="absolute inset-0 z-0"
         />
@@ -111,7 +108,7 @@ export default function HeroPage() {
 
           <a
             href=""
-                  onClick={(e) => scrollToSection(e, "#works")}
+            onClick={(e) => scrollToSection(e, "#works")}
             className="btn btn-primary rounded-full px-8 mt-6 hover:scale-105 transition-transform"
           >
             See My Works

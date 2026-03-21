@@ -22,8 +22,10 @@ export default function HeroTyping() {
 
   return (
     <div className="relative mb-4">
-
-      <span aria-hidden="true" className="invisible text-lg md:text-xl font-light tracking-wide">
+      <span
+        aria-hidden="true"
+        className="invisible text-lg md:text-xl font-light tracking-wide"
+      >
         Software Developer
       </span>
 
@@ -31,7 +33,6 @@ export default function HeroTyping() {
         <AnimatePresence mode="wait">
           <motion.span
             key={roles[index]}
-
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}

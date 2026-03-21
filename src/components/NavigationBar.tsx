@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // 🔥 Added useLocation and useNavigate
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoDark from "/logo-dark.svg";
 import logoLight from "/logo-light.svg";
 
@@ -19,7 +19,6 @@ export default function NavigationBar() {
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
-  // 🔥 Setup hooks for routing
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -54,9 +53,8 @@ export default function NavigationBar() {
 
     observer.observe(section);
     return () => observer.disconnect();
-  }, [location.pathname]); // 🔥 Re-run this if the path changes
+  }, [location.pathname]);
 
-  // 🔥 Extracted the scroll math so we can reuse it
   const executeScroll = (targetId: string) => {
     const target = document.querySelector(targetId);
     if (target) {
@@ -71,24 +69,19 @@ export default function NavigationBar() {
     }
   };
 
-  // 🔥 Smart click handler
   const handleWorksClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setOpen(false);
 
     if (location.pathname !== "/") {
-      // If we aren't on home, navigate there and append the hash
       navigate("/#works");
     } else {
-      // If we are on home, just do the smooth scroll
       executeScroll("#works");
     }
   };
 
-  // 🔥 Catch the navigation from the About page and trigger the scroll
   useEffect(() => {
     if (location.pathname === "/" && location.hash === "#works") {
-      // Small timeout ensures the Home page has fully rendered before we calculate the scroll position
       setTimeout(() => {
         executeScroll("#works");
       }, 100);
@@ -103,7 +96,6 @@ export default function NavigationBar() {
         }`}
       >
         <div className="hidden md:flex flex-1 justify-start gap-8 text-2xl text-base-content">
-          {/* 🔥 Updated the onClick to use our new handleWorksClick */}
           <a
             href="/#works"
             onClick={handleWorksClick}
@@ -266,7 +258,6 @@ export default function NavigationBar() {
               </div>
 
               <div className="flex flex-col items-center gap-8 text-2xl text-base-content border-l border-b border-base-300 rounded-bl-2xl pt-10 pb-10 bg-base-200/50 backdrop-blur-sm">
-                {/* 🔥 Updated the mobile link too */}
                 <a
                   href="/#works"
                   onClick={handleWorksClick}
