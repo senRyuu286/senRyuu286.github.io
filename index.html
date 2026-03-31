@@ -6,30 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script type="text/javascript">
-      (function (l) {
-        if (l.search[1] === "/") {
-          var decoded = l.search
-            .slice(1)
-            .split("&")
-            .map(function (s) {
-              return s.replace(/~and~/g, "&");
-            })
-            .filter(function (s) {
-              return s.slice(0, 2) === "p=/";
-            })[0];
-          if (decoded !== undefined) {
-            var path = decoded.slice(2);
-            if (path !== l.pathname) {
-              window.history.replaceState(
-                null,
-                null,
-                l.pathname.slice(0, -1) + path + l.hash,
-              );
-            }
-          }
-        }
-      })(window.location);
-    </script>
+  (function (l) {
+    if (l.search[1] === "/") {
+      var path = l.search.slice(1).split("&")[0];
+      window.history.replaceState(
+        null,
+        null,
+        l.pathname + path + (l.hash || "")
+      );
+    }
+  })(window.location);
+</script>
 
     <meta
       name="description"
@@ -66,13 +53,14 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+    <meta name="google-site-verification" content="nQjDhjJ6X-JwNHVNylRJOJ5bnBHV_nDNHZ2V0BFLO4o" />
 
     <title>Justin Ramas</title>
-    <script type="module" crossorigin src="/assets/index-DNxH2TDB.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-eKBonY8h.js">
-    <link rel="modulepreload" crossorigin href="/assets/framer-motion-BXX0Eo2X.js">
-    <link rel="modulepreload" crossorigin href="/assets/tsparticles-Dr_QWTOZ.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-Cxx5kpdP.css">
+    <script type="module" crossorigin src="/assets/index-CVvHRnM6.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-CXVBZ0MF.js">
+    <link rel="modulepreload" crossorigin href="/assets/framer-motion-Dj_htwKq.js">
+    <link rel="modulepreload" crossorigin href="/assets/tsparticles-CJZIkfv2.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DujtcFYQ.css">
   </head>
   <body>
     <div id="root"></div>
