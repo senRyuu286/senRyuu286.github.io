@@ -2,7 +2,6 @@ import {
   Mail,
   Linkedin,
   Github,
-  Facebook,
   Menu,
   X,
   Sun,
@@ -13,6 +12,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoDark from "/logo-dark.svg";
 import logoLight from "/logo-light.svg";
+
+const socialLinks = [
+  { Icon: Mail, url: "mailto:justinramas12@outlook.com" },
+  { Icon: Linkedin, url: "https://www.linkedin.com/in/justin-ramas/" },
+  { Icon: Github, url: "https://github.com/senRyuu286" },
+];
 
 export default function NavigationBar() {
   const [open, setOpen] = useState(false);
@@ -171,10 +176,12 @@ export default function NavigationBar() {
         </Link>
 
         <div className="hidden md:flex flex-1 justify-end gap-6 items-center text-base-content">
-          {[Mail, Linkedin, Github, Facebook].map((Icon, i) => (
+          {socialLinks.map(({ Icon, url }, i) => (
             <a
               key={i}
-              href="#"
+              href={url}
+              target={url.startsWith("http") ? "_blank" : undefined}
+              rel={url.startsWith("http") ? "noopener noreferrer" : undefined}
               className="hover:text-primary transition hover:scale-110"
             >
               <Icon size={24} />
@@ -277,10 +284,16 @@ export default function NavigationBar() {
                   About
                 </Link>
                 <div className="flex gap-8 text-base-content">
-                  {[Mail, Linkedin, Github, Facebook].map((Icon, i) => (
+                  {socialLinks.map(({ Icon, url }, i) => (
                     <a
                       key={i}
-                      href="#"
+                      href={url}
+                      target={url.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        url.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                       className="hover:text-primary transition"
                     >
                       <Icon size={28} />

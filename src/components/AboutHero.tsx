@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Facebook, MapPin, GraduationCap, Zap } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, GraduationCap, Zap } from "lucide-react";
 
 // 🚀 OPTIMIZATION 1: Extract static data outside the component to prevent memory recreation on re-renders
 const quickFacts = [
@@ -9,10 +9,9 @@ const quickFacts = [
 ];
 
 const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub Profile" },
-  { icon: Linkedin, href: "#", label: "LinkedIn Profile" },
-  { icon: Facebook, href: "#", label: "Facebook Profile" },
-  { icon: Mail, href: "#", label: "Email Contact" },
+  { icon: Github, href: "https://github.com/senRyuu286", label: "GitHub Profile" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/justin-ramas/", label: "LinkedIn Profile" },
+  { icon: Mail, href: "mailto:justinramas12@outlook.com", label: "Email Contact" },
 ];
 
 // 🚀 OPTIMIZATION 2: Extract animation variants to keep JSX clean and performant

@@ -35,7 +35,7 @@ export default function WhatIDo() {
 
   const cards = [
     {
-      title: "Learning & Design",
+      title: "Learn & Design",
       text: "As a student exploring web design, I focus on creating clean and engaging interfaces while continuously improving my understanding of user experience and visual design.",
     },
     {

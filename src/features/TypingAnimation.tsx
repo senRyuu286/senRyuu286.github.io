@@ -2,10 +2,12 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const roles = [
-  "IT Professional",
-  "Software Developer",
-  "Tech Enthusiast",
-  "Student Developer",
+  "BSIT Student",            
+  "Frontend Developer",      
+  "Building Web Apps",    
+  "UI/UX Enthusiast",        
+  "Aspiring Software Engineer",
+  "Tech Explorer",             
 ];
 
 export default function HeroTyping() {
@@ -26,7 +28,7 @@ export default function HeroTyping() {
         aria-hidden="true"
         className="invisible text-lg md:text-xl font-light tracking-wide"
       >
-        Software Developer
+        Aspiring Software Engineer
       </span>
 
       <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-content tracking-wide">

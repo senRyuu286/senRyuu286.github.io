@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Mail, Linkedin, Github, Facebook } from "lucide-react";
+import { Mail, Linkedin, Github } from "lucide-react";
 
 export default function Footer() {
   const shouldReduceMotion = useReducedMotion();
@@ -57,31 +57,25 @@ export default function Footer() {
           <div className="flex items-center gap-3 text-base-content/70">
             <Mail size={18} />
             <a
-              href="mailto:youremail@email.com"
+              href="mailto:justinramas12@outlook.com"
               className="hover:text-primary transition-colors"
             >
-              youremail@email.com
+              justinramas12@outlook.com
             </a>
           </div>
 
           <div className="flex items-center gap-5 text-base-content/60 md:ml-auto">
             <a
-              href="#"
+              href="https://www.linkedin.com/in/justin-ramas/"
               className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
             >
               <Linkedin size={20} />
             </a>
             <a
-              href="#"
+              href="https://github.com/senRyuu286"
               className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
             >
               <Github size={20} />
-            </a>
-            <a
-              href="#"
-              className="hover:text-primary transition-all duration-300 hover:-translate-y-1"
-            >
-              <Facebook size={20} />
             </a>
           </div>
         </motion.div>

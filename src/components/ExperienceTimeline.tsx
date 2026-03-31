@@ -42,7 +42,7 @@ const timelineVariant: Variants = {
 
 export default function ExperienceTimeline() {
   return (
-    <section className="max-w-4xl mx-auto px-6 py-24">
+    <section className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-16">
         <h3 className="text-4xl font-bold text-base-content tracking-tight">
           My Journey

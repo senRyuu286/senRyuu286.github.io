@@ -33,7 +33,7 @@ const badgeVariant: Variants = {
 
 export default function BentoStack() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-24">
+    <section className="max-w-6xl mx-auto px-6 pt-8 pb-12">
       <div className="mb-12">
         <h3 className="text-4xl font-bold text-base-content tracking-tight">
           Tech Stack

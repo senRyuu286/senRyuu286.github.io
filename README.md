@@ -1,10 +1,8 @@
 # Justin Ramas | Personal Portfolio
 
-![Portfolio Preview](image.png) > **Live Site:** [https://senryuu286.github.io/](https://senryuu286.github.io/)
+![Portfolio Preview](./public/preview.png) > **Live Site:** [https://senryuu286.github.io/](https://senryuu286.github.io/)
 
 A modern, highly optimized personal portfolio built to showcase my frontend development skills, academic journey as a BSIT student, and personal projects. Designed with a focus on clean UI/UX, smooth animations, and top-tier performance.
-
-
 
 ## Tech Stack
 

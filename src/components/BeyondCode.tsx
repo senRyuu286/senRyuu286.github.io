@@ -34,7 +34,7 @@ const cardVariant: Variants = {
 
 export default function BeyondCode() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-24 border-t border-base-300/50 mt-10">
+    <section className="max-w-6xl mx-auto px-6 pt-8 pb-12 border-t border-base-300/50 mt-10">
       <div className="text-center mb-16">
         <h3 className="text-4xl font-bold text-base-content tracking-tight">
           Beyond the Code
