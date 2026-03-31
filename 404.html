@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Page Not Found | Justin Ramas</title>
 
     <script type="text/javascript">
-      var segmentCount = 0;
+      var pathSegmentsToKeep = 0;
       var l = window.location;
       l.replace(
         l.protocol +
@@ -14,18 +14,12 @@
           (l.port ? ":" + l.port : "") +
           l.pathname
             .split("/")
-            .slice(0, 1 + segmentCount)
+            .slice(0, 1 + pathSegmentsToKeep)
             .join("/") +
           "/?/" +
-          l.pathname
-            .split("/")
-            .slice(1 + segmentCount)
-            .join("/")
-            .replace(/&/g, "~and~") +
-          (l.search
-            ? "&" + l.search.slice(1).replace(/&/g, "~and~")
-            : "") +
-          l.hash
+          l.pathname.slice(1).replace(/&/g, "~and~") +
+          (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+          l.hash,
       );
     </script>
 
@@ -71,15 +65,9 @@
         content: "";
         position: fixed;
         inset: 0;
-        background-image: linear-gradient(
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          ),
-          linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          );
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         background-size: 48px 48px;
         pointer-events: none;
         z-index: 0;
@@ -214,7 +202,10 @@
       <div class="content">
         <span class="badge">Page not found</span>
         <h1>You've wandered off the path.</h1>
-        <p>This page doesn't exist — but don't worry, you're being redirected back.</p>
+        <p>
+          This page doesn't exist — but don't worry, you're being redirected
+          back.
+        </p>
 
         <div class="spinner-wrap">
           <div class="spinner"></div>
