@@ -1,4 +1,4 @@
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import { GraduationCap, Code, Rocket } from "lucide-react";
 
 const journeySteps = [
@@ -52,7 +52,7 @@ export default function ExperienceTimeline() {
         </p>
       </div>
 
-      <motion.div
+      <m.div
         variants={timelineVariant}
         initial="hidden"
         whileInView="visible"
@@ -104,7 +104,7 @@ export default function ExperienceTimeline() {
             </li>
           ))}
         </ul>
-      </motion.div>
+      </m.div>
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import {
-  motion,
+  m,
   useScroll,
   useTransform,
   useReducedMotion,
@@ -36,7 +36,7 @@ export default function SelectedWorks() {
       ref={ref}
       className="relative bg-base-200 py-16 px-6 overflow-hidden"
     >
-      <motion.div
+      <m.div
         className="max-w-6xl mx-auto"
         initial="hidden"
         whileInView="show"
@@ -49,15 +49,15 @@ export default function SelectedWorks() {
           },
         }}
       >
-        <motion.h2
+        <m.h2
           variants={fadeUp}
-          className="text-3xl md:text-4xl font-semibold text-primary mb-12"
+          className="text-3xl md:text-4xl font-semibold text-primary mb-12 transform-gpu will-change-transform"
         >
           Selected Works
-        </motion.h2>
+        </m.h2>
 
         <div className="grid md:grid-cols-2 gap-16 items-center">
-          <motion.div variants={fadeUp} className="space-y-6">
+          <m.div variants={fadeUp} className="space-y-6">
             <div>
               <h3 className="text-2xl font-semibold mb-1 text-base-content">
                 Stride
@@ -100,9 +100,9 @@ export default function SelectedWorks() {
                 />
               </a>
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             style={{ y: parallaxY }}
             className="relative transform-gpu will-change-transform group"
@@ -113,14 +113,15 @@ export default function SelectedWorks() {
                   src={stride}
                   alt="Stride preview"
                   className="w-full h-full object-cover object-top"
+                  decoding="async"
                 />
               </div>
             </div>
 
             <div className="absolute -z-10 inset-0 blur-3xl opacity-30 bg-primary/20 rounded-full" />
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
+      </m.div>
     </section>
   );
 }

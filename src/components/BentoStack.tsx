@@ -1,4 +1,4 @@
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import { Monitor, Terminal, Smartphone } from "lucide-react";
 
 const techCategories = {
@@ -43,17 +43,17 @@ export default function BentoStack() {
         </p>
       </div>
 
-      <motion.div
+      <m.div
         className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]"
         variants={containerVariant}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <motion.div
+        <m.div
           variants={cardVariant}
           whileHover={{ y: -5 }}
-          className="card bg-linear-to-br from-base-200 to-base-300 shadow-xl md:col-span-2 md:row-span-2 border border-base-content/5 overflow-hidden relative group"
+          className="card bg-linear-to-br from-base-200 to-base-300 shadow-xl md:col-span-2 md:row-span-2 border border-base-content/5 overflow-hidden relative group transform-gpu will-change-transform"
         >
           <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition duration-500" />
 
@@ -70,28 +70,28 @@ export default function BentoStack() {
               Building responsive, interactive, and performant user interfaces.
             </p>
 
-            <motion.div
+            <m.div
               className="flex flex-wrap gap-3 mt-auto"
               variants={containerVariant}
             >
               {techCategories.web.map((tech) => (
-                <motion.span
+                <m.span
                   key={tech}
                   variants={badgeVariant}
                   whileHover={{ scale: 1.05, y: -2 }}
-                  className="px-4 py-2 rounded-lg bg-base-100 border border-base-content/10 text-base-content/90 font-medium hover:border-primary hover:text-primary transition-colors cursor-default shadow-sm"
+                  className="px-4 py-2 rounded-lg bg-base-100 border border-base-content/10 text-base-content/90 font-medium hover:border-primary hover:text-primary transition-colors cursor-default shadow-sm transform-gpu will-change-transform"
                 >
                   {tech}
-                </motion.span>
+                </m.span>
               ))}
-            </motion.div>
+            </m.div>
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={cardVariant}
           whileHover={{ y: -5 }}
-          className="card bg-base-200 shadow-xl border border-base-content/5 relative overflow-hidden group"
+          className="card bg-base-200 shadow-xl border border-base-content/5 relative overflow-hidden group transform-gpu will-change-transform"
         >
           <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-secondary/10 rounded-full blur-2xl group-hover:bg-secondary/20 transition duration-500" />
 
@@ -113,12 +113,12 @@ export default function BentoStack() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={cardVariant}
           whileHover={{ y: -5 }}
-          className="card bg-base-200 shadow-xl border border-base-content/5 relative overflow-hidden group"
+          className="card bg-base-200 shadow-xl border border-base-content/5 relative overflow-hidden group transform-gpu will-change-transform"
         >
           <div className="card-body z-10 justify-center items-center text-center">
             <div className="p-4 bg-base-100 rounded-full mb-2 group-hover:scale-110 transition-transform duration-300 shadow-inner">
@@ -138,8 +138,8 @@ export default function BentoStack() {
               ))}
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

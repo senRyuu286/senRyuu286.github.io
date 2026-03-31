@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const roles = [
@@ -33,7 +33,7 @@ export default function HeroTyping() {
 
       <h2 className="absolute inset-0 flex items-center justify-center text-lg md:text-xl max-w-3xl font-light text-base-content tracking-wide">
         <AnimatePresence mode="wait">
-          <motion.span
+          <m.span
             key={roles[index]}
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ export default function HeroTyping() {
             className="transform-gpu will-change-transform inline-block"
           >
             {roles[index]}
-          </motion.span>
+          </m.span>
         </AnimatePresence>
       </h2>
     </div>

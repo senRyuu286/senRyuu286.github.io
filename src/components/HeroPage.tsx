@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import {
@@ -7,27 +7,11 @@ import {
   OutMode,
 } from "@tsparticles/engine";
 import TypingAnimation from "../features/TypingAnimation";
-
-const scrollToSection = (
-  e: React.MouseEvent<HTMLAnchorElement>,
-  targetId: string,
-) => {
-  e.preventDefault();
-  const target = document.querySelector(targetId);
-
-  if (target) {
-    const navbarOffset = 72;
-    const elementPosition = target.getBoundingClientRect().top + window.scrollY;
-
-    window.scrollTo({
-      top: elementPosition - navbarOffset,
-      behavior: "smooth",
-    });
-  }
-};
+import { scrollToSection } from "../features/ScrollToSection";
 
 export default function HeroPage() {
   const [initDone, setInitDone] = useState(false);
+  const isScrolling = useRef(false);
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -105,10 +89,12 @@ export default function HeroPage() {
             latest tools, trends, and best practices in the IT field to
             continuously improve my skills and projects.
           </p>
-
           <a
-            href=""
-            onClick={(e) => scrollToSection(e, "#works")}
+            href="#works"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("#works", () => {}, isScrolling);
+            }}
             className="btn btn-primary rounded-full px-8 mt-6 hover:scale-105 transition-transform"
           >
             See My Works

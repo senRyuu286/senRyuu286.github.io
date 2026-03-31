@@ -1,5 +1,5 @@
 import { Camera, Gamepad2, BookOpen } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 
 const hobbies = [
   {
@@ -44,7 +44,7 @@ export default function BeyondCode() {
         </p>
       </div>
 
-      <motion.div
+      <m.div
         className="grid grid-cols-1 md:grid-cols-3 gap-8"
         variants={containerVariant}
         initial="hidden"
@@ -52,11 +52,11 @@ export default function BeyondCode() {
         viewport={{ once: true, margin: "-50px" }}
       >
         {hobbies.map((hobby, i) => (
-          <motion.div
+          <m.div
             key={i}
             variants={cardVariant}
             whileHover={{ y: -8, scale: 1.02 }}
-            className="flex flex-col items-center text-center p-8 rounded-3xl bg-base-200/50 hover:bg-base-200 border border-base-content/5 transition-all duration-300 shadow-sm hover:shadow-xl group"
+            className="flex flex-col items-center text-center p-8 rounded-3xl bg-base-200/50 hover:bg-base-200 border border-base-content/5 transition-all duration-300 shadow-sm hover:shadow-xl group transform-gpu will-change-transform"
           >
             <div className="bg-primary/10 text-primary p-5 rounded-2xl mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
               <hobby.icon size={36} strokeWidth={1.5} />
@@ -65,9 +65,9 @@ export default function BeyondCode() {
               {hobby.title}
             </h4>
             <p className="text-base-content/70 leading-relaxed">{hobby.desc}</p>
-          </motion.div>
+          </m.div>
         ))}
-      </motion.div>
+      </m.div>
     </section>
   );
 }
