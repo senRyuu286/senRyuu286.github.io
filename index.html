@@ -2,9 +2,7 @@
 <html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./logo-light.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    
     <script type="text/javascript">
       (function (l) {
         if (l.search[1] === "/") {
@@ -14,19 +12,20 @@
             .map(function (s) {
               return s.replace(/~and~/g, "&");
             });
-          window.history.replaceState(
-            null,
-            null,
+          var newUrl =
             l.pathname.slice(0, -1) +
-              decoded[0] +
-              (decoded.slice(1).length > 0
-                ? "?" + decoded.slice(1).join("&")
-                : "") +
-              l.hash,
-          );
+            decoded[0] +
+            (decoded.slice(1).length > 0
+              ? "?" + decoded.slice(1).join("&")
+              : "") +
+            l.hash;
+          window.history.replaceState(null, null, newUrl);
         }
       })(window.location);
     </script>
+    
+    <link rel="icon" type="image/svg+xml" href="./logo-light.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta
       name="description"
@@ -69,10 +68,10 @@
     />
 
     <title>Justin Ramas</title>
-    <script type="module" crossorigin src="/assets/index-CVvHRnM6.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-CXVBZ0MF.js">
-    <link rel="modulepreload" crossorigin href="/assets/framer-motion-Dj_htwKq.js">
-    <link rel="modulepreload" crossorigin href="/assets/tsparticles-CJZIkfv2.js">
+    <script type="module" crossorigin src="/assets/index-DM5XqppE.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-HXbir23J.js">
+    <link rel="modulepreload" crossorigin href="/assets/framer-motion-DpfArGoE.js">
+    <link rel="modulepreload" crossorigin href="/assets/tsparticles-BW3bqKsq.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DujtcFYQ.css">
   </head>
   <body>
