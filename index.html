@@ -6,17 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script type="text/javascript">
-  (function (l) {
-    if (l.search[1] === "/") {
-      var path = l.search.slice(1).split("&")[0];
-      window.history.replaceState(
-        null,
-        null,
-        l.pathname + path + (l.hash || "")
-      );
-    }
-  })(window.location);
-</script>
+      (function (l) {
+        if (l.search[1] === "/") {
+          var path = l.search.slice(1).split("&")[0];
+          var base = l.pathname.replace(/\/$/, "");
+          window.history.replaceState(null, null, base + path + (l.hash || ""));
+        }
+      })(window.location);
+    </script>
 
     <meta
       name="description"
@@ -53,7 +50,10 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
-    <meta name="google-site-verification" content="nQjDhjJ6X-JwNHVNylRJOJ5bnBHV_nDNHZ2V0BFLO4o" />
+    <meta
+      name="google-site-verification"
+      content="nQjDhjJ6X-JwNHVNylRJOJ5bnBHV_nDNHZ2V0BFLO4o"
+    />
 
     <title>Justin Ramas</title>
     <script type="module" crossorigin src="/assets/index-CVvHRnM6.js"></script>
