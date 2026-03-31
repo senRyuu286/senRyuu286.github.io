@@ -6,7 +6,8 @@ import {
   type Variants,
 } from "framer-motion";
 import { useRef } from "react";
-import sample from "../assets/sample.svg";
+import { ExternalLink } from "lucide-react";
+import stride from "../assets/desktop-mockup.webp";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -59,50 +60,45 @@ export default function SelectedWorks() {
           <motion.div variants={fadeUp} className="space-y-6">
             <div>
               <h3 className="text-2xl font-semibold mb-1 text-base-content">
-                CPU Scheduling Simulator
+                Stride
               </h3>
               <p className="text-sm font-medium text-primary">
-                Python Scheduling Simulator
+                Academic Task Manager
               </p>
             </div>
 
             <p className="text-base-content/70 leading-relaxed max-w-md">
-              A CPU Scheduling Simulator with an easy-to-use GUI that lets users
-              test different scheduling algorithms and see results on a live
-              Gantt chart. It helps visualize how CPU scheduling works in real
-              time.
+              A local-first academic task management app built for students
+              juggling multiple responsibilities at once. Stride brings
+              everything into one place — from rapid thought capture to deadline
+              tracking — with no account, no login, and no internet required.
             </p>
 
-            <div className="space-y-4 text-sm">
-              <div>
-                <p className="text-base-content/50 uppercase tracking-wider text-xs font-semibold mb-1">
-                  Role
-                </p>
-                <p className="font-medium text-base-content">
-                  Simulation Programmer
-                </p>
-              </div>
+            <div className="pt-2 flex flex-col gap-3">
+              <a
+                href="https://github.com/senRyuu286/stride"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-semibold text-base-content hover:text-primary transition-colors group"
+              >
+                GitHub
+                <span className="transform group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </a>
 
-              <div>
-                <p className="text-base-content/50 uppercase tracking-wider text-xs font-semibold mb-1">
-                  Duration
-                </p>
-                <p className="font-medium text-base-content">
-                  July 14, 2025 — July 18, 2025
-                </p>
-              </div>
-
-              <div className="pt-2">
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 font-semibold text-base-content hover:text-primary transition-colors group"
-                >
-                  GitHub
-                  <span className="transform group-hover:translate-x-1 transition-transform">
-                    →
-                  </span>
-                </a>
-              </div>
+              <a
+                href="https://senryuu286.github.io/stride/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-semibold text-base-content hover:text-primary transition-colors group"
+              >
+                Try Stride
+                <ExternalLink
+                  size={15}
+                  className="transform group-hover:translate-x-1 transition-transform"
+                />
+              </a>
             </div>
           </motion.div>
 
@@ -112,11 +108,13 @@ export default function SelectedWorks() {
             className="relative transform-gpu will-change-transform group"
           >
             <div className="relative w-full h-auto">
-              <img
-                src={sample}
-                alt="CPU Scheduling Simulator"
-                className="w-full h-auto object-cover rounded-2xl transform transition-transform duration-700 group-hover:scale-105"
-              />
+              <div className="w-full aspect-video rounded-2xl bg-base-300 flex items-center justify-center overflow-hidden transform transition-transform duration-700 group-hover:scale-105">
+                <img
+                  src={stride}
+                  alt="Stride preview"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
             </div>
 
             <div className="absolute -z-10 inset-0 blur-3xl opacity-30 bg-primary/20 rounded-full" />
