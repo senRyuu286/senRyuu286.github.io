@@ -1,0 +1,15 @@
+---
+interface Props {
+  /** The id of the field this label belongs to. */
+  for: string;
+  required?: boolean;
+  class?: string;
+}
+
+const { for: fieldId, required = false, class: className } = Astro.props;
+---
+
+<label for={fieldId} class:list={['mb-2 block text-meta font-semibold text-ink', className]}>
+  <slot />
+  {required && <span class="font-normal text-ink-muted"> (required)</span>}
+</label>

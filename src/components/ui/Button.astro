@@ -1,0 +1,46 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'primary' | 'secondary' | 'sign';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'class'> {
+  /** "sign" is only for the yellow hero panel (Milestone 4). */
+  variant?: Variant;
+  /** If set, the component renders a link instead of a button. */
+  href?: string;
+  class?: string;
+}
+
+const { variant = 'primary', href, class: className, type = 'button', ...rest } = Astro.props;
+
+const base =
+  'inline-flex min-h-11 cursor-pointer items-center justify-center rounded-control border px-6 py-2 text-body font-semibold no-underline transition-colors duration-120 ease-enter disabled:cursor-not-allowed disabled:border-rule disabled:bg-rule disabled:text-ink-muted';
+
+const variants: Record<Variant, string> = {
+  primary:
+    'border-accent bg-accent text-accent-ink hover:border-accent-hover hover:bg-accent-hover active:border-accent-active active:bg-accent-active',
+  secondary:
+    'border-ink-muted bg-transparent text-ink hover:border-ink hover:bg-surface active:bg-rule',
+  sign: 'border-signal-ink bg-signal-ink text-signal hover:bg-signal-ink/85 active:bg-signal-ink/75',
+};
+
+// External links always open in a new tab with rel="noopener noreferrer" (project rule).
+const isExternal = href !== undefined && /^https?:\/\//.test(href);
+---
+
+{
+  href !== undefined ? (
+    <a
+      href={href}
+      class:list={[base, variants[variant], className]}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={[base, variants[variant], className]} {...rest}>
+      <slot />
+    </button>
+  )
+}

@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'class' | 'aria-pressed'> {
+  /** Starting state. The Work filter script flips aria-pressed in Milestone 5. */
+  pressed?: boolean;
+  class?: string;
+}
+
+const { pressed = false, class: className, type = 'button', ...rest } = Astro.props;
+---
+
+<button
+  type={type}
+  aria-pressed={pressed ? 'true' : 'false'}
+  class:list={[
+    'inline-flex min-h-11 cursor-pointer items-center rounded-control border border-ink-muted bg-surface px-4 text-body text-ink',
+    'transition-colors duration-120 ease-enter',
+    'hover:border-ink hover:bg-paper active:bg-rule',
+    'aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-accent-ink',
+    'aria-pressed:hover:border-accent-hover aria-pressed:hover:bg-accent-hover',
+    'aria-pressed:active:bg-accent-active',
+    'disabled:cursor-not-allowed disabled:border-rule disabled:bg-rule disabled:text-ink-muted',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</button>
