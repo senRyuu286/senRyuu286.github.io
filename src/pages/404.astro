@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { site } from '../lib/site';
+---
+
+<BaseLayout
+	title={`Page not found | ${site.name}`}
+	description="This page does not exist or has moved. Go back to the home page to see my skills, projects, and certificates."
+	noindex
+>
+	<h1>Page not found</h1>
+	<p class="mt-3">This page does not exist or has moved. The home page is the best place to start again.</p>
+	<div class="mt-6">
+		<Button href="/">Back to home</Button>
+	</div>
+</BaseLayout>

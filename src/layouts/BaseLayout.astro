@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../lib/site';
+
+interface Props {
+  /** Unique page title, about 60 characters. */
+  title: string;
+  /** Unique page description, about 155 characters. */
+  description: string;
+  /** Preload the Archivo font. Only the Home page (hero sign) sets this. */
+  preloadDisplayFont?: boolean;
+  /** Keeps the page out of search results (used by the 404 page). */
+  noindex?: boolean;
+}
+
+const { title, description, preloadDisplayFont = false, noindex = false } = Astro.props;
+
+// Astro.site comes from "site" in astro.config.mjs.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = site.ogImage !== '' ? new URL(site.ogImage, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical.href} />}
+		<meta name="color-scheme" content="light dark" />
+		<meta name="theme-color" content="#EDEFF1" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#12161D" media="(prefers-color-scheme: dark)" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		{preloadDisplayFont && <link rel="preload" href="/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin />}
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical.href} />
+		<meta property="og:site_name" content={site.name} />
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+	</head>
+	<body class="flex min-h-dvh flex-col">
+		<a
+			href="#main"
+			class="absolute top-3 left-3 z-50 translate-y-[-200%] rounded-control bg-ink px-4 py-2 text-body font-semibold text-paper no-underline transition-transform duration-120 ease-enter focus:translate-y-0"
+		>
+			Skip to main content
+		</a>
+		<Header />
+		<main id="main" tabindex="-1" class="mx-auto w-full max-w-5xl flex-1 px-4 py-12 focus:outline-none sm:px-6">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

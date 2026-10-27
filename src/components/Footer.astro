@@ -1,0 +1,39 @@
+---
+import { isUrl, site } from '../lib/site';
+
+const year = new Date().getFullYear();
+
+const links = [
+	{ label: 'Contact', href: '/contact/', external: false },
+	{ label: 'LinkedIn', href: site.linkedin, external: true },
+	{ label: 'GitHub', href: site.github, external: true },
+];
+---
+
+<footer class="border-t border-rule">
+	<div class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-8 text-meta text-ink-muted sm:px-6">
+		<ul class="flex flex-wrap gap-x-6">
+			{
+				links.map((link) =>
+					link.external && !isUrl(link.href) ? (
+						<li>
+							<span class="inline-flex min-h-11 items-center">{link.href}</span>
+						</li>
+					) : (
+						<li>
+							<a
+								href={link.href}
+								target={link.external ? '_blank' : undefined}
+								rel={link.external ? 'noopener noreferrer' : undefined}
+								class="inline-flex min-h-11 items-center"
+							>
+								{link.label}
+							</a>
+						</li>
+					),
+				)
+			}
+		</ul>
+		<p>© {year} <span translate="no">{site.name}</span>. Built with Astro and Tailwind CSS.</p>
+	</div>
+</footer>
