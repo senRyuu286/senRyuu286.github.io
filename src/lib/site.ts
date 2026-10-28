@@ -1,6 +1,12 @@
 /** Site-wide facts in one place. Anything in [BRACKETS] is a placeholder (see file 07). */
 interface SiteInfo {
   name: string;
+  /** Completes the hero headline: "BSIT student building ...". */
+  focusArea: string;
+  /** One line under the hero headline. Also the Home meta description. */
+  bioSentence: string;
+  /** Closing line on Home. */
+  availability: string;
   email: string;
   linkedin: string;
   github: string;
@@ -10,6 +16,9 @@ interface SiteInfo {
 
 export const site: SiteInfo = {
   name: '[MY NAME]',
+  focusArea: '[MY FOCUS AREA]',
+  bioSentence: '[MY BIO SENTENCE]',
+  availability: '[CONFIRM: availability, for example open to internships]',
   email: '[MY EMAIL]',
   linkedin: '[LINKEDIN LINK]',
   github: '[GITHUB LINK]',

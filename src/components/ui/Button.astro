@@ -1,10 +1,10 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Variant = 'primary' | 'secondary' | 'sign';
+type Variant = 'primary' | 'secondary' | 'sign' | 'sign-outline';
 
 interface Props extends Omit<HTMLAttributes<'button'>, 'class'> {
-  /** "sign" is only for the yellow hero panel (Milestone 4). */
+  /** "sign" and "sign-outline" are only for the yellow hero panel. */
   variant?: Variant;
   /** If set, the component renders a link instead of a button. */
   href?: string;
@@ -21,7 +21,10 @@ const variants: Record<Variant, string> = {
     'border-accent bg-accent text-accent-ink hover:border-accent-hover hover:bg-accent-hover active:border-accent-active active:bg-accent-active',
   secondary:
     'border-ink-muted bg-transparent text-ink hover:border-ink hover:bg-surface active:bg-rule',
-  sign: 'border-signal-ink bg-signal-ink text-signal hover:bg-signal-ink/85 active:bg-signal-ink/75',
+  // On the yellow panel the blue focus ring is too faint in dark mode, so use signal-ink.
+  sign: 'border-signal-ink bg-signal-ink text-signal hover:bg-signal-ink/85 active:bg-signal-ink/75 focus-visible:outline-signal-ink',
+  'sign-outline':
+    'border-signal-ink bg-transparent text-signal-ink hover:bg-signal-ink/10 active:bg-signal-ink/20 focus-visible:outline-signal-ink',
 };
 
 // External links always open in a new tab with rel="noopener noreferrer" (project rule).

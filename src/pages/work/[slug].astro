@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudySpec from '../../components/CaseStudySpec.astro';
+import Button from '../../components/ui/Button.astro';
+import { isUrl, site } from '../../lib/site';
+
+export const getStaticPaths = (async () => {
+	const projects = await getCollection('projects');
+	return projects.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+// Links come from the content file. Placeholders show as plain text until real addresses are added.
+const links = [
+	{ label: 'View code on GitHub', value: data.github },
+	{ label: 'Open live demo', value: data.demo },
+].filter((link): link is { label: string; value: string } => link.value !== undefined);
+---
+
+<BaseLayout title={`${data.title} | ${site.name}`} description={data.summary}>
+	<article class="max-w-3xl">
+		<p><a href="/work/">Back to all work</a></p>
+		<h1 class="mt-6">{data.title}</h1>
+		<p class="mt-3">{data.summary}</p>
+		<CaseStudySpec role={data.role} stack={data.stack} year={data.year} status={data.status} class="mt-8" />
+		{
+			links.length > 0 && (
+				<ul class="mt-6 flex flex-wrap gap-3">
+					{links.map((link) => (
+						<li>
+							{isUrl(link.value) ? (
+								<Button href={link.value} variant="secondary">
+									{link.label}
+								</Button>
+							) : (
+								<span class="inline-flex min-h-11 items-center">{link.value}</span>
+							)}
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<div class="content mt-12">
+			<Content />
+		</div>
+	</article>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+interface Props {
+	role: string;
+	stack: string[];
+	year: string;
+	status: string;
+	class?: string;
+}
+
+const { role, stack, year, status, class: className } = Astro.props;
+
+const rows = [
+	{ label: 'Role', value: role },
+	{ label: 'Stack', value: stack.join(', ') },
+	{ label: 'Year', value: year },
+	{ label: 'Status', value: status },
+];
+---
+
+<dl class:list={['grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 border-y border-rule py-4', className]}>
+	{
+		rows.map((row) => (
+			<>
+				<dt class="text-ink-muted">{row.label}</dt>
+				<dd class="wrap-break-word">{row.value}</dd>
+			</>
+		))
+	}
+</dl>

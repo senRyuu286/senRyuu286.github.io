@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkExplorer from '../../components/WorkExplorer.astro';
+import { getWorkItems } from '../../lib/work';
+import { site } from '../../lib/site';
+
+const items = await getWorkItems();
+---
+
+<BaseLayout
+	title={`Work | ${site.name}`}
+	description="Projects, certificates, and activities in one list. Search by title or tag, or filter by type."
+>
+	<h1>Work</h1>
+	<p class="mt-3">Projects, certificates, and activities in one list. Search by title or tag, or filter by type.</p>
+	<div class="mt-8">
+		<WorkExplorer items={items} />
+	</div>
+</BaseLayout>

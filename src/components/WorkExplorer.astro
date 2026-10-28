@@ -1,0 +1,56 @@
+---
+import type { WorkItem } from '../lib/work';
+import { typeFilters } from '../lib/filter';
+import SpecTable from './SpecTable.astro';
+import Button from './ui/Button.astro';
+import Input from './ui/Input.astro';
+import Label from './ui/Label.astro';
+import Toggle from './ui/Toggle.astro';
+
+interface Props {
+	items: WorkItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div>
+	<!-- Hidden until the script runs. Without JavaScript the full list below is still readable. -->
+	<div data-work-controls hidden>
+		<div class="max-w-md">
+			<Label for="work-search">Search work</Label>
+			<Input
+				id="work-search"
+				type="search"
+				name="q"
+				autocomplete="off"
+				spellcheck={false}
+				placeholder="Search by title, type, or tag…"
+				data-work-search
+			/>
+		</div>
+		<div role="group" aria-label="Filter by type" class="mt-4 flex flex-wrap gap-3">
+			{
+				typeFilters.map((filter) => (
+					<Toggle pressed={filter.type === null} data-work-chip data-type={filter.type ?? ''}>
+						{filter.label}
+					</Toggle>
+				))
+			}
+		</div>
+		<p role="status" class="mt-4 text-meta text-ink-muted" data-work-status></p>
+	</div>
+
+	<div class="mt-6">
+		<SpecTable items={items} />
+	</div>
+
+	<div data-work-empty hidden class="mt-6">
+		<p>No matches. Try a different word or clear the filters.</p>
+		<Button variant="secondary" class="mt-4" data-work-clear>Clear filters</Button>
+	</div>
+</div>
+
+<script>
+	import '../scripts/work-explorer';
+</script>

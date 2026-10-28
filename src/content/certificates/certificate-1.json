@@ -1,0 +1,8 @@
+{
+  "title": "[CERTIFICATE 1]",
+  "issuer": "[ISSUER]",
+  "year": "[YEAR]",
+  "status": "[STATUS]",
+  "tags": ["[TAG]"],
+  "credentialUrl": "[CREDENTIAL LINK]"
+}
