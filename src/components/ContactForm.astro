@@ -1,0 +1,49 @@
+---
+import Button from './ui/Button.astro';
+import Input from './ui/Input.astro';
+import Label from './ui/Label.astro';
+import Textarea from './ui/Textarea.astro';
+import { site } from '../lib/site';
+
+const action = `https://formspree.io/f/${site.formspreeId}`;
+const success = 'Message sent. I’ll reply as soon as I can.';
+const failure = `Your message did not send. Check your connection and try again, or email me at ${site.email}.`;
+---
+
+<form id="contact-form" action={action} method="POST" data-success={success} data-failure={failure} class="max-w-xl">
+	<div>
+		<Label for="contact-name" required>Name</Label>
+		<Input id="contact-name" name="name" autocomplete="name" required aria-describedby="contact-name-error" />
+		<p id="contact-name-error" data-error-for="name" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+	<div class="mt-4">
+		<Label for="contact-email" required>Email</Label>
+		<Input
+			id="contact-email"
+			name="email"
+			type="email"
+			autocomplete="email"
+			spellcheck={false}
+			required
+			aria-describedby="contact-email-error"
+		/>
+		<p id="contact-email-error" data-error-for="email" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+	<div class="mt-4">
+		<Label for="contact-message" required>Message</Label>
+		<Textarea id="contact-message" name="message" required aria-describedby="contact-message-error" />
+		<p id="contact-message-error" data-error-for="message" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+
+	<!-- Spam trap: people never see it, but bots often fill it in. -->
+	<div class="hidden" aria-hidden="true">
+		<label>Leave this field empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+	</div>
+
+	<Button type="submit" class="mt-4 min-w-44" data-contact-submit>Send message</Button>
+	<p role="status" data-contact-status class="mt-4 min-h-20"></p>
+</form>
+
+<script>
+	import '../scripts/contact-form';
+</script>

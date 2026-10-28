@@ -9,3 +9,6 @@ export const skillGroups: SkillGroup[] = [
   { name: '[SKILL GROUP 2]', items: ['[SKILL]', '[SKILL]', '[SKILL]'] },
   { name: '[SKILL GROUP 3]', items: ['[SKILL]', '[SKILL]', '[SKILL]'] },
 ];
+
+/** Shown on the About page under "Currently learning". */
+export const currentlyLearning: string[] = ['[ITEM]'];

@@ -1,0 +1,28 @@
+---
+import type { JourneyStop } from '../lib/journey';
+
+interface Props {
+	stops: JourneyStop[];
+}
+
+const { stops } = Astro.props;
+---
+
+<!-- role="list" keeps list meaning in Safari, which drops it when list bullets are removed. -->
+<ol role="list" data-journey>
+	{
+		stops.map((stop, index) => (
+			<li class="relative pl-14 not-last:pb-10 not-last:before:absolute not-last:before:top-5 not-last:before:-bottom-5 not-last:before:left-4.75 not-last:before:w-0.5 not-last:before:bg-ink-muted">
+				<span
+					aria-hidden="true"
+					class="absolute top-0 left-0 grid size-10 place-items-center rounded-full border-2 border-signal-ink bg-signal font-display font-bold text-signal-ink"
+				>
+					{index + 1}
+				</span>
+				<p class="font-display font-bold">{stop.title}</p>
+				<p class="text-meta text-ink-muted">{stop.period}</p>
+				<p class="mt-1">{stop.detail}</p>
+			</li>
+		))
+	}
+</ol>

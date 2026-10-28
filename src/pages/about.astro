@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JourneyRoute from '../components/JourneyRoute.astro';
+import SkillGroups from '../components/SkillGroups.astro';
+import { journey } from '../lib/journey';
+import { currentlyLearning, skillGroups } from '../lib/skills';
+import { site } from '../lib/site';
+---
+
+<BaseLayout
+	title={`About | ${site.name}`}
+	description="My learning journey, the skills I use, and what I am learning now."
+>
+	<h1>About</h1>
+	<p class="mt-3">I am <span translate="no">{site.name}</span>, a BSIT student at {site.school}, building {site.focusArea}.</p>
+	<p class="mt-3">{site.bio}</p>
+
+	<section class="mt-12" aria-labelledby="journey-heading">
+		<h2 id="journey-heading">Learning journey</h2>
+		<div class="mt-6">
+			<JourneyRoute stops={journey} />
+		</div>
+	</section>
+
+	<section class="mt-12" aria-labelledby="skills-heading">
+		<h2 id="skills-heading">Skills</h2>
+		<SkillGroups groups={skillGroups} class="mt-3" />
+	</section>
+
+	<section class="mt-12" aria-labelledby="learning-heading">
+		<h2 id="learning-heading">Currently learning</h2>
+		<ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+			{currentlyLearning.map((item) => <li>{item}</li>)}
+		</ul>
+	</section>
+</BaseLayout>

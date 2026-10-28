@@ -11,9 +11,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:launch": "playwright test -c playwright.launch.config.ts"
   },
   "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.4.2",
     "tailwindcss": "4.3.3",

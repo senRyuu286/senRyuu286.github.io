@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://senryuu286.github.io/sitemap-index.xml
