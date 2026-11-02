@@ -1,0 +1,14 @@
+---
+// A small label pill, for example one technology in a tech stack.
+// It is not a link or a button: no cursor change, no focus stop. On a mouse it lifts 2px as a small reward.
+// The hover and border colors come from --chip-border and --chip-hover, which a parent can change (see .tile-signal).
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={['chip inline-block max-w-full rounded-control border px-3 py-1 text-meta wrap-anywhere', className]}>
+	<slot />
+</span>

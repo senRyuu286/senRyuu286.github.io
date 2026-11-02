@@ -19,11 +19,26 @@ function serverFieldNames(data: unknown): string[] | null {
   );
 }
 
+/**
+ * Plays a one-shot CSS animation again, even if it is still running.
+ * Remove the class, read a layout value (this makes the browser apply the removal now), then add the class back.
+ * Reading offsetWidth costs almost nothing here: the form is tiny and this runs at most once per button press.
+ */
+function replay(element: HTMLElement, className: string): void {
+  element.classList.remove(className);
+  void element.offsetWidth;
+  element.classList.add(className);
+}
+
+type Tone = 'none' | 'success' | 'failure';
+
 function init(): void {
   const form = document.querySelector<HTMLFormElement>('#contact-form');
   const status = document.querySelector<HTMLElement>('[data-contact-status]');
+  const statusText = status?.querySelector<HTMLElement>('[data-status-text]');
+  const statusIcon = status?.querySelector<SVGElement>('[data-status-icon]');
   const submit = document.querySelector<HTMLButtonElement>('[data-contact-submit]');
-  if (!form || !status || !submit) return;
+  if (!form || !status || !statusText || !statusIcon || !submit) return;
 
   const fields = Array.from(form.querySelectorAll<Field>('input[required], textarea[required]'));
 
@@ -58,9 +73,15 @@ function init(): void {
     return false;
   }
 
-  function setStatus(message: string, isError: boolean): void {
-    status!.textContent = message;
-    status!.classList.toggle('text-error', isError);
+  /**
+   * Writes the message once and plays the pop. The pop only changes how the box looks, never its text,
+   * so a screen reader hears the message one time. Only the text span changes, so the check mark survives.
+   */
+  function setStatus(message: string, tone: Tone): void {
+    statusText!.textContent = message;
+    statusIcon!.classList.toggle('hidden', tone !== 'success');
+    status!.classList.toggle('text-error', tone === 'failure');
+    if (message !== '') replay(status!, 'status-pop');
   }
 
   const successText = form.dataset.success ?? '';
@@ -79,9 +100,11 @@ function init(): void {
     event.preventDefault();
     if (sending) return;
 
-    setStatus('', false);
+    setStatus('', 'none');
     const invalid = fields.filter((field) => !checkField(field));
     if (invalid.length > 0) {
+      // One short shake per field that needs fixing. Only a Send attempt shakes, never typing or leaving a field.
+      invalid.forEach((field) => replay(field, 'field-shake'));
       invalid[0]?.focus();
       return;
     }
@@ -100,20 +123,21 @@ function init(): void {
 
       if (response.ok) {
         form.reset();
-        setStatus(successText, false);
+        setStatus(successText, 'success');
       } else {
         const data: unknown = await response.json().catch(() => null);
         const names = serverFieldNames(data) ?? [];
         const rejected = fields.filter((field) => names.includes(field.name));
         if (rejected.length > 0) {
           rejected.forEach(showFieldError);
+          rejected.forEach((field) => replay(field, 'field-shake'));
           rejected[0]?.focus();
         } else {
-          setStatus(failureText, true);
+          setStatus(failureText, 'failure');
         }
       }
     } catch {
-      setStatus(failureText, true);
+      setStatus(failureText, 'failure');
     } finally {
       sending = false;
       submit.removeAttribute('aria-disabled');

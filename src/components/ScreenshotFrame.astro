@@ -1,0 +1,17 @@
+---
+// The 16:10 box for the capstone screenshot. Home and the case study page both use it,
+// so the real image only has to be swapped in here. The fixed ratio keeps the page from shifting when it loads.
+// The visible [CAPSTONE SCREENSHOT] label is caught by the launch gate until a real image replaces it.
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+	class:list={['grid aspect-16/10 w-full place-items-center rounded-control border border-rule bg-paper', className]}
+	data-card-screenshot
+>
+	<p class="px-4 text-center text-meta text-ink-muted">[CAPSTONE SCREENSHOT]</p>
+</div>

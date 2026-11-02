@@ -1,11 +1,15 @@
 ---
-title: '[CAPSTONE TITLE]'
+title: 'Veritas'
 summary: '[CAPSTONE SUMMARY]'
-role: '[MY ROLE]'
+role: 'Blockchain & Full-Stack Developer'
 stack:
-  - '[STACK]'
-year: '[YEAR]'
-status: '[STATUS]'
+  - 'PHP'
+  - 'Laravel'
+  - 'Python'
+  - 'FastAPI'
+  - 'Solidity'
+year: '2026'
+status: 'Ongoing'
 tags:
   - '[TAG]'
 github: '[GITHUB LINK]'

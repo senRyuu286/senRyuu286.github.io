@@ -1,0 +1,21 @@
+---
+// One stop on a route spine: a yellow numbered marker on the left, and your content on the right.
+// The marker and the line are decoration, so screen readers skip them.
+// A "section" stop is named by its heading (labelledby). An "li" stop is an item in a list, so the list names it.
+interface Props {
+	/** The number shown in the marker. */
+	n: number | string;
+	/** "section" (default) for page sections. "li" when the spine is an ol. */
+	as?: 'section' | 'li';
+	/** The id of the heading inside a section stop. It names the section for assistive technology. */
+	labelledby?: string;
+	class?: string;
+}
+
+const { n, as: Tag = 'section', labelledby, class: className } = Astro.props;
+---
+
+<Tag class:list={['route-stop', className]} aria-labelledby={Tag === 'section' ? labelledby : undefined} data-stop>
+	<span class="route-marker" aria-hidden="true">{n}</span>
+	<slot />
+</Tag>

@@ -1,0 +1,97 @@
+---
+interface Page {
+	label: string;
+	href: string;
+	current: boolean;
+	parent: boolean;
+}
+
+interface Profile {
+	key: string;
+	label: string;
+	/** What to show while the link is still a placeholder, such as [LINKEDIN LINK]. */
+	text: string;
+	href: string;
+	real: boolean;
+	external: boolean;
+	/** SVG path data for a 24px filled icon. */
+	icon: string;
+}
+
+interface Props {
+	pages: Page[];
+	profiles: Profile[];
+}
+
+const { pages, profiles } = Astro.props;
+---
+
+<!-- Native <details>: opens and closes with no JavaScript. site-nav.ts adds Escape and outside click. -->
+<details data-nav-menu class="group ml-auto md:hidden">
+	<summary
+		class="inline-flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-control px-3 font-semibold text-ink transition-colors duration-120 ease-enter select-none hover:text-accent active:bg-paper [&::-webkit-details-marker]:hidden"
+	>
+		Menu
+		<!-- Three bars that turn into a cross while the menu is open. -->
+		<span aria-hidden="true" class="relative block h-3.5 w-4.5">
+			<span class="absolute top-0 left-0 h-0.5 w-full rounded-full bg-current transition-transform duration-200 ease-enter group-open:translate-y-1.5 group-open:rotate-45"></span>
+			<span class="absolute top-1.5 left-0 h-0.5 w-full rounded-full bg-current transition-opacity duration-200 ease-enter group-open:opacity-0"></span>
+			<span class="absolute top-3 left-0 h-0.5 w-full rounded-full bg-current transition-transform duration-200 ease-enter group-open:-translate-y-1.5 group-open:-rotate-45"></span>
+		</span>
+	</summary>
+
+	<div
+		data-nav-panel
+		class="absolute inset-x-4 top-full mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain rounded-panel border border-rule bg-surface p-2 group-open:animate-in group-open:fade-in group-open:slide-in-from-top-2 group-open:duration-200 group-open:ease-enter sm:inset-x-6"
+	>
+		<ul>
+			{
+				pages.map((page) => (
+					<li>
+						<a
+							href={page.href}
+							aria-current={page.current ? 'page' : undefined}
+							data-parent={page.parent || undefined}
+							class="flex min-h-11 items-center border-l-2 border-transparent px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper aria-[current=page]:border-accent aria-[current=page]:font-semibold data-parent:border-ink-muted"
+						>
+							{page.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		<ul class="mt-2 border-t border-rule pt-2">
+			{
+				profiles.map((profile) => (
+					<li>
+						{profile.real ? (
+							<a
+								href={profile.href}
+								target={profile.external ? '_blank' : undefined}
+								rel={profile.external ? 'noopener noreferrer' : undefined}
+								class="flex min-h-11 items-center gap-3 px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper"
+							>
+								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5 shrink-0">
+									<path d={profile.icon} />
+								</svg>
+								{profile.label}
+								{profile.external && <span class="sr-only"> (opens in a new tab)</span>}
+							</a>
+						) : (
+							<span class="flex min-h-11 items-center gap-3 px-3 text-ink-muted">
+								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5 shrink-0 opacity-50">
+									<path d={profile.icon} />
+								</svg>
+								{profile.text}
+							</span>
+						)}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</details>
+
+<script>
+	import '../scripts/site-nav';
+</script>

@@ -15,8 +15,9 @@ const { items } = Astro.props;
 ---
 
 <div>
-	<!-- Hidden until the script runs. Without JavaScript the full list below is still readable. -->
-	<div data-work-controls hidden>
+	<!-- These controls need JavaScript. global.css shows them from the first paint when scripting is on (so the list below
+	     does not jump) and hides them when it is off. Without JavaScript the full list is still readable. -->
+	<div data-work-controls>
 		<div class="max-w-md">
 			<Label for="work-search">Search work</Label>
 			<Input
@@ -38,7 +39,7 @@ const { items } = Astro.props;
 				))
 			}
 		</div>
-		<p role="status" class="mt-4 text-meta text-ink-muted" data-work-status></p>
+		<p role="status" class="mt-4 text-meta text-ink-muted" data-work-status>{`Showing ${items.length} of ${items.length} item${items.length === 1 ? '' : 's'}`}</p>
 	</div>
 
 	<div class="mt-6">

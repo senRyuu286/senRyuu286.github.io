@@ -23,15 +23,15 @@ interface SiteInfo {
 }
 
 export const site: SiteInfo = {
-  name: "[MY NAME]",
-  school: "[MY SCHOOL]",
+  name: "Justin Ramas",
+  school: "University of San Jose Recoletos",
   focusArea: "[MY FOCUS AREA]",
-  bioSentence: "[MY BIO SENTENCE]",
+  bioSentence: "I am an Information Technology undergrad deeply curious about how the web works behind the scenes. I spend my time turning coffee into code, constantly learning new frameworks, and building projects to bridge the gap between theory and real-world development.",
   bio: "[MY BIO]",
-  availability: "[CONFIRM: availability, for example open to internships]",
-  email: "[MY EMAIL]",
-  linkedin: "[LINKEDIN LINK]",
-  github: "[GITHUB LINK]",
+  availability: "Open to internships",
+  email: "justinramas12@outlook.com",
+  linkedin: "https://www.linkedin.com/in/justin-ramas/",
+  github: "https://github.com/senRyuu286",
   formspreeId: "mzeernja",
   goatcounterCode: "website-portfolio",
   ogImage: "",

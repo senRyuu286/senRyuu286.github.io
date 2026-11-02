@@ -44,8 +44,10 @@ const personJson = includePerson
 		<meta name="color-scheme" content="light dark" />
 		<meta name="theme-color" content="#EDEFF1" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#12161D" media="(prefers-color-scheme: dark)" />
+		<!-- sizes="32x32" on the ICO makes Chrome pick the SVG. Safari uses the ICO. The apple-touch-icon is the iPhone home-screen icon. -->
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		{preloadDisplayFont && <link rel="preload" href="/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin />}
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />

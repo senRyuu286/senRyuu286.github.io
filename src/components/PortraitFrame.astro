@@ -1,0 +1,18 @@
+---
+// A fixed 4:5 frame for the portrait, so the page never shifts when the real photo arrives.
+// The two corner brackets are decoration only. They scale out from their own corners once on load.
+// Until a photo exists, the visible [PORTRAIT PHOTO] label keeps the launch gate from passing.
+const bracket =
+	'absolute size-7 border-accent animate-in zoom-in-50 fade-in duration-300 ease-enter delay-200 fill-mode-backwards';
+---
+
+<div class="relative mx-auto w-full max-w-72 lg:mx-0 lg:max-w-none lg:self-center" data-portrait>
+	<div
+		class="grid aspect-4/5 w-full place-items-center rounded-control border border-rule bg-surface"
+		data-portrait-box
+	>
+		<p class="px-4 text-center text-meta text-ink-muted">[PORTRAIT PHOTO]</p>
+	</div>
+	<span aria-hidden="true" data-bracket class:list={[bracket, '-top-2 -left-2 origin-top-left border-t-3 border-l-3']}></span>
+	<span aria-hidden="true" data-bracket class:list={[bracket, '-right-2 -bottom-2 origin-bottom-right border-r-3 border-b-3']}></span>
+</div>

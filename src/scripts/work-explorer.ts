@@ -44,7 +44,9 @@ function init(): void {
       for (const row of newlyShown) row.classList.add(...FADE_IN);
     });
 
-    status!.textContent = `Showing ${visible} of ${items.length} item${items.length === 1 ? '' : 's'}`;
+    // The page already shows the starting text. Only write when it changes, so screen readers stay quiet on load.
+    const message = `Showing ${visible} of ${items.length} item${items.length === 1 ? '' : 's'}`;
+    if (status!.textContent !== message) status!.textContent = message;
     empty!.hidden = visible > 0;
   }
 
@@ -75,7 +77,8 @@ function init(): void {
     search.focus();
   });
 
-  controls.hidden = false;
+  // CSS already shows the controls where the scripting media feature exists. This flag covers browsers that lack it.
+  controls.dataset.ready = '';
   apply();
 }
 

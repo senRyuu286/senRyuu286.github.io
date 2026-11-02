@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import JourneyRoute from '../components/JourneyRoute.astro';
+import RouteSpine from '../components/RouteSpine.astro';
+import RouteStop from '../components/RouteStop.astro';
 import SkillGroups from '../components/SkillGroups.astro';
 import { journey } from '../lib/journey';
 import { currentlyLearning, skillGroups } from '../lib/skills';
@@ -17,9 +18,17 @@ import { site } from '../lib/site';
 
 	<section class="mt-12" aria-labelledby="journey-heading">
 		<h2 id="journey-heading">Learning journey</h2>
-		<div class="mt-6">
-			<JourneyRoute stops={journey} />
-		</div>
+		<RouteSpine as="ol" data-journey class="mt-6">
+			{
+				journey.map((stop, index) => (
+					<RouteStop as="li" n={index + 1}>
+						<p class="font-display font-bold">{stop.title}</p>
+						<p class="text-meta text-ink-muted">{stop.period}</p>
+						<p class="mt-1">{stop.detail}</p>
+					</RouteStop>
+				))
+			}
+		</RouteSpine>
 	</section>
 
 	<section class="mt-12" aria-labelledby="skills-heading">

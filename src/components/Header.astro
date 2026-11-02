@@ -1,34 +1,104 @@
 ---
-import { nav, site } from '../lib/site';
+import MobileMenu from './MobileMenu.astro';
+import { isUrl, nav, site } from '../lib/site';
 
-const path = Astro.url.pathname;
+// 24px filled icon shapes. LinkedIn and GitHub marks: Simple Icons (CC0). Envelope: Material Icons (Apache 2.0).
+const icons = {
+	linkedin:
+		'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
+	github:
+		'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
+	mail: 'M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z',
+};
+
+// "/work/" and "/work" count as the same page. Only an exact match is the current page.
+// A child page (such as /work/capstone/) marks its parent section with data-parent, for a softer visual style only.
+const trim = (path: string) => path.replace(/\/+$/, '') || '/';
+const here = trim(Astro.url.pathname);
+
+const pages = nav.map((item) => {
+	const target = trim(item.href);
+	return { label: item.label, href: item.href, current: here === target, parent: here.startsWith(`${target}/`) };
+});
+
+const isEmail = (value: string) => /^[^\s@[\]]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+// While a value is still a placeholder, its icon is shown but is not a link (the same idea as Footer and Contact).
+const profiles = [
+	{ key: 'linkedin', label: 'LinkedIn', text: site.linkedin, href: site.linkedin, real: isUrl(site.linkedin), external: true, icon: icons.linkedin },
+	{ key: 'github', label: 'GitHub', text: site.github, href: site.github, real: isUrl(site.github), external: true, icon: icons.github },
+	{ key: 'mail', label: 'Email', text: site.email, href: `mailto:${site.email}`, real: isEmail(site.email), external: false, icon: icons.mail },
+];
 ---
 
-<header class="border-b border-rule">
-	<div class="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 sm:px-6">
-		<a
-			href="/"
-			translate="no"
-			class="inline-flex min-h-11 items-center font-display text-h2 font-bold text-ink no-underline hover:text-accent"
-		>
-			{site.name}
+<!--
+	A sticky bar that floats 12px below the top. It stays a direct child of <body> so "sticky" has the whole page to move through.
+	The mt-3 and top-3 values match, so the bar does not jump when the page starts to scroll.
+-->
+<header class="site-header sticky top-3 z-40 mt-3 w-full max-w-5xl self-center px-4 sm:px-6">
+	<div class="flex min-h-14 items-center gap-x-2 rounded-panel border border-rule bg-surface px-2">
+		<a href="/" translate="no" class="nav-logo inline-flex min-h-11 min-w-11 items-center gap-3 rounded-control px-1.5 text-ink no-underline">
+			<!-- Logo mark: the letter J in a cobalt square (fixed 32px). The J is outlined from the Archivo font
+			     (SIL Open Font License), so it needs no font file. It uses the color tokens, so dark mode follows by itself. -->
+			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center rounded-control bg-accent">
+				<svg viewBox="0 0 32 32" focusable="false" class="size-8 fill-accent-ink">
+					<path d="M15.89 26Q14.03 26 12.66 25.41Q11.29 24.81 10.55 23.53Q9.8 22.25 9.8 20.22V19.1H14.25V20.03Q14.25 21.08 14.63 21.62Q15 22.17 15.9 22.17Q16.82 22.17 17.2 21.56Q17.58 20.95 17.58 19.73V6H22.2V19.89Q22.2 22.06 21.4 23.41Q20.6 24.76 19.18 25.38Q17.76 26 15.89 26Z"></path>
+				</svg>
+			</span>
+			<!-- On phones the name stays in the page for screen readers and is hidden to the eye. -->
+			<span class="sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
 		</a>
-		<nav aria-label="Main">
-			<ul class="flex flex-wrap gap-x-6">
+
+		<nav aria-label="Main" class="flex min-w-0 flex-1 items-center">
+			<ul class="ml-2 hidden items-center md:flex">
 				{
-					nav.map((item) => (
+					pages.map((page) => (
 						<li>
 							<a
-								href={item.href}
-								aria-current={path.startsWith(item.href) ? 'page' : undefined}
-								class="inline-flex min-h-11 items-center text-ink hover:text-accent aria-[current=page]:font-bold aria-[current=page]:decoration-2"
+								href={page.href}
+								aria-current={page.current ? 'page' : undefined}
+								data-parent={page.parent || undefined}
+								class="nav-link inline-flex min-h-11 items-center px-3"
 							>
-								{item.label}
+								{page.label}
 							</a>
 						</li>
 					))
 				}
 			</ul>
+
+			<ul class="ml-auto hidden items-center md:flex">
+				{
+					profiles.map((profile) => (
+						<li>
+							{profile.real ? (
+								<a
+									href={profile.href}
+									target={profile.external ? '_blank' : undefined}
+									rel={profile.external ? 'noopener noreferrer' : undefined}
+									class="inline-flex size-11 items-center justify-center rounded-control text-ink-muted no-underline transition-colors duration-200 ease-enter hover:text-accent active:text-accent-active"
+								>
+									<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5">
+										<path d={profile.icon} />
+									</svg>
+									<span class="sr-only">
+										{profile.label}
+										{profile.external && ' (opens in a new tab)'}
+									</span>
+								</a>
+							) : (
+								<span data-nav-inert aria-hidden="true" class="inline-flex size-11 items-center justify-center text-ink-muted opacity-50">
+									<svg viewBox="0 0 24 24" fill="currentColor" focusable="false" class="size-5">
+										<path d={profile.icon} />
+									</svg>
+								</span>
+							)}
+						</li>
+					))
+				}
+			</ul>
+
+			<MobileMenu pages={pages} profiles={profiles} />
 		</nav>
 	</div>
 </header>

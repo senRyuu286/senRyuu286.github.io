@@ -28,10 +28,11 @@ const { items } = Astro.props;
 					data-search={item.searchText}
 					class="block border-t border-rule py-4 sm:table-row sm:py-0"
 				>
-					<td role="cell" class="block sm:table-cell sm:w-full sm:py-4 sm:pr-6 sm:align-top">
+					<td role="cell" class="relative block sm:table-cell sm:w-full sm:py-4 sm:pr-6 sm:align-top">
 						<p class="font-display font-bold">
 							{item.href !== undefined ? (
 								<a
+									class="work-link"
 									href={item.href}
 									target={item.external ? '_blank' : undefined}
 									rel={item.external ? 'noopener noreferrer' : undefined}
