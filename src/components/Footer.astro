@@ -1,13 +1,9 @@
 ---
-import { isUrl, site } from '../lib/site';
+import { profileLinks, site } from '../lib/site';
 
 const year = new Date().getFullYear();
 
-const links = [
-	{ label: 'Contact', href: '/contact/', external: false },
-	{ label: 'LinkedIn', href: site.linkedin, external: true },
-	{ label: 'GitHub', href: site.github, external: true },
-];
+const links = [{ label: 'Contact', href: '/#contact', real: true, external: false }, ...profileLinks.filter((link) => link.external)];
 ---
 
 <footer class="border-t border-rule">
@@ -15,7 +11,7 @@ const links = [
 		<ul class="flex flex-wrap gap-x-6">
 			{
 				links.map((link) =>
-					link.external && !isUrl(link.href) ? (
+					!link.real ? (
 						<li>
 							<span class="inline-flex min-h-11 items-center">{link.href}</span>
 						</li>

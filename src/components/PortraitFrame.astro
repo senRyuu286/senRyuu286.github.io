@@ -1,7 +1,7 @@
 ---
 // src/components/PortraitFrame.astro
 import Button from './ui/Button.astro';
-import { isUrl, site } from '../lib/site';
+import { profileLinks } from '../lib/site';
 
 // A framed card: a fixed 4:5 box for the portrait (so the page never shifts when the real photo arrives),
 // with the contact links under it. A link shows only when its value is real, so placeholders never appear as links.
@@ -10,11 +10,7 @@ import { isUrl, site } from '../lib/site';
 const bracket =
 	'absolute size-7 border-accent animate-in zoom-in-50 fade-in duration-300 ease-enter delay-200 fill-mode-backwards';
 
-const links = [
-	{ label: 'Email', href: `mailto:${site.email}`, real: /^[^\s@[\]]+@[^\s@]+$/.test(site.email) },
-	{ label: 'LinkedIn', href: site.linkedin, real: isUrl(site.linkedin) },
-	{ label: 'GitHub', href: site.github, real: isUrl(site.github) },
-].filter((link) => link.real);
+const links = profileLinks.filter((link) => link.real);
 ---
 
 <div class="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none" data-portrait>

@@ -5,11 +5,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Chip from '../components/ui/Chip.astro';
 import EducationCertificates from '../components/EducationCertificates.astro';
+import ContactForm from '../components/ContactForm.astro';
+import RouteSpine from '../components/RouteSpine.astro';
+import RouteStop from '../components/RouteStop.astro';
+import { journey } from '../lib/journey';
 import Hero from '../components/Hero.astro';
 import ScreenshotFrame from '../components/ScreenshotFrame.astro';
 import TechStack from '../components/TechStack.astro';
-import { isUrl, site } from '../lib/site';
-import { skillGroups, skillIcons } from '../lib/skills';
+import { isUrl, profileLinks, site } from '../lib/site';
+import { currentlyLearning, skillGroups, skillIcons } from '../lib/skills';
 
 // The featured capstone comes from src/content/projects/capstone.md.
 const capstone = await getEntry('projects', 'capstone');
@@ -30,13 +34,6 @@ const capstoneLinks = capstone
 	includePerson
 >
 	<Hero />
-
-	<section aria-labelledby="tech-stack-heading" class="mt-16">
-		<h2 id="tech-stack-heading">Tech stack</h2>
-		<TechStack groups={skillGroups} class="mt-4" />
-		<p class="mt-6"><a href="/about/">See my learning journey on the About page</a></p>
-		<p class="mt-2 text-meta text-ink-muted">Logos from Simple Icons. Trademarks belong to their owners.</p>
-	</section>
 
 	{
 		capstone && (
@@ -73,5 +70,40 @@ const capstoneLinks = capstone
 		)
 	}
 
-	<EducationCertificates class="mt-16" />
+	<section aria-labelledby="tech-stack-heading" class="mt-16">
+		<h2 id="tech-stack-heading">Tech stack</h2>
+		<TechStack groups={skillGroups} class="mt-4" />
+		<p class="mt-6"><a href="/#about">See my learning journey</a></p>
+		<p class="mt-2 text-meta text-ink-muted">Logos from Simple Icons. Trademarks belong to their owners.</p>
+	</section>
+
+	<section id="about" aria-labelledby="about-heading" class="mt-20 border-t border-rule pt-10">
+		<h2 id="about-heading">About me</h2>
+		<p class="mt-4">I am <span translate="no">{site.name}</span>, a BSIT student at {site.school}, building {site.focusArea}.</p>
+		<p class="mt-3">{site.bio}</p>
+		<div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+			<section aria-labelledby="journey-heading">
+				<h3 id="journey-heading" class="font-display text-body font-bold">Learning journey</h3>
+				<RouteSpine as="ol" data-journey class="mt-6">
+					{journey.map((stop, index) => <RouteStop as="li" n={index + 1}><p class="font-display font-bold">{stop.title}</p><p class="text-meta text-ink-muted">{stop.period}</p><p class="mt-1">{stop.detail}</p></RouteStop>)}
+				</RouteSpine>
+			</section>
+			<section aria-labelledby="learning-heading">
+				<h3 id="learning-heading" class="font-display text-body font-bold">Currently learning</h3>
+				<ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1">{currentlyLearning.map((item) => <li>{item}</li>)}</ul>
+			</section>
+		</div>
+	</section>
+	<EducationCertificates class="mt-20 border-t border-rule pt-10" />
+	<section id="contact" aria-labelledby="contact-heading" class="mt-20 border-t border-rule pt-10">
+		<div class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+			<div>
+				<h2 id="contact-heading">Contact</h2>
+				<p class="mt-3">Send me a message and I will reply as soon as I can.</p>
+				<h3 id="profiles-heading" class="mt-8 font-display text-body font-bold">Find me online</h3>
+				<ul class="mt-3 flex flex-wrap gap-x-6">{profileLinks.filter((profile) => profile.external).map((profile) => <li>{profile.real ? <a href={profile.href} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">{profile.label}<span class="sr-only"> (opens in a new tab)</span></a> : <span>{profile.text}</span>}</li>)}</ul>
+			</div>
+			<ContactForm />
+		</div>
+	</section>
 </BaseLayout>

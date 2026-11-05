@@ -39,11 +39,18 @@ export const site: SiteInfo = {
 
 export const nav = [
   { label: "Work", href: "/work/" },
-  { label: "About", href: "/about/" },
-  { label: "Contact", href: "/contact/" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 /** True when a value is a real web address and not a placeholder. */
 export function isUrl(value: string): boolean {
   return /^https?:\/\//.test(value);
 }
+
+/** Profile links share the same validity rules across the site. */
+export const profileLinks = [
+  { key: 'linkedin', label: 'LinkedIn', text: site.linkedin, href: site.linkedin, real: isUrl(site.linkedin), external: true },
+  { key: 'github', label: 'GitHub', text: site.github, href: site.github, real: isUrl(site.github), external: true },
+  { key: 'mail', label: 'Email', text: site.email, href: `mailto:${site.email}`, real: /^[^\s@[\]]+@[^\s@]+\.[^\s@]+$/.test(site.email), external: false },
+];

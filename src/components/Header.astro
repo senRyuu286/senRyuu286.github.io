@@ -1,7 +1,7 @@
 ---
 // src/components/Header.astro
 import MobileMenu from './MobileMenu.astro';
-import { isUrl, nav, site } from '../lib/site';
+import { nav, profileLinks, site } from '../lib/site';
 
 // 24px filled icon shapes. LinkedIn and GitHub marks: Simple Icons (CC0). Envelope: Material Icons (Apache 2.0).
 const icons = {
@@ -19,17 +19,11 @@ const here = trim(Astro.url.pathname);
 
 const pages = nav.map((item) => {
 	const target = trim(item.href);
-	return { label: item.label, href: item.href, current: here === target, parent: here.startsWith(`${target}/`) };
+	const isSection = item.href.includes('#');
+	return { label: item.label, href: item.href, current: !isSection && here === target, parent: !isSection && here.startsWith(`${target}/`) };
 });
 
-const isEmail = (value: string) => /^[^\s@[\]]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-// While a value is still a placeholder, its icon is shown but is not a link (the same idea as Footer and Contact).
-const profiles = [
-	{ key: 'linkedin', label: 'LinkedIn', text: site.linkedin, href: site.linkedin, real: isUrl(site.linkedin), external: true, icon: icons.linkedin },
-	{ key: 'github', label: 'GitHub', text: site.github, href: site.github, real: isUrl(site.github), external: true, icon: icons.github },
-	{ key: 'mail', label: 'Email', text: site.email, href: `mailto:${site.email}`, real: isEmail(site.email), external: false, icon: icons.mail },
-];
+const profiles = profileLinks.map((profile) => ({ ...profile, icon: icons[profile.key as keyof typeof icons] }));
 ---
 
 <!--

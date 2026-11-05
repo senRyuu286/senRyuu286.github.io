@@ -278,3 +278,11 @@
     animation: status-pop var(--dur-base) var(--ease-enter);
   }
 }
+/* Readable project Markdown, including future lists, links, and images. */
+.project-content > * + * { margin-top: 1rem; }
+.project-content h2 { margin-top: 2.5rem; }
+.project-content h3 { margin-top: 2rem; font-family: var(--font-display); font-weight: 700; }
+.project-content ul, .project-content ol { padding-left: 1.5rem; }
+.project-content ul { list-style: disc; }
+.project-content ol { list-style: decimal; }
+.project-content img { max-width: 100%; height: auto; }

@@ -30,7 +30,7 @@ async function mockFormspree(page: Page, mock: Mock = {}) {
 
 /** Serves the Contact page with a long email address inside the failure message (the worst case for height). */
 async function useLongEmail(page: Page, email = LONG_EMAIL) {
-  await page.route('**/contact/', async (route) => {
+  await page.route('**/', async (route) => {
     const response = await route.fetch();
     const html = (await response.text()).replace(
       /data-failure="[^"]*"/,
@@ -52,7 +52,7 @@ const status = (page: Page) => page.locator('[data-contact-status]');
 /** Waits for fonts and for every running animation to finish, so measurements are steady. */
 async function settle(page: Page) {
   await page.evaluate(() => document.fonts.ready.then(() => true));
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)).then(() => true));
+  await page.evaluate(() => Promise.allSettled(document.getAnimations().map((a) => a.finished)).then(() => true));
 }
 
 type Win = Window & { __anims: string[]; __texts: string[] };
@@ -131,7 +131,7 @@ const css = (locator: Locator, property: string) =>
 
 test.describe('Contact interactions: the shake', () => {
   test('each invalid field shakes once when Send is pressed', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await recordAnimations(page);
     await send(page);
 
@@ -142,7 +142,7 @@ test.describe('Contact interactions: the shake', () => {
   });
 
   test('only a Send attempt shakes: not leaving a field, not typing', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await recordAnimations(page);
 
     // Tab through the empty fields without sending: nothing shakes and nothing is marked invalid.
@@ -165,7 +165,7 @@ test.describe('Contact interactions: the shake', () => {
   });
 
   test('pressing Send again replays the shake, even while it is still running', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await recordAnimations(page);
     await send(page);
     await send(page);
@@ -174,7 +174,7 @@ test.describe('Contact interactions: the shake', () => {
   });
 
   test('the shake is short, small, and moves only by transform', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await send(page);
     await settle(page);
 
@@ -194,7 +194,7 @@ test.describe('Contact interactions: the shake', () => {
     test.use({ reducedMotion: 'reduce' });
 
     test('there is no shake, but the border, the error text, and the focus still show', async ({ page }) => {
-      await page.goto('/contact/');
+      await page.goto('/#contact');
       await recordAnimations(page);
       await send(page);
 
@@ -215,7 +215,7 @@ test.describe('Contact interactions: sending', () => {
     let release!: () => void;
     const gate = new Promise<void>((resolve) => (release = resolve));
     const requests = await mockFormspree(page, { gate });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await fill(page);
 
     const button = page.locator('[data-contact-submit]');
@@ -250,7 +250,7 @@ test.describe('Contact interactions: sending', () => {
 
   test('a slow server keeps the sending state until the reply arrives', async ({ page }) => {
     await mockFormspree(page, { gate: new Promise<void>((resolve) => setTimeout(resolve, 1500)) });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await fill(page);
     await send(page);
 
@@ -262,7 +262,7 @@ test.describe('Contact interactions: sending', () => {
   });
 
   test('the Send button taps without a delay or a grey flash', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const button = page.locator('[data-contact-submit]');
     expect(await css(button, 'touch-action')).toBe('manipulation');
     expect(await css(button, '-webkit-tap-highlight-color')).toBe('rgba(0, 0, 0, 0)');
@@ -272,7 +272,7 @@ test.describe('Contact interactions: sending', () => {
 test.describe('Contact interactions: success', () => {
   test('shows the exact text once, with a check mark and one pop, and resets the form', async ({ page }) => {
     await mockFormspree(page);
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await recordAnimations(page);
     // Counts how many times the message text is written. A screen reader announces each write.
     await page.evaluate(() => {
@@ -314,7 +314,7 @@ test.describe('Contact interactions: success', () => {
 
   test('the pop is 200ms, uses opacity and transform only, and starts from a small scale, not zero', async ({ page }) => {
     await mockFormspree(page);
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await fill(page);
     await send(page);
     await expect(status(page)).toHaveText(SUCCESS);
@@ -334,7 +334,7 @@ test.describe('Contact interactions: success', () => {
 
     test('the message and check mark appear at once, with no pop', async ({ page }) => {
       await mockFormspree(page);
-      await page.goto('/contact/');
+      await page.goto('/#contact');
       await recordAnimations(page);
       await fill(page);
       await send(page);
@@ -358,7 +358,7 @@ test.describe('Contact interactions: failure', () => {
   for (const { label, mock } of cases) {
     test(`${label} shows the failure text once, keeps what was typed, and offers another try`, async ({ page }) => {
       await mockFormspree(page, mock);
-      await page.goto('/contact/');
+      await page.goto('/#contact');
       await recordAnimations(page);
       await fill(page, 'Test Person', 'test@example.com', 'Keep this message.');
       await send(page);
@@ -391,7 +391,7 @@ test.describe('Contact interactions: failure', () => {
         ],
       },
     });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await recordAnimations(page);
     await fill(page);
     await send(page);
@@ -406,7 +406,7 @@ test.describe('Contact interactions: failure', () => {
 
   test('a 422 that names no known field falls back to the failure text', async ({ page }) => {
     await mockFormspree(page, { status: 422, body: { errors: [{ field: 'subject', code: 'X' }] } });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await fill(page);
     await send(page);
 
@@ -419,7 +419,7 @@ test.describe('Contact interactions: odd input', () => {
     page,
   }) => {
     const requests = await mockFormspree(page);
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await settle(page);
     const before = await positions(page);
 
@@ -445,7 +445,7 @@ test.describe('Contact interactions: layout stability', () => {
       await page.setViewportSize({ width, height: 800 });
       await mockFormspree(page, { status: 500, body: {} });
       await useLongEmail(page);
-      await page.goto('/contact/');
+      await page.goto('/#contact');
       await settle(page);
       const before = await positions(page);
 
@@ -463,7 +463,7 @@ test.describe('Contact interactions: layout stability', () => {
     test(`success and invalid states do not move the page at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await mockFormspree(page);
-      await page.goto('/contact/');
+      await page.goto('/#contact');
       await settle(page);
       const before = await positions(page);
 
@@ -482,7 +482,7 @@ test.describe('Contact interactions: layout stability', () => {
 
   test('focus goes to the first invalid field, stays below the sticky bar, and shows its ring', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 700 });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     // Scroll so the Name field sits under the sticky bar while the Send button is still on screen.
     await page.evaluate(() => {
       const top = document.querySelector('#contact-name')!.getBoundingClientRect().top + window.scrollY;
@@ -505,7 +505,7 @@ test.describe('Contact form without JavaScript (Milestone 6 parts)', () => {
   test.use({ javaScriptEnabled: false });
 
   test('keeps a quiet status area, shows no check mark, and uses keyboard hints', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await expect(page.locator('[data-status-icon]')).toBeHidden();
     await expect(status(page)).toHaveText('');
     await expect(page.locator('#contact-form')).not.toHaveAttribute('novalidate', /.*/);
@@ -528,7 +528,7 @@ test.describe('Contact interactions: accessibility', () => {
         test(`${state} state has no serious or critical issues (${scheme}, motion ${motion})`, async ({ page }) => {
           await page.emulateMedia({ colorScheme: scheme, reducedMotion: motion });
           await mockFormspree(page, state === 'failure' ? { status: 500, body: {} } : {});
-          await page.goto('/contact/');
+          await page.goto('/#contact');
           if (state === 'invalid') {
             await send(page);
             await expect(page.locator('#contact-name-error')).toHaveText('Enter your name.');

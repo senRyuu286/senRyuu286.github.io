@@ -42,9 +42,8 @@ const failure = `Your message did not send. Check your connection and try again,
 	</div>
 
 	<Button type="submit" class="mt-4 min-w-44" data-contact-submit>Send message</Button>
-	<!-- The reserved height holds the longest failure message (5 lines under 360px, 4 lines up to 600px, 3 lines above),
-	     so the page below never moves. Measured for an email address of up to 64 characters. -->
-	<p role="status" data-contact-status class="mt-4 flex min-h-32 items-start gap-2 wrap-anywhere min-[360px]:min-h-26 min-[600px]:min-h-20">
+	<!-- The status keeps space for the failure message in the narrower homepage column. -->
+	<p role="status" data-contact-status class="mt-4 flex min-h-32 items-start gap-2 wrap-anywhere">
 		<svg
 			data-status-icon
 			aria-hidden="true"

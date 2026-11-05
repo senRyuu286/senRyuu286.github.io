@@ -41,16 +41,12 @@ function scaleY(transform: string): number {
 }
 
 test.describe('Capstone page', () => {
-  test('has one h1, a summary, and none of the removed case study sections', async ({ page }) => {
+  test('renders the project Markdown beneath the overview', async ({ page }) => {
     await page.goto('/work/capstone/');
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('main h2, main h3, main h4')).toHaveCount(0);
-    await expect(page.locator('main dl')).toHaveCount(0);
-    const article = page.locator('article');
-    for (const word of ['Role', 'Problem', 'Approach', 'Outcome', 'Result', 'What I learned']) {
-      await expect(article.getByText(word, { exact: true })).toHaveCount(0);
+    for (const heading of ['Problem', 'Approach', 'Outcome', 'What I learned']) {
+      await expect(page.locator('.project-content').getByRole('heading', { name: heading })).toBeVisible();
     }
-    expect(await article.locator('> p').count()).toBe(2);
   });
 
   test('shows the stack as chips in a labelled list', async ({ page }) => {
@@ -116,7 +112,7 @@ test.describe('Capstone page', () => {
 
 test.describe('About journey on the route spine', () => {
   test('is still an ordered list with at least three stops, each a list item on the spine', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     await expect(journey(page)).toHaveCount(1);
     await expect(journey(page)).toHaveAttribute('role', 'list');
     await expect(journey(page)).toHaveClass(/route-spine/);
@@ -127,7 +123,7 @@ test.describe('About journey on the route spine', () => {
   });
 
   test('numbers its stops 1 to n with hidden 28px yellow markers', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     const count = await stops(page).count();
     const signal = await tokenColor(page, '--signal');
     for (let index = 0; index < count; index += 1) {
@@ -141,7 +137,7 @@ test.describe('About journey on the route spine', () => {
   });
 
   test('the line is a 3px cobalt bar between markers, and the last stop has none', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     const count = await stops(page).count();
     const accent = await tokenColor(page, '--accent');
     for (let index = 0; index < count - 1; index += 1) {
@@ -157,7 +153,7 @@ test.describe('About journey on the route spine', () => {
   });
 
   test('each marker lines up with the first line of its stop', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     const count = await stops(page).count();
     for (let index = 0; index < count; index += 1) {
       const dot = await box(marker(page, index));
@@ -169,26 +165,21 @@ test.describe('About journey on the route spine', () => {
   });
 
   test('the old round journey markers are gone', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     await expect(journey(page).locator('.rounded-full')).toHaveCount(0);
     await expect(journey(page).locator('.size-10')).toHaveCount(0);
   });
 
-  test('keeps the same headings, and the skills still use the spec table', async ({ page }) => {
-    await page.goto('/about/');
-    await expect(page.locator('h1')).toHaveCount(1);
-    const headings = page.locator('main h2');
-    await expect(headings).toHaveCount(3);
-    await expect(headings.nth(0)).toHaveText('Learning journey');
-    await expect(headings.nth(1)).toHaveText('Skills');
-    await expect(headings.nth(2)).toHaveText('Currently learning');
-    await expect(page.locator('main h3')).toHaveCount(0);
-    await expect(page.locator('section[aria-labelledby="skills-heading"] dl')).toHaveCount(1);
-    await expect(page.locator('[data-tiles]')).toHaveCount(0);
+  test('Home groups the journey and learning information under About', async ({ page }) => {
+    await page.goto('/#about');
+    await expect(page.locator('#about').getByRole('heading', { name: 'About me' })).toBeVisible();
+    await expect(page.locator('#about').getByRole('heading', { name: 'Learning journey' })).toBeVisible();
+    await expect(page.locator('#about').getByRole('heading', { name: 'Currently learning' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Tech stack' })).toBeVisible();
   });
 
   test('has nothing in the journey to tab to', async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('/#about');
     await expect(journey(page).locator('a, button, [tabindex]')).toHaveCount(0);
   });
 
@@ -197,7 +188,7 @@ test.describe('About journey on the route spine', () => {
 
     test('the line is fully drawn and still', async ({ page }) => {
       await page.setViewportSize(DESKTOP);
-      await page.goto('/about/');
+      await page.goto('/#about');
       const count = await stops(page).count();
       for (let index = 0; index < count - 1; index += 1) {
         expect(await pseudoCss(stops(page).nth(index), 'animation-name')).toBe('none');
@@ -210,7 +201,7 @@ test.describe('About journey on the route spine', () => {
     test.use({ javaScriptEnabled: false });
 
     test('the whole journey is there and readable', async ({ page }) => {
-      await page.goto('/about/');
+      await page.goto('/#about');
       const count = await stops(page).count();
       expect(count).toBeGreaterThanOrEqual(3);
       for (let index = 0; index < count; index += 1) {
@@ -224,7 +215,7 @@ test.describe('About journey on the route spine', () => {
     test.use({ viewport: SMALLEST_PHONE });
 
     test('has no sideways scrolling, and the text stays wide enough to read', async ({ page }) => {
-      await page.goto('/about/');
+      await page.goto('/#about');
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
       const count = await stops(page).count();
       for (let index = 0; index < count; index += 1) {
@@ -237,7 +228,7 @@ test.describe('About journey on the route spine', () => {
   for (const scheme of ['light', 'dark'] as const) {
     test(`the journey has no serious or critical accessibility issues in ${scheme} mode`, async ({ page }) => {
       await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
-      await page.goto('/about/');
+      await page.goto('/#about');
       const results = await new AxeBuilder({ page })
         .include('[data-journey]')
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

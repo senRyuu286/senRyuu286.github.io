@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const PAGES = ['/', '/work/', '/about/', '/contact/', '/work/capstone/', '/404.html'];
+const PAGES = ['/', '/work/', '/work/capstone/', '/404.html'];
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 /** Reads "rgb(36, 71, 224)" into numbers. */

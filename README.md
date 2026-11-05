@@ -7,7 +7,7 @@ A personal portfolio for a BSIT student: skills, projects, certificates, activit
 | Part | Choice |
 |---|---|
 | Framework | Astro 7.4.2 (static output, TypeScript strict) |
-| Styling | Tailwind CSS 4.3.3, with design tokens in `src/styles/global.css` |
+| Styling | Tailwind CSS 4.3.3, with design tokens in `src/styles/tokens.css` |
 | Animation | CSS only, with `tw-animate-css` 1.4.0 |
 | Sitemap | `@astrojs/sitemap` 3.7.4 |
 | Type checks | TypeScript 6.0.3 and `@astrojs/check` 0.9.12 |
@@ -26,7 +26,7 @@ A personal portfolio for a BSIT student: skills, projects, certificates, activit
 | Command | What it does |
 |---|---|
 | `pnpm install` | Installs the exact versions in `pnpm-lock.yaml` |
-| `pnpm dev` | Starts the dev server at `http://localhost:4321` |
+| `pnpm exec astro dev --background` | Starts the development server in the background |
 | `pnpm build` | Builds the site into `dist/` |
 | `pnpm preview` | Serves the built site |
 | `pnpm check` | Type-checks `.astro` and `.ts` files |
@@ -37,15 +37,15 @@ A personal portfolio for a BSIT student: skills, projects, certificates, activit
 
 ```
 .github/workflows/deploy.yml   Build on every push, deploy only from main
-public/                        Fonts, favicon, robots.txt, link-preview image
+public/                        Fonts, icons, robots.txt (link-preview image still needed)
 src/components/                Page sections and the five ui/ building blocks
 src/content/                   projects/, certificates/, activities/ (one file per item)
 src/content.config.ts          Shape of those content files
 src/layouts/BaseLayout.astro   Shared page frame, SEO tags, analytics
 src/lib/                       Site facts, skills, journey, filter logic, structured data
 src/pages/                     One file per page
-src/scripts/                   Work page filter and contact form scripts
-src/styles/global.css          Tokens, fonts, Tailwind theme
+src/scripts/                   Work filter, contact form, and mobile navigation enhancements
+src/styles/                    Tailwind imports, tokens, base, component and motion styles
 tests/                         Everyday browser tests
 launch-tests/                  The launch gate
 ```
@@ -55,7 +55,7 @@ launch-tests/                  The launch gate
 - **Site facts** (name, school, links, service codes): `src/lib/site.ts`
 - **Skills and learning journey:** `src/lib/skills.ts` and `src/lib/journey.ts`
 - **Work list:** add one file to `src/content/projects/`, `certificates/`, or `activities/`. Copy an existing file and change its fields. Project files are Markdown and become pages at `/work/<file name>/`.
-- **Links inside Markdown text** are not opened safely in a new tab automatically. Put external links in the `github` and `demo` fields instead.
+- **Project detail:** write the full case study in the Markdown body. For external links, use the `github` and `demo` fields; Markdown body links do not automatically open in a new tab.
 
 Anything written as `[LIKE THIS]` is an unfinished placeholder. `pnpm test:launch` lists every one that is left.
 

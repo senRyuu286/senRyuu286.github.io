@@ -42,7 +42,7 @@ test.describe('Home hero layout', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('h1')).toContainText('BSIT student building');
     await expect(heroButton(page, 'View my work')).toHaveAttribute('href', '/work/');
-    await expect(heroButton(page, 'Contact me')).toHaveAttribute('href', '/contact/');
+    await expect(heroButton(page, 'Contact me')).toHaveAttribute('href', '/#contact');
   });
 
   test('hero buttons have 44px tall targets', async ({ page }) => {
@@ -199,7 +199,7 @@ test.describe('Button lift', () => {
   });
 
   test('buttons on other pages lift too', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const send = page.getByRole('button', { name: /^send message$/i });
     await send.hover();
     await expect.poll(() => css(send, 'transform')).toBe('matrix(1, 0, 0, 1, 0, -2)');

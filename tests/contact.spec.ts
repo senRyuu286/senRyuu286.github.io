@@ -37,7 +37,7 @@ const send = (page: Page) => page.getByRole('button', { name: /^send message$/i 
 test.describe('Contact form with JavaScript', () => {
   test('a valid message is sent, shows success, resets, and causes no layout shift', async ({ page }) => {
     const requests = await mockFormspree(page, 200, { ok: true });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const before = await footerTop(page);
 
     await fill(page, 'Test Person', 'test@example.com', 'Hello from a test.');
@@ -52,7 +52,7 @@ test.describe('Contact form with JavaScript', () => {
 
   test('a bad email shows an error tied to its field, sends nothing, and causes no layout shift', async ({ page }) => {
     const requests = await mockFormspree(page, 200, { ok: true });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const before = await footerTop(page);
 
     await fill(page, 'Test Person', 'not-an-email', 'Hello from a test.');
@@ -68,7 +68,7 @@ test.describe('Contact form with JavaScript', () => {
   });
 
   test('empty required fields each show an error and focus goes to the first one', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     await send(page);
 
     await expect(page.locator('#contact-name-error')).toHaveText('Enter your name.');
@@ -79,7 +79,7 @@ test.describe('Contact form with JavaScript', () => {
 
   test('a server failure shows the failure message and keeps what was typed', async ({ page }) => {
     await mockFormspree(page, 500, { error: 'Server error' });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
 
     await fill(page, 'Test Person', 'test@example.com', 'Hello from a test.');
     await send(page);
@@ -92,7 +92,7 @@ test.describe('Contact form with JavaScript', () => {
     await mockFormspree(page, 422, {
       errors: [{ field: 'email', code: 'TYPE_EMAIL', message: 'must be a valid email' }],
     });
-    await page.goto('/contact/');
+    await page.goto('/#contact');
 
     await fill(page, 'Test Person', 'test@example.com', 'Hello from a test.');
     await send(page);
@@ -102,7 +102,7 @@ test.describe('Contact form with JavaScript', () => {
   });
 
   test('the spam trap exists in the form and is hidden from people', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const trap = page.locator('#contact-form input[name="_gotcha"]');
     await expect(trap).toHaveCount(1);
     await expect(trap).toBeHidden();
@@ -113,7 +113,7 @@ test.describe('Contact form without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('is still a normal form that posts to Formspree with browser validation on', async ({ page }) => {
-    await page.goto('/contact/');
+    await page.goto('/#contact');
     const form = page.locator('#contact-form');
     await expect(form).toHaveAttribute('action', /^https:\/\/formspree\.io\/f\//);
     await expect(form).toHaveAttribute('method', /post/i);

@@ -26,6 +26,8 @@ const certificates = defineCollection({
     status: z.string(),
     tags: z.array(z.string()),
     credentialUrl: z.string().optional(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
   }),
 });
 

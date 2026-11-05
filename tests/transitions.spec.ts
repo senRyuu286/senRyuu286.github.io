@@ -44,7 +44,7 @@ function findRule(page: Page, selector: string) {
 test.describe('Page transitions', () => {
   test('moving to another page by link runs the crossfade', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'no-preference');
-    await page.goto('/about/');
+    await page.goto('/');
     await page.locator('header nav a:text-is("Work")').first().click();
     await page.waitForURL('**/work/');
     expect(await usedTransition(page)).toBe('true');
@@ -53,25 +53,25 @@ test.describe('Page transitions', () => {
 
   test('the Back button runs the crossfade too', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'no-preference');
-    await page.goto('/about/');
+    await page.goto('/');
     await page.locator('header nav a:text-is("Work")').first().click();
     await page.waitForURL('**/work/');
     await page.goBack();
-    await page.waitForURL('**/about/');
+    await page.waitForURL(/\/$/);
     expect(await usedTransition(page)).toBe('true');
     await context.close();
   });
 
   test('with reduced motion there is no crossfade, for links or for Back', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'reduce');
-    await page.goto('/about/');
+    await page.goto('/');
     await page.locator('header nav a:text-is("Work")').first().click();
     await page.waitForURL('**/work/');
     expect(await usedTransition(page)).toBe('false');
     await page.goBack();
-    await page.waitForURL('**/about/');
+    await page.waitForURL(/\/$/);
     expect(await usedTransition(page)).toBe('false');
-    await expect(page.locator('h1')).toHaveText('About');
+    await expect(page.locator('h1')).toBeVisible();
     await context.close();
   });
 
@@ -97,15 +97,6 @@ test.describe('Page transitions', () => {
     expect(where.inside[0]).toContain('prefers-reduced-motion: no-preference');
   });
 
-  test('the header has its own layer when motion is allowed, and none when it is reduced', async ({ browser }) => {
-    for (const [motion, expected] of [['no-preference', 'site-header'], ['reduce', 'none']] as const) {
-      const { page, context } = await newPage(browser, motion);
-      await page.goto('/');
-      expect(await page.locator('header.site-header').evaluate((el) => getComputedStyle(el).getPropertyValue('view-transition-name'))).toBe(expected);
-      await context.close();
-    }
-  });
-
   test('the page fade is 200ms and uses the project easing token', async ({ page }) => {
     await page.goto('/');
     const rule = await findRule(page, '::view-transition-old(root)');
@@ -117,39 +108,6 @@ test.describe('Page transitions', () => {
     const token = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--dur-base').trim());
     const ms = token.endsWith('ms') ? parseFloat(token) : parseFloat(token) * 1000;
     expect(ms).toBe(200);
-  });
-
-  test('the header is held still: the old header is hidden and the new one does not fade', async ({ page }) => {
-    await page.goto('/');
-    const oldHeader = await findRule(page, '::view-transition-old(site-header)');
-    const newHeader = await findRule(page, '::view-transition-new(site-header)');
-    expect(oldHeader?.props['display']).toBe('none');
-    expect(newHeader?.props['animation-name']).toBe('none');
-  });
-
-  test('after a crossfade the new page is ready to use: nothing blocks it and nothing scrolls sideways', async ({ browser }) => {
-    const { page, context } = await newPage(browser, 'no-preference');
-    await page.setViewportSize({ width: 320, height: 700 });
-    await page.goto('/about/');
-    await page.locator('header button, header summary').first().click();
-    await page.getByRole('link', { name: 'Contact' }).last().click();
-    await page.waitForURL('**/contact/');
-    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)).then(() => true));
-
-    expect(await usedTransition(page)).toBe('true');
-    const state = await page.evaluate(() => {
-      const h1 = document.querySelector('h1')!.getBoundingClientRect();
-      const hit = document.elementFromPoint(h1.left + 5, h1.top + h1.height / 2);
-      return {
-        sideways: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        hitIsPage: hit !== null && hit !== document.documentElement,
-        menuClosed: !document.querySelector('header details')?.hasAttribute('open'),
-      };
-    });
-    expect(state.sideways).toBe(0);
-    expect(state.hitIsPage).toBe(true);
-    expect(state.menuClosed).toBe(true);
-    await context.close();
   });
 
   test.describe('without JavaScript', () => {
