@@ -1,0 +1,32 @@
+---
+// src/components/TechStack.astro
+import Chip from './ui/Chip.astro';
+import { skillIcons, type SkillGroup } from '../lib/skills';
+
+interface Props {
+	groups: SkillGroup[];
+	class?: string;
+}
+
+const { groups, class: className } = Astro.props;
+---
+
+<!-- One row per group: the group name on the left and its chips on the right. On phones the name sits above the chips. -->
+<ul class:list={['border-b border-rule', className]} data-stack>
+	{
+		groups.map((group) => (
+			<li class="grid gap-3 border-t border-rule py-5 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-6" data-stack-group>
+				<h3 class="font-display text-body font-bold wrap-break-word">{group.name}</h3>
+				{group.items.length > 0 && (
+					<ul class="flex flex-wrap gap-2">
+						{group.items.map((item) => (
+							<li class="max-w-full min-w-0">
+								<Chip icon={skillIcons[item]}>{item}</Chip>
+							</li>
+						))}
+					</ul>
+				)}
+			</li>
+		))
+	}
+</ul>

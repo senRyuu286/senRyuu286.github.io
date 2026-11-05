@@ -1,4 +1,5 @@
 ---
+// src/components/Header.astro
 import MobileMenu from './MobileMenu.astro';
 import { isUrl, nav, site } from '../lib/site';
 
@@ -36,7 +37,7 @@ const profiles = [
 	The mt-3 and top-3 values match, so the bar does not jump when the page starts to scroll.
 -->
 <header class="site-header sticky top-3 z-40 mt-3 w-full max-w-5xl self-center px-4 sm:px-6">
-	<div class="flex min-h-14 items-center gap-x-2 rounded-panel border border-rule bg-surface px-2">
+	<div class="nav-bar relative isolate flex min-h-14 items-center gap-x-2 rounded-panel border border-rule px-2">
 		<a href="/" translate="no" class="nav-logo inline-flex min-h-11 min-w-11 items-center gap-3 rounded-control px-1.5 text-ink no-underline">
 			<!-- Logo mark: the letter J in a cobalt square (fixed 32px). The J is outlined from the Archivo font
 			     (SIL Open Font License), so it needs no font file. It uses the color tokens, so dark mode follows by itself. -->

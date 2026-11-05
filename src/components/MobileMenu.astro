@@ -1,4 +1,5 @@
 ---
+// src/components/MobileMenu.astro
 interface Page {
 	label: string;
 	href: string;
@@ -42,7 +43,7 @@ const { pages, profiles } = Astro.props;
 
 	<div
 		data-nav-panel
-		class="absolute inset-x-4 top-full mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain rounded-panel border border-rule bg-surface p-2 group-open:animate-in group-open:fade-in group-open:slide-in-from-top-2 group-open:duration-200 group-open:ease-enter sm:inset-x-6"
+		class="nav-panel absolute -inset-x-px top-full mt-2.25 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain rounded-panel border border-rule p-2 group-open:animate-in group-open:fade-in group-open:slide-in-from-top-2 group-open:duration-200 group-open:ease-enter"
 	>
 		<ul>
 			{

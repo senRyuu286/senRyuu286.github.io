@@ -1,0 +1,51 @@
+---
+// src/components/SideMarks.astro
+// Decorative squares in the side margins that drift as the page scrolls (Phase 7, P7-5, ADR-36).
+// The squares are "randomized" once, when the site is built, from a fixed seed. Every visitor sees the same squares,
+// and every build gives the same layout. Change SEED for a different arrangement. There is no JavaScript at run time.
+// The drift itself is CSS only (see motion.css). Nothing shows below 1440px wide, with reduced motion, or without support.
+const SEED = 20261103;
+
+// A tiny seeded random number generator (mulberry32): the same seed always gives the same numbers.
+function makeRandom(seed: number) {
+	let a = seed;
+	return () => {
+		a = (a + 0x6d2b79f5) | 0;
+		let t = Math.imul(a ^ (a >>> 15), 1 | a);
+		t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
+const random = makeRandom(SEED);
+
+// Heights are percentages of the screen height. CSS snaps each one to the 48px grid.
+const heights = [8, 20, 32, 44, 56, 68, 80];
+
+const marks = (['left', 'right'] as const).flatMap((side) => {
+	// Four different heights per side, so two squares never sit on the same row.
+	const rows = [...heights].sort(() => random() - 0.5).slice(0, 4);
+	return rows.map((y) => ({
+		side,
+		// Column 0, 1, or 2 counted in grid cells from the screen edge. All of them stay well inside the side margin.
+		column: Math.floor(random() * 3),
+		y,
+		// How far the square drifts upward over the whole page, in px.
+		drift: -(80 + Math.round(random() * 240)),
+		// How strong the cobalt tint is, as a percentage.
+		tint: 10 + Math.round(random() * 6),
+	}));
+});
+---
+
+<div class="side-marks" aria-hidden="true">
+	{
+		marks.map((mark) => (
+			<span
+				class="side-mark"
+				data-side={mark.side}
+				style={`--c:${mark.column};--y:${mark.y}%;--d:${mark.drift}px;--tint:${mark.tint}%`}
+			/>
+		))
+	}
+</div>

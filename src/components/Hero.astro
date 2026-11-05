@@ -1,0 +1,35 @@
+---
+// src/components/Hero.astro
+import Button from './ui/Button.astro';
+import PortraitFrame from './PortraitFrame.astro';
+import { site } from '../lib/site';
+
+// One reveal recipe for every hero line: fade in and rise 8px over 400ms.
+// "fill-mode-backwards" keeps a line hidden only during its own short delay, then it is always visible.
+// Reduced motion turns every animation off (see motion.css), so the lines are simply there.
+const reveal = 'animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter fill-mode-backwards';
+---
+
+<!-- Below 1024px the text comes first and the portrait card follows. From 1024px they sit side by side. -->
+<section data-hero class="grid items-center gap-10 py-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:py-12">
+	<div>
+		<!-- The yellow dot is decoration. The words say the same thing. It pulses three times after load, then rests (see motion.css). -->
+		<p
+			class:list={['inline-flex items-center gap-2 rounded-pill border border-rule bg-surface px-3 py-1 text-meta', reveal]}
+			data-availability
+		>
+			<span aria-hidden="true" class="availability-dot relative size-2 rounded-pill bg-signal"></span>
+			{site.availability}
+		</p>
+		<h1 class:list={['sign mt-5 wrap-break-word', reveal, 'delay-80']} translate="no">{site.name}</h1>
+		<p class:list={['mt-3 font-display text-h2 font-bold', reveal, 'delay-160']} data-role>
+			BSIT student building {site.focusArea}
+		</p>
+		<p class:list={['mt-5', reveal, 'delay-240']}>{site.bioSentence}</p>
+		<div class:list={['mt-8 flex flex-wrap gap-3', reveal, 'delay-320']}>
+			<Button href="/work/">View my work</Button>
+			<Button href="/contact/" variant="secondary">Contact me</Button>
+		</div>
+	</div>
+	<PortraitFrame />
+</section>

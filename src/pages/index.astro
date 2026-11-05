@@ -1,23 +1,18 @@
 ---
+// src/pages/index.astro
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Chip from '../components/ui/Chip.astro';
-import HeroSign from '../components/HeroSign.astro';
-import PortraitFrame from '../components/PortraitFrame.astro';
-import RouteSpine from '../components/RouteSpine.astro';
+import EducationCertificates from '../components/EducationCertificates.astro';
+import Hero from '../components/Hero.astro';
 import ScreenshotFrame from '../components/ScreenshotFrame.astro';
-import RouteStop from '../components/RouteStop.astro';
-import TechTiles from '../components/TechTiles.astro';
+import TechStack from '../components/TechStack.astro';
 import { isUrl, site } from '../lib/site';
-import { skillGroups } from '../lib/skills';
+import { skillGroups, skillIcons } from '../lib/skills';
 
 // The featured capstone comes from src/content/projects/capstone.md.
 const capstone = await getEntry('projects', 'capstone');
-
-// Stops are numbered in the order they appear, so the numbers stay right even if the capstone entry is missing.
-const stackStop = capstone ? 2 : 1;
-const closingStop = stackStop + 1;
 
 // GitHub and demo links appear on Home only when they are real web addresses. Placeholders stay off this page.
 const capstoneLinks = capstone
@@ -34,58 +29,49 @@ const capstoneLinks = capstone
 	preloadDisplayFont
 	includePerson
 >
-	<!-- Below 1024px the sign panel comes first and the portrait follows. From 1024px they sit side by side. -->
-	<div class="grid gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-		<HeroSign />
-		<PortraitFrame />
-	</div>
+	<Hero />
 
-	<!-- The route spine joins the three sections below the hero. Static and complete by default (see global.css). -->
-	<RouteSpine class="mt-12">
-		{
-			capstone && (
-				<RouteStop n={1} labelledby="featured-heading">
-					<h2 id="featured-heading">Featured capstone</h2>
-					<article
-						class="mt-4 grid gap-6 rounded-panel border border-rule bg-surface p-4 sm:p-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
-						data-card
-					>
-						<div>
-							<h3 class="font-display text-body font-bold wrap-break-word">{capstone.data.title}</h3>
-							<p class="mt-2">{capstone.data.summary}</p>
-							<ul class="mt-4 flex flex-wrap gap-2" aria-label="Stack">
-								{capstone.data.stack.map((item) => (
-									<li class="max-w-full min-w-0">
-										<Chip>{item}</Chip>
-									</li>
-								))}
-							</ul>
-							<div class="mt-6 flex flex-wrap gap-3">
-								<Button href={`/work/${capstone.id}/`} variant="secondary">
-									Read the case study
+	<section aria-labelledby="tech-stack-heading" class="mt-16">
+		<h2 id="tech-stack-heading">Tech stack</h2>
+		<TechStack groups={skillGroups} class="mt-4" />
+		<p class="mt-6"><a href="/about/">See my learning journey on the About page</a></p>
+		<p class="mt-2 text-meta text-ink-muted">Logos from Simple Icons. Trademarks belong to their owners.</p>
+	</section>
+
+	{
+		capstone && (
+			<section aria-labelledby="featured-heading" class="mt-16">
+				<h2 id="featured-heading">Featured capstone</h2>
+				<article
+					class="mt-4 grid gap-6 rounded-panel border border-rule bg-surface p-4 sm:p-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+					data-card
+				>
+					<div>
+						<h3 class="font-display text-body font-bold wrap-break-word">{capstone.data.title}</h3>
+						<p class="mt-2">{capstone.data.summary}</p>
+						<ul class="mt-4 flex flex-wrap gap-2" aria-label="Stack">
+							{capstone.data.stack.map((item) => (
+								<li class="max-w-full min-w-0">
+									<Chip icon={skillIcons[item]}>{item}</Chip>
+								</li>
+							))}
+						</ul>
+						<div class="mt-6 flex flex-wrap gap-3">
+							<Button href={`/work/${capstone.id}/`} variant="secondary">
+								Read the case study
+							</Button>
+							{capstoneLinks.map((link) => (
+								<Button href={link.value} variant="secondary">
+									{link.label}
 								</Button>
-								{capstoneLinks.map((link) => (
-									<Button href={link.value} variant="secondary">
-										{link.label}
-									</Button>
-								))}
-							</div>
+							))}
 						</div>
-						<ScreenshotFrame class="self-start" />
-					</article>
-				</RouteStop>
-			)
-		}
+					</div>
+					<ScreenshotFrame class="self-start" />
+				</article>
+			</section>
+		)
+	}
 
-		<RouteStop n={stackStop} labelledby="tech-stack-heading">
-			<h2 id="tech-stack-heading">Tech stack</h2>
-			<TechTiles groups={skillGroups} class="mt-4" />
-			<p class="mt-6"><a href="/about/">See my learning journey on the About page</a></p>
-		</RouteStop>
-
-		<RouteStop n={closingStop} labelledby="closing-heading">
-			<h2 id="closing-heading">{site.availability}</h2>
-			<Button href="/contact/" class="mt-5">Contact me</Button>
-		</RouteStop>
-	</RouteSpine>
+	<EducationCertificates class="mt-16" />
 </BaseLayout>

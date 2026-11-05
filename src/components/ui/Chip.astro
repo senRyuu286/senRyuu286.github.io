@@ -1,14 +1,20 @@
 ---
-// A small label pill, for example one technology in a tech stack.
+// src/components/ui/Chip.astro
+import { Icon } from 'astro-icon/components';
+
+// A small label pill, for example one technology in a tech stack, with an optional logo.
 // It is not a link or a button: no cursor change, no focus stop. On a mouse it lifts 2px as a small reward.
-// The hover and border colors come from --chip-border and --chip-hover, which a parent can change (see .tile-signal).
+// The logo is decoration (the name next to it says the same thing), so it is hidden from screen readers.
 interface Props {
-	class?: string;
+  class?: string;
+  /** An astro-icon name, for example "simple-icons:python" or "java" (see src/lib/skills.ts). */
+  icon?: string;
 }
 
-const { class: className } = Astro.props;
+const { class: className, icon } = Astro.props;
 ---
 
-<span class:list={['chip inline-block max-w-full rounded-control border px-3 py-1 text-meta wrap-anywhere', className]}>
-	<slot />
+<span class:list={['chip inline-flex max-w-full items-center gap-2 rounded-pill border px-3 py-1 text-meta wrap-anywhere', className]}>
+	{icon && <Icon name={icon} class="size-4 shrink-0 text-ink-muted" aria-hidden="true" focusable="false" />}
+	<span class="min-w-0"><slot /></span>
 </span>

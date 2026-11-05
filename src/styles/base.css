@@ -1,0 +1,139 @@
+/* src/styles/base.css */
+/* ---------- Base styles ---------- */
+@layer base {
+  html {
+    scroll-padding-top: var(--nav-offset);
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    hyphens: none;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: 1.2;
+  }
+
+  p {
+    max-width: 65ch;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 120ms var(--ease-enter);
+  }
+
+  a:hover {
+    color: var(--accent-hover);
+  }
+
+  /* On a mouse the underline of a text link gets thicker, at once (no animation). Buttons and nav links have no underline, so
+     they are not affected. Reduced motion keeps this: it is a change of state, not movement. */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Grid background (Phase 7, P7-3, ADR-35) ----------
+   A faint graph-paper grid behind every page. It is one fixed layer, so it never moves and never repaints on scroll.
+   The lines are 6% ink over the paper, so text contrast stays above 5.8:1 (computed for light and dark).
+   It only exists where the browser knows color-mix (the @supports guard). Without that guard, an old browser would draw
+   solid ink lines, because the build adds a plain fallback color to color-mix rules.
+   It is hidden in forced-colors mode, with high-contrast settings, and in print.
+   TO REMOVE: delete this whole block (down to the closing brace after the media query). */
+@layer base {
+  @supports (color: color-mix(in srgb, red, red)) {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(to right, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+  }
+
+  @media (forced-colors: active), (prefers-contrast: more), print {
+    body::before {
+      display: none;
+    }
+  }
+}
+
+/* ---------- Glass navigation (Phase 7, P7-4, ADR-37) ----------
+   The bar is a frosted pane: 72% surface color over a 12px blur of whatever scrolls behind it. The phone menu panel is 80%.
+   The bar's glass sits on a ::before layer, not on the bar itself. A bar with its own blur would stop the panel inside it
+   from blurring the page, and would move the panel. For the same reason the header must not have its own page-transition layer.
+   Without blur or color-mix support, or with reduced transparency or forced colors, the bar and panel are solid.
+   Known limit: the build removes the -webkit- line and widens the @supports test to include it, so Safari 17 and older
+   show the see-through bar without the blur (text contrast still passes, it is only visually busier).
+   TO REMOVE: delete this whole block, then put bg-surface back on the bar (Header.astro) and the panel (MobileMenu.astro). */
+@layer base {
+  .nav-bar,
+  .nav-panel {
+    background-color: var(--surface);
+  }
+
+  @supports (backdrop-filter: blur(1px)) and (color: color-mix(in srgb, red, red)) {
+    .nav-bar {
+      background-color: transparent;
+    }
+
+    .nav-bar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background-color: color-mix(in srgb, var(--surface) 72%, transparent);
+      backdrop-filter: blur(12px) saturate(1.4);
+    }
+
+    .nav-panel {
+      background-color: color-mix(in srgb, var(--surface) 80%, transparent);
+      backdrop-filter: blur(12px) saturate(1.4);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+    .nav-bar,
+    .nav-panel {
+      background-color: var(--surface);
+      backdrop-filter: none;
+    }
+
+    .nav-bar::before {
+      display: none;
+    }
+  }
+}

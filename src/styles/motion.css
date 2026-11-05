@@ -1,0 +1,235 @@
+/* src/styles/motion.css */
+/* The line draws itself while you scroll, only where the browser supports it and motion is allowed.
+   Everywhere else the full line in components.css stays as it is. Firefox needs a duration to run a scroll animation (1ms is enough). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .route-stop:not(:last-child)::before {
+      animation-name: route-draw;
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 50%;
+    }
+
+    @keyframes route-draw {
+      from {
+        transform: scaleY(0);
+      }
+
+      to {
+        transform: scaleY(1);
+      }
+    }
+  }
+}
+
+@keyframes field-shake {
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes status-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* While the form sends, the button stays calm: no hover color, no press color, and a busy cursor. The label already
+   says "Sending…". This rule sits outside any layer on purpose, so it beats the hover and active utilities. */
+[data-contact-submit][aria-disabled="true"] {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  cursor: progress;
+}
+
+/* ---------- Side marks (Phase 7, P7-5, ADR-36) ----------
+   Faint cobalt squares in the side margins. They sit on the 48px grid and drift upward as the page scrolls, each at its own
+   speed. They only exist at 1440px wide and up (the margins are 208px or more there), with motion allowed, in browsers that
+   can tie an animation to scrolling and snap lengths with round(). Anywhere else they are not drawn at all.
+   They move with transform only. The squares themselves are placed in SideMarks.astro.
+   TO REMOVE: delete this whole block and the <SideMarks /> line in BaseLayout.astro. */
+.side-marks {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) and (width: round(down, 10px, 48px)) and (color: color-mix(in srgb, red, red)) {
+  @media (min-width: 90rem) and (prefers-reduced-motion: no-preference) {
+    .side-marks {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .side-mark {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      top: round(down, var(--y), 48px);
+      background-color: color-mix(in srgb, var(--accent) var(--tint), transparent);
+      animation-name: side-mark-drift;
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+
+    .side-mark[data-side="left"] {
+      left: calc(var(--c) * 48px);
+    }
+
+    .side-mark[data-side="right"] {
+      left: round(down, calc(100% - (var(--c) + 1) * 48px), 48px);
+    }
+
+    @keyframes side-mark-drift {
+      to {
+        transform: translateY(var(--d));
+      }
+    }
+  }
+}
+
+@media (forced-colors: active), print {
+  .side-marks {
+    display: none;
+  }
+}
+
+/* ---------- Reading progress (Phase 7, P7-6) ----------
+   A 2px cobalt line along the bottom edge of the nav bar. It grows from left to right as you scroll down the page, so on a phone
+   you can see how far through the page you are. It is tied to the scroll position (transform only, no easing), starts at zero
+   width, and stays at zero on a page that does not scroll. Where scroll-linked animation is not supported, or with reduced
+   motion, it is simply not there.
+   TO REMOVE: delete this whole block. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-bar::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 0;
+      height: 2px;
+      border-radius: 2px;
+      background-color: var(--accent);
+      pointer-events: none;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation-name: progress-grow;
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+
+    @keyframes progress-grow {
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .nav-bar::after {
+    display: none;
+  }
+}
+
+/* ---------- Availability dot pulse (Phase 7, P7-6) ----------
+   A soft ring grows out of the yellow dot and fades, three times, 1.4 seconds each, starting just after the hero lines have
+   appeared. That is 4.2 seconds of motion in total, under the 5 second limit, so it needs no pause button. Then it rests.
+   It moves with transform and opacity only. Reduced motion removes it (the global rule below).
+   TO REMOVE: delete this whole block. */
+.availability-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--signal);
+  opacity: 0;
+  animation: availability-ping 1400ms var(--ease-enter) 700ms 3 backwards;
+}
+
+@keyframes availability-ping {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+/* ---------- Page transitions (Phase 6, Milestone 8) ---------- */
+/* Moving between pages crossfades for 200ms in browsers that support it (Chrome, Edge, Safari 18.2 and later).
+   Other browsers change page instantly, as before. Reduced motion switches the whole thing off.
+   The header fades with the page. Since P7-4 it has no layer of its own: a separate layer switches off the blur of the glass nav.
+   TO TURN PAGE TRANSITIONS OFF: delete this whole block (down to the closing brace before the reduced-motion block). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--dur-base);
+    animation-timing-function: var(--ease-enter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Navigation: no movement. The logo stays still and a hover or focus underline does not appear.
+     Colors still change, and the current-page underline (not a hover effect) stays. */
+  .nav-logo .nav-logo-mark {
+    transform: none !important;
+  }
+
+  .nav-link:not([aria-current="page"]):not([data-parent])::after {
+    transform: scaleX(0) !important;
+  }
+
+  /* Buttons keep their color change but do not move. */
+  .btn-lift {
+    transform: none !important;
+  }
+
+  /* Chips keep their border color change but do not move. */
+  .chip {
+    transform: none !important;
+  }
+
+  /* Work rows: no bar. The title link keeps its color change and its focus ring. */
+  .work-link::before {
+    display: none;
+  }
+
+  /* Contact: no shake and no pop. The red border, the error text, and the message itself still carry the meaning. */
+  .field-shake,
+  .status-pop {
+    animation: none !important;
+  }
+}
