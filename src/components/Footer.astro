@@ -1,35 +1,37 @@
 ---
-import { profileLinks, site } from '../lib/site';
+import { nav, profileLinks, site } from '../lib/site';
+import { profileIcons } from '../lib/profile-icons';
 
 const year = new Date().getFullYear();
-
-const links = [{ label: 'Contact', href: '/#contact', real: true, external: false }, ...profileLinks.filter((link) => link.external)];
+const profiles = profileLinks.filter((profile) => profile.real);
 ---
 
-<footer class="border-t border-rule">
-	<div class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-8 text-meta text-ink-muted sm:px-6">
-		<ul class="flex flex-wrap gap-x-6">
-			{
-				links.map((link) =>
-					!link.real ? (
-						<li>
-							<span class="inline-flex min-h-11 items-center">{link.href}</span>
-						</li>
-					) : (
-						<li>
-							<a
-								href={link.href}
-								target={link.external ? '_blank' : undefined}
-								rel={link.external ? 'noopener noreferrer' : undefined}
-								class="inline-flex min-h-11 items-center"
-							>
-								{link.label}
-							</a>
-						</li>
-					),
-				)
-			}
-		</ul>
-		<p>© {year} <span translate="no">{site.name}</span>. Built with Astro and Tailwind CSS.</p>
+<footer class="portfolio-footer">
+	<div class="footer-inner">
+		<div class="footer-main">
+			<div class="footer-copy">
+				<p class="footer-name" translate="no">{site.name}</p>
+				<p class="footer-message">Thanks for stopping by.</p>
+				<nav aria-label="Footer">
+					<ul class="footer-nav">
+						{nav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<p>© {year} <span translate="no">{site.name}</span></p>
+			<ul class="footer-social" aria-label="Find me online">
+				{profiles.map((profile) => (
+					<li>
+						<a href={profile.href} target={profile.external ? '_blank' : undefined} rel={profile.external ? 'noopener noreferrer' : undefined}>
+							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d={profileIcons[profile.key as keyof typeof profileIcons]} /></svg>
+							<span class="sr-only">{profile.label}{profile.external && ' (opens in a new tab)'}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
 	</div>
+	<img class="footer-illustration" src="/footer-landscape.png" alt="" width="2172" height="724" loading="lazy" />
 </footer>
