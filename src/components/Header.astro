@@ -31,8 +31,8 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: icons[profil
 	The mt-3 and top-3 values match, so the bar does not jump when the page starts to scroll.
 -->
 <header class="site-header sticky top-3 z-40 mt-3 w-full max-w-5xl self-center px-4 sm:px-6">
-	<div class="nav-bar relative isolate flex min-h-14 items-center gap-x-2 rounded-panel border border-rule px-2">
-		<a href="/" translate="no" class="nav-logo inline-flex min-h-11 min-w-11 items-center gap-3 rounded-control px-1.5 text-ink no-underline">
+	<div class="nav-bar relative isolate flex min-h-14 items-center gap-x-2 nav-shell border px-2">
+		<a href="/" translate="no" aria-label={site.name} class="nav-logo inline-flex min-h-11 min-w-11 items-center rounded-control px-1.5 text-ink no-underline">
 			<!-- Logo mark: the letter J in a cobalt square (fixed 32px). The J is outlined from the Archivo font
 			     (SIL Open Font License), so it needs no font file. It uses the color tokens, so dark mode follows by itself. -->
 			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center rounded-control bg-accent">
@@ -41,7 +41,7 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: icons[profil
 				</svg>
 			</span>
 			<!-- On phones the name stays in the page for screen readers and is hidden to the eye. -->
-			<span class="sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
+			<span aria-hidden="true" class="nav-name sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
 		</a>
 
 		<nav aria-label="Main" class="flex min-w-0 flex-1 items-center">
@@ -97,3 +97,11 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: icons[profil
 		</nav>
 	</div>
 </header>
+<script>
+	const header = document.querySelector('.site-header');
+	const updateHeader = () => {
+		header?.toggleAttribute('data-scrolled', window.scrollY > 8);
+	};
+	updateHeader();
+	window.addEventListener('scroll', updateHeader, { passive: true });
+</script>

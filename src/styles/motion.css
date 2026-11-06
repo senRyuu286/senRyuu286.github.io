@@ -106,6 +106,15 @@
     scroll-behavior: auto !important;
   }
 
+  /* This is a discrete visibility change, not motion. */
+  @supports (animation-timeline: view()) and (timeline-scope: --hero-name) and (animation-range: exit 0% exit 100%) {
+    body:has(.hero-name) .nav-name {
+      animation: nav-name-reveal 1ms steps(1, end) both !important;
+      animation-timeline: --hero-name !important;
+      animation-range: exit 0% exit 100% !important;
+    }
+  }
+
   /* Navigation: no movement. The logo stays still and a hover or focus underline does not appear.
      Colors still change, and the current-page underline (not a hover effect) stays. */
   .nav-logo .nav-logo-mark {

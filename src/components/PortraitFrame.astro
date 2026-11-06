@@ -1,40 +1,8 @@
 ---
-// src/components/PortraitFrame.astro
-import Button from './ui/Button.astro';
-import { profileLinks } from '../lib/site';
-
-// A framed card: a fixed 4:5 box for the portrait (so the page never shifts when the real photo arrives),
-// with the contact links under it. A link shows only when its value is real, so placeholders never appear as links.
-// The two corner brackets are decoration only. They scale out from their own corners once on load.
-// Until a photo exists, the visible [PORTRAIT PHOTO] label keeps the launch gate from passing.
-const bracket =
-	'absolute size-7 border-accent animate-in zoom-in-50 fade-in duration-300 ease-enter delay-200 fill-mode-backwards';
-
-const links = profileLinks.filter((link) => link.real);
+// Generic illustration stands in until a personal portrait is available.
 ---
-
-<div class="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none" data-portrait>
-	<div class="rounded-panel border border-rule bg-surface p-3">
-		<div
-			class="grid aspect-4/5 w-full place-items-center rounded-control border border-rule bg-paper"
-			data-portrait-box
-		>
-			<p class="px-4 text-center text-meta text-ink-muted">[PORTRAIT PHOTO]</p>
-		</div>
-		{
-			links.length > 0 && (
-				<ul class="mt-3 grid grid-cols-[repeat(auto-fit,minmax(6.5rem,1fr))] gap-2" aria-label="Contact links">
-					{links.map((link) => (
-						<li>
-							<Button href={link.href} variant="secondary" class="w-full px-3!">
-								{link.label}
-							</Button>
-						</li>
-					))}
-				</ul>
-			)
-		}
+<div class="hero-portrait animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter delay-80 fill-mode-backwards" data-portrait>
+	<div data-portrait-box>
+		<img src="/hero-illustration.png" alt="" width="1280" height="1200" />
 	</div>
-	<span aria-hidden="true" data-bracket class:list={[bracket, '-top-2 -left-2 origin-top-left border-t-3 border-l-3']}></span>
-	<span aria-hidden="true" data-bracket class:list={[bracket, '-right-2 -bottom-2 origin-bottom-right border-r-3 border-b-3']}></span>
 </div>

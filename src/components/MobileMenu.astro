@@ -30,9 +30,9 @@ const { pages, profiles } = Astro.props;
 <!-- Native <details>: opens and closes with no JavaScript. site-nav.ts adds Escape and outside click. -->
 <details data-nav-menu class="group ml-auto md:hidden">
 	<summary
-		class="inline-flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-control px-3 font-semibold text-ink transition-colors duration-120 ease-enter select-none hover:text-accent active:bg-paper [&::-webkit-details-marker]:hidden"
+		class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-control px-3 font-semibold text-ink transition-colors duration-120 ease-enter select-none hover:text-accent active:bg-paper [&::-webkit-details-marker]:hidden"
 	>
-		Menu
+		<span class="sr-only">Menu</span>
 		<!-- Three bars that turn into a cross while the menu is open. -->
 		<span aria-hidden="true" class="relative block h-3.5 w-4.5">
 			<span class="absolute top-0 left-0 h-0.5 w-full rounded-full bg-current transition-transform duration-200 ease-enter group-open:translate-y-1.5 group-open:rotate-45"></span>
