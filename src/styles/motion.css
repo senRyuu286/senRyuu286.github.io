@@ -1,29 +1,4 @@
 /* src/styles/motion.css */
-/* The line draws itself while you scroll, only where the browser supports it and motion is allowed.
-   Everywhere else the full line in components.css stays as it is. Firefox needs a duration to run a scroll animation (1ms is enough). */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .route-stop:not(:last-child)::before {
-      animation-name: route-draw;
-      animation-duration: 1ms;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 50%;
-    }
-
-    @keyframes route-draw {
-      from {
-        transform: scaleY(0);
-      }
-
-      to {
-        transform: scaleY(1);
-      }
-    }
-  }
-}
-
 @keyframes field-shake {
   25% {
     transform: translateX(-4px);
@@ -51,33 +26,6 @@
   background-color: var(--accent);
   border-color: var(--accent);
   cursor: progress;
-}
-
-/* ---------- Availability dot pulse (Phase 7, P7-6) ----------
-   A soft ring grows out of the yellow dot and fades, three times, 1.4 seconds each, starting just after the hero lines have
-   appeared. That is 4.2 seconds of motion in total, under the 5 second limit, so it needs no pause button. Then it rests.
-   It moves with transform and opacity only. Reduced motion removes it (the global rule below).
-   TO REMOVE: delete this whole block. */
-.availability-dot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: var(--signal);
-  opacity: 0;
-  animation: availability-ping 1400ms var(--ease-enter) 700ms 3 backwards;
-}
-
-@keyframes availability-ping {
-  from {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(2.6);
-  }
 }
 
 /* ---------- Page transitions (Phase 6, Milestone 8) ---------- */
@@ -133,11 +81,6 @@
   /* Chips keep their border color change but do not move. */
   .chip {
     transform: none !important;
-  }
-
-  /* Work rows: no bar. The title link keeps its color change and its focus ring. */
-  .work-link::before {
-    display: none;
   }
 
   /* Contact: no shake and no pop. The red border, the error text, and the message itself still carry the meaning. */

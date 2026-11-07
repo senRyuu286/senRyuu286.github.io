@@ -2,15 +2,15 @@
 // Keep the placeholder labeled until a real project screenshot is available.
 interface Props {
 	class?: string;
-	illustrated?: boolean;
 }
 
-const { class: className, illustrated = true } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
 <div
 	class:list={['relative aspect-16/10 w-full overflow-hidden rounded-control border border-rule bg-paper', className]}
 	data-card-screenshot
 >
-	{illustrated ? <><img src="/veritas-preview-placeholder.png" alt="Illustration of an academic credential on a laptop" width="1586" height="992" loading="lazy" class="h-full w-full object-cover" /><span class="absolute bottom-3 left-3 rounded-control bg-paper px-3 py-1 text-meta text-ink">Illustration placeholder</span></> : <p class="grid h-full place-items-center px-4 text-center text-meta text-ink-muted">Project screenshot coming soon</p>}
+	<img src="/project-preview-placeholder.png" alt="Illustration of a laptop with a code symbol" width="1586" height="992" loading="lazy" class="h-full w-full object-cover" />
+	<span class="absolute bottom-3 left-3 rounded-control bg-paper px-3 py-1 text-meta text-ink">Illustration placeholder</span>
 </div>

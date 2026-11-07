@@ -31,7 +31,7 @@ test.describe('Selected works', () => {
       await page.goto('/');
       const shot = page.locator('[data-card-screenshot]');
       await expect(shot).toContainText('Illustration placeholder');
-      await expect(shot.locator('img')).toHaveAttribute('src', '/veritas-preview-placeholder.png');
+      await expect(shot.locator('img')).toHaveAttribute('src', '/project-preview-placeholder.png');
       const area = await box(shot);
       expect(area.width / area.height).toBeCloseTo(1.6, 1);
     });
