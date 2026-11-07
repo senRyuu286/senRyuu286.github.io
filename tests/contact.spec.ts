@@ -127,7 +127,7 @@ test.describe('Contact form without JavaScript', () => {
 test('contact section shows profile links and location without exposing a mail link', async ({ page }) => {
   await page.goto('/#contact');
   const contact = page.locator('#contact');
-  await expect(contact.getByRole('heading', { name: 'Let’s build something meaningful.' })).toBeVisible();
+  await expect(contact.getByRole('heading', { name: 'Let’s Build Something Meaningful.' })).toBeVisible();
   await expect(contact.getByText('Cebu, Philippines')).toBeVisible();
   for (const name of ['GitHub', 'LinkedIn']) {
     const link = contact.getByRole('link', { name: new RegExp(name, 'i') });

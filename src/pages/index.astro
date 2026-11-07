@@ -1,6 +1,6 @@
 ---
 // src/pages/index.astro
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Chip from '../components/ui/Chip.astro';
@@ -12,31 +12,30 @@ import TechStack from '../components/TechStack.astro';
 import { isUrl, profileLinks, site } from '../lib/site';
 import { skillGroups, skillIcons } from '../lib/skills';
 
-// The featured capstone comes from src/content/projects/capstone.json.
-const capstone = await getEntry('projects', 'capstone');
-
-// GitHub and demo links appear on Home only when they are real web addresses. Placeholders stay off this page.
-const capstoneLinks = capstone
-	? [
-			{ label: 'GitHub', value: capstone.data.github, icon: 'arrow' },
-			{ label: `Try ${capstone.data.title}`, value: capstone.data.demo, icon: 'external' },
-		].flatMap((link) => link.value && isUrl(link.value) ? [{ ...link, value: link.value }] : [])
-	: [];
+const projects = (await getCollection('projects')).sort((a, b) =>
+	a.id === 'capstone' ? -1 : b.id === 'capstone' ? 1 : a.data.title.localeCompare(b.data.title),
+);
 ---
 
 <BaseLayout
-	title={`${site.name} | Information Technology student`}
+	title={`${site.name} | Portfolio`}
 	description="Justin Ramas is an Information Technology student exploring web development and building projects."
 	preloadDisplayFont
 	includePerson
 >
-	<Hero showExplore={Boolean(capstone)} />
+	<Hero showExplore={projects.length > 0} />
 	<div class="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6">
 
 	{
-		capstone && (
-			<section aria-labelledby="selected-works-heading" class="selected-works mt-16">
-				<h2 id="selected-works-heading">Selected works</h2>
+		projects.length > 0 && (
+			<section aria-labelledby="works" class="selected-works mt-16">
+				<h2 id="works">Selected Works</h2>
+				{projects.map((capstone) => {
+					const capstoneLinks = [
+						{ label: 'GitHub', value: capstone.data.github, icon: 'arrow' },
+						{ label: `Try ${capstone.data.title}`, value: capstone.data.demo, icon: 'external' },
+					].flatMap((link) => link.value && isUrl(link.value) ? [{ ...link, value: link.value }] : []);
+					return (
 				<article class="selected-work" data-selected-work>
 					<div class="selected-work-copy">
 						<h3>{capstone.data.title}</h3>
@@ -58,14 +57,16 @@ const capstoneLinks = capstone
 							</div>
 						)}
 					</div>
-					<ScreenshotFrame />
+					<ScreenshotFrame illustrated={capstone.id === 'capstone'} />
 				</article>
+					);
+				})}
 			</section>
 		)
 	}
 
 	<section aria-labelledby="tech-stack-heading" class="mt-16">
-		<h2 id="tech-stack-heading">Tech stack</h2>
+		<h2 id="tech-stack-heading">Tech Stack</h2>
 		<TechStack groups={skillGroups} class="mt-4" />
 	</section>
 
@@ -73,7 +74,7 @@ const capstoneLinks = capstone
 	<section id="contact" aria-labelledby="contact-heading" class="contact-section mt-20">
 		<div class="contact-layout">
 			<div class="contact-form-card">
-				<h2 id="contact-heading">Let’s build something meaningful.</h2>
+				<h2 id="contact-heading">Let’s Build Something Meaningful.</h2>
 				<p class="contact-intro">I’m currently learning and exploring opportunities. Feel free to reach out about collaborations or projects.</p>
 				<ContactForm />
 			</div>
@@ -82,7 +83,7 @@ const capstoneLinks = capstone
 					<img src="/contact-illustration-v2.png" alt="" width="1312" height="1199" loading="lazy" />
 				</div>
 				<div class="contact-details">
-					<h3 id="profiles-heading" class="sr-only">Find me online</h3>
+					<h3 id="profiles-heading" class="sr-only">Find Me Online</h3>
 					<ul>
 						{profileLinks.map((profile) => (
 							<li class="contact-detail">

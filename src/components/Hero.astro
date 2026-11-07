@@ -16,13 +16,13 @@ const { showExplore } = Astro.props;
 		<div class="hero-intro animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter delay-80 fill-mode-backwards">
 			<p>Hey there! I’m an Information Technology student curious about how the web works and building projects along the way.</p>
 			<div class="hero-actions">
-				<Button href="/work/">View my work</Button>
+				<Button href="/#works">View my work</Button>
 				<Button href="/#contact" variant="secondary">Contact me</Button>
 			</div>
 		</div>
 		<PortraitFrame />
 		<section class="hero-interests animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter delay-160 fill-mode-backwards" aria-labelledby="hero-interests-heading">
-			<h2 id="hero-interests-heading">Areas of interest</h2>
+			<h2 id="hero-interests-heading">Areas of Interest</h2>
 			<ul>
 				<li>Full-stack development</li>
 				<li>Mobile development</li>
@@ -32,7 +32,7 @@ const { showExplore } = Astro.props;
 	</div>
 	{showExplore && (
 		<div class="hero-explore animate-in fade-in duration-400 ease-enter delay-240 fill-mode-backwards">
-			<a href="#selected-works-heading" aria-label="Scroll to explore selected works" class="group">
+			<a href="#works" aria-label="Scroll to explore selected works" class="group">
 				Scroll to explore <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-enter motion-safe:group-hover:translate-y-1 motion-safe:group-focus-visible:translate-y-1">&#8595;</span>
 			</a>
 		</div>

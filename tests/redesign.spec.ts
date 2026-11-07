@@ -11,14 +11,13 @@ test('Home combines the introduction, education and contact with links to Work',
   await expect(page.locator('header a[href="/#contact"]').first()).toHaveAttribute('href', '/#contact');
 });
 
-test('the navigation and work list remain usable without JavaScript', async ({ browser }) => {
+test('the navigation and selected works remain usable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 700 } });
   const page = await context.newPage();
   await page.goto('/');
   await page.locator('[data-nav-menu] summary').click();
   await expect(page.locator('[data-nav-panel] a[href="/#contact"]')).toBeVisible();
-  await page.goto('/work/');
-  await expect(page.locator('[data-work-row]').first()).toBeVisible();
-  await expect(page.locator('[data-work-controls]')).toBeHidden();
+  await expect(page.locator('[data-nav-panel] a[href="/#works"]')).toBeVisible();
+  await expect(page.locator('[data-selected-work]').first()).toBeVisible();
   await context.close();
 });

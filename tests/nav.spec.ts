@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 // Add every new page here as it is built.
-const pages = ['/', '/work/', '/404.html'];
+const pages = ['/', '/404.html'];
 const schemes = ['light', 'dark'] as const;
 
 const DESKTOP = { width: 1024, height: 768 };
@@ -45,7 +45,6 @@ test.describe('Navigation on a desktop screen', () => {
 
   const current: Array<[string, string | null]> = [
     ['/', null],
-    ['/work/', 'Work'],
   ];
 
   for (const [path, label] of current) {
@@ -129,10 +128,6 @@ test.describe('Navigation on a desktop screen', () => {
       expect(await underlineTransform(page, 'Work')).toBe('matrix(0, 0, 0, 1, 0, 0)');
     });
 
-    test('the current page keeps its underline', async ({ page }) => {
-      await page.goto('/work/');
-      expect(await underlineTransform(page, 'Work')).toBe('matrix(1, 0, 0, 1, 0, 0)');
-    });
   });
 
   test('without reduced motion the logo twists on hover', async ({ page }) => {
@@ -212,10 +207,10 @@ test.describe('Navigation on a phone', () => {
     await expect(panel(page)).toBeHidden();
   });
 
-  test('Work is marked as the current page in the menu', async ({ page }) => {
-    await page.goto('/work/');
+  test('Work points to selected works in the menu', async ({ page }) => {
+    await page.goto('/');
     await menuButton(page).click();
-    await expect(panelLink(page, 'Work')).toHaveAttribute('aria-current', 'page');
+    await expect(panelLink(page, 'Work')).toHaveAttribute('href', '/#works');
     await expect(panelLink(page, 'Contact')).not.toHaveAttribute('aria-current', 'page');
   });
 

@@ -457,6 +457,7 @@
 /* Selected work is presented as a project story beside its screenshot. */
 @layer components {
   .selected-work { display: grid; gap: 2rem; margin-top: 2rem; }
+  .selected-work + .selected-work { margin-top: 4rem; }
   .selected-work-copy { min-width: 0; }
   .selected-work h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; overflow-wrap: anywhere; }
   .selected-work-subtitle { margin-top: 0.35rem; color: var(--accent); font-weight: 600; overflow-wrap: anywhere; }

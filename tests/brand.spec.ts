@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-for (const path of ['/', '/work/', '/404.html']) {
+for (const path of ['/', '/404.html']) {
   test(`${path} uses the portfolio logo and browser icons`, async ({ page }) => {
     await page.goto(path);
     const logo = page.locator('header .nav-logo');

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 // Add every new page here as it is built.
-const pages = ['/', '/work/', '/404.html'];
+const pages = ['/', '/404.html'];
 
 /** Returns the address of every external link missing target="_blank" or rel="noopener noreferrer". */
 async function findBadExternalLinks(page: Page): Promise<string[]> {

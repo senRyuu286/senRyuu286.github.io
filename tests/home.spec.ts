@@ -9,9 +9,9 @@ test.describe('Home hero', () => {
       const hero = page.locator('[data-hero]');
       await expect(hero.getByRole('heading', { level: 1, name: 'Justin Ramas' })).toBeVisible();
       await expect(hero.locator('[data-portrait-box] img')).toBeVisible();
-      await expect(hero.getByRole('heading', { name: 'Areas of interest' })).toBeVisible();
-      await expect(hero.getByRole('link', { name: 'Scroll to explore selected works' })).toHaveAttribute('href', '#selected-works-heading');
-      await expect(hero.getByRole('link', { name: 'View my work' })).toHaveAttribute('href', '/work/');
+      await expect(hero.getByRole('heading', { name: 'Areas of Interest' })).toBeVisible();
+      await expect(hero.getByRole('link', { name: 'Scroll to explore selected works' })).toHaveAttribute('href', '#works');
+      await expect(hero.getByRole('link', { name: 'View my work' })).toHaveAttribute('href', '/#works');
       await expect(hero.getByRole('link', { name: 'Contact me' })).toHaveAttribute('href', '/#contact');
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
       const heading = await hero.locator('h1').boundingBox();

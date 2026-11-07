@@ -59,7 +59,7 @@ test.describe('Selected works', () => {
 
 test('the stack groups remain visible and labelled', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Tech stack' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Tech Stack' })).toBeVisible();
   expect(await page.locator('[data-stack-group]').count()).toBeGreaterThan(0);
   await expect(page.locator('[data-stack-group] .tech-item').first()).toBeVisible();
   await expect(page.locator('[data-stack-group] .tech-item svg').first()).toBeVisible();

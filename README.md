@@ -1,6 +1,6 @@
 # Portfolio
 
-A personal portfolio for a BSIT student: skills, projects, certificates, activities, and a learning journey. It is a static site, so it needs no server.
+A personal portfolio for a BSIT student featuring projects, skills, education, and certificates. It is a static site, so it needs no server.
 
 ## Stack
 
@@ -37,14 +37,14 @@ A personal portfolio for a BSIT student: skills, projects, certificates, activit
 
 ```
 .github/workflows/deploy.yml   Build on every push, deploy only from main
-public/                        Fonts, icons, robots.txt (link-preview image still needed)
+public/                        Fonts, icons, illustrations, and link-preview image
 src/components/                Page sections and the five ui/ building blocks
 src/content/                   projects/, certificates/, activities/ (one file per item)
 src/content.config.ts          Shape of those content files
 src/layouts/BaseLayout.astro   Shared page frame, SEO tags, analytics
-src/lib/                       Site facts, skills, journey, filter logic, structured data
+src/lib/                       Site facts, skills, education, and structured data
 src/pages/                     One file per page
-src/scripts/                   Work filter, contact form, and mobile navigation enhancements
+src/scripts/                   Certificate carousel, contact form, and mobile navigation enhancements
 src/styles/                    Tailwind imports, tokens, base, component and motion styles
 tests/                         Everyday browser tests
 launch-tests/                  The launch gate
@@ -55,14 +55,14 @@ launch-tests/                  The launch gate
 - **Site facts** (name, links, service codes): `src/lib/site.ts`
 - **Education** (school, program, period, status, major): `src/lib/education.ts`
 - **Skills and learning journey:** `src/lib/skills.ts` and `src/lib/journey.ts`
-- **Work list:** add one file to `src/content/projects/`, `certificates/`, or `activities/`. Copy an existing file and change its fields. All entries are JSON files. Projects appear in the Work list; the capstone also appears in Selected works. Use the `github` and `demo` fields for external links.
-- **Credly badges:** put the public badge URL in the certificate’s `credentialUrl`, or add the badge UUID as `credlyBadgeId`. Add its badge image URL or a local path in `image` to show the badge without the Credly embed. The badge must be public for visitors to verify it. `status` appears in the Work list; `tags` appear there and are searchable.
+- **Projects:** add a JSON file to `src/content/projects/`. Projects appear in Selected works, with the capstone first. Use the `github` and `demo` fields for external links.
+- **Credly badges:** put the public badge URL in the certificate’s `credentialUrl`, or add the badge UUID as `credlyBadgeId`. Add its badge image URL or a local path in `image` to show the badge without the Credly embed. The badge must be public for visitors to verify it.
 
 Anything written as `[LIKE THIS]` is an unfinished placeholder. `pnpm test:launch` lists every one that is left.
 
 ## Testing
 
-`pnpm test` checks the Work filter, the contact form (with Formspree replaced by fake replies), external links, the learning journey list, and accessibility (axe) in light and dark mode.
+`pnpm test` checks the homepage, contact form, external links, and accessibility (axe) in light and dark mode.
 
 ## Deployment
 

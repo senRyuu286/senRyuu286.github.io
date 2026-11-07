@@ -21,7 +21,7 @@ export const site: SiteInfo = {
 };
 
 export const nav = [
-  { label: "Work", href: "/work/" },
+  { label: "Works", href: "/#works" },
   { label: "Contact", href: "/#contact" },
 ];
 

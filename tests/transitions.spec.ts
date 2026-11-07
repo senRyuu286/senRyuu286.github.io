@@ -44,32 +44,32 @@ function findRule(page: Page, selector: string) {
 test.describe('Page transitions', () => {
   test('moving to another page by link runs the crossfade', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'no-preference');
-    await page.goto('/');
-    await page.locator('header nav a:text-is("Work")').first().click();
-    await page.waitForURL('**/work/');
+    await page.goto('/404.html');
+    await page.locator('header a.nav-logo').click();
+    await page.waitForURL(/\/$/);
     expect(await usedTransition(page)).toBe('true');
     await context.close();
   });
 
   test('the Back button runs the crossfade too', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'no-preference');
-    await page.goto('/');
-    await page.locator('header nav a:text-is("Work")').first().click();
-    await page.waitForURL('**/work/');
-    await page.goBack();
+    await page.goto('/404.html');
+    await page.locator('header a.nav-logo').click();
     await page.waitForURL(/\/$/);
+    await page.goBack();
+    await page.waitForURL('**/404.html');
     expect(await usedTransition(page)).toBe('true');
     await context.close();
   });
 
   test('with reduced motion there is no crossfade, for links or for Back', async ({ browser }) => {
     const { page, context } = await newPage(browser, 'reduce');
-    await page.goto('/');
-    await page.locator('header nav a:text-is("Work")').first().click();
-    await page.waitForURL('**/work/');
+    await page.goto('/404.html');
+    await page.locator('header a.nav-logo').click();
+    await page.waitForURL(/\/$/);
     expect(await usedTransition(page)).toBe('false');
     await page.goBack();
-    await page.waitForURL(/\/$/);
+    await page.waitForURL('**/404.html');
     expect(await usedTransition(page)).toBe('false');
     await expect(page.locator('h1')).toBeVisible();
     await context.close();
@@ -114,9 +114,9 @@ test.describe('Page transitions', () => {
     test.use({ javaScriptEnabled: false });
 
     test('links still move between pages (the crossfade is CSS only)', async ({ page }) => {
-      await page.goto('/');
-      await page.locator('header nav a:text-is("Work")').first().click();
-      await expect(page).toHaveURL(/\/work\/$/);
+      await page.goto('/404.html');
+      await page.locator('header a.nav-logo').click();
+      await expect(page).toHaveURL(/\/$/);
       await expect(page.locator('h1')).toBeVisible();
     });
   });

@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 import MobileMenu from './MobileMenu.astro';
 import { nav, profileLinks, site } from '../lib/site';
 
-// "/work/" and "/work" count as the same page. Only an exact match is the current page.
+// Only exact page links, not section links, receive aria-current.
 const trim = (path: string) => path.replace(/\/+$/, '') || '/';
 const here = trim(Astro.url.pathname);
 
