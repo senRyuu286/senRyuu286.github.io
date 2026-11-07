@@ -56,6 +56,16 @@ launch-tests/                  The launch gate
 - **Education** (school, program, period, status, major): `src/lib/education.ts`
 - **Skills and learning journey:** `src/lib/skills.ts` and `src/lib/journey.ts`
 - **Projects:** add a JSON file to `src/content/projects/`. Projects appear in Selected works, with the capstone first. Use the `github` and `demo` fields for external links.
+- **Experiences:** edit or add JSON files in `src/content/activities/`. `title` is the event name; `achievement` appears above it (or `role` when empty). Use `summary` for your story and `date` for the displayed date; `year` is an optional fallback. Optional `location`, `collaborators`, `takeaway`, and `link` add context. Put photos in `public/`, then set `image` to its path (for example `/event-photo.jpg`) and `imageAlt` to a description. Keep the `organization`, `role`, and `tags` fields. Leave optional fields empty or omit them when they do not apply.
+
+  The `image` field is the cover photo, shown on the homepage and first in the experience. Add more photos in `images`; each needs a path and description, and can have a caption. Use `\n\n` in `summary` to separate paragraphs.
+
+  ```json
+  "images": [
+    { "src": "/event-photo-2.jpg", "alt": "Our team presenting the project", "caption": "Presenting our work" },
+    { "src": "/event-photo-3.jpg", "alt": "The team at the event" }
+  ]
+  ```
 - **Credly badges:** put the public badge URL in the certificate’s `credentialUrl`, or add the badge UUID as `credlyBadgeId`. Add its badge image URL or a local path in `image` to show the badge without the Credly embed. The badge must be public for visitors to verify it.
 
 Anything written as `[LIKE THIS]` is an unfinished placeholder. `pnpm test:launch` lists every one that is left.

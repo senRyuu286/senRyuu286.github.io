@@ -5,6 +5,7 @@ import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Chip from '../components/ui/Chip.astro';
 import EducationCertificates from '../components/EducationCertificates.astro';
+import Experiences from '../components/Experiences.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Hero from '../components/Hero.astro';
 import ScreenshotFrame from '../components/ScreenshotFrame.astro';
@@ -71,6 +72,7 @@ const projects = (await getCollection('projects')).sort((a, b) =>
 	</section>
 
 	<EducationCertificates class="mt-20" />
+	<Experiences />
 	<section id="contact" aria-labelledby="contact-heading" class="contact-section mt-20">
 		<div class="contact-layout">
 			<div class="contact-form-card">

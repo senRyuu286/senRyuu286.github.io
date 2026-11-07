@@ -1,0 +1,23 @@
+{
+  "title": "International Project Based Learning 2026",
+  "organization": "University of San Jose-Recoletos",
+  "role": "Team Member",
+  "tags": ["[TAG]"],
+  "achievement": "USJ-R Representative",
+  "date": "August, 2026",
+  "location": "USJ-R, Magallanes Street, Cebu City, Cebu",
+  "collaborators": "Jean Kathleen Villegas | OIT and STUST teammates are omitted",
+  "takeaway": "Representing USJ-R in an international project-based learning experience gave me a chance to work with people from different backgrounds. It reminded me to stay open to new perspectives and learn from the people around me.",
+  "image": "/events/ipbl/1.JPG",
+  "imageAlt": "Project-based learning participants posing together with a certificate",
+  "link": "",
+  "images": [
+    { "src": "/events/ipbl/2.jpeg", "alt": "Participants posing behind the International PBL welcome banner" },
+    { "src": "/events/ipbl/3.JPG", "alt": "Participants discussing their work around a computer" },
+    { "src": "/events/ipbl/4.jpg", "alt": "A small four-legged robot on a worktable" },
+    { "src": "/events/ipbl/5.JPG", "alt": "Participants working together on a robot and a computer" },
+    { "src": "/events/ipbl/6.JPG", "alt": "Participants examining a small electronic component" },
+    { "src": "/events/ipbl/7.JPG", "alt": "Participants discussing the project together" },
+    { "src": "/events/ipbl/8.JPG", "alt": "Participants assembling electronics at a worktable" }
+  ]
+}

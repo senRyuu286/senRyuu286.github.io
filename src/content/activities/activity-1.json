@@ -1,9 +1,21 @@
 {
-  "title": "[ACTIVITY 1]",
-  "organization": "[ORGANIZATION]",
-  "role": "[MY ROLE]",
-  "year": "[YEAR]",
-  "status": "[STATUS]",
-  "summary": "[ACTIVITY SUMMARY]",
-  "tags": ["[TAG]"]
+  "title": "Philippine Startup Challenge XI",
+  "organization": "Department of Information and Communications Technology",
+  "role": "Team Member",
+  "tags": ["[TAG]"],
+  "achievement": "Regional Finalist",
+  "date": "October, 2026",
+  "location": "Bai Hotel, Mandaue City, Cebu",
+  "collaborators": "John Anthony Romeo | Joel Franco Navales",
+  "takeaway": "Reaching the regional finals with my team was a memorable experience. It reminded me how much a shared idea can grow when people work on it together.",
+  "image": "/events/psc/1.jpeg",
+  "imageAlt": "Participants holding certificates on stage at the Philippine Startup Challenge",
+  "link": "",
+  "images": [
+    { "src": "/events/psc/2.jpeg", "alt": "A group posing together in the event venue" },
+    { "src": "/events/psc/3.jpeg", "alt": "Four participants holding decorated bags in front of the competition backdrop" },
+    { "src": "/events/psc/4.jpeg", "alt": "A group posing in front of the Philippine Startup Challenge stage" },
+    { "src": "/events/psc/5.jpeg", "alt": "Participants holding decorated bags in front of the competition backdrop" },
+    { "src": "/events/psc/6.jpeg", "alt": "Participants gathered for a group photo in the venue lounge" }
+  ]
 }

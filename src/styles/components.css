@@ -329,6 +329,50 @@
   }
 }
 
+/* Photo-led experiences with a native dialog and details fallback. */
+@layer components {
+  .experience-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 2.5rem 1.5rem; margin-top: 2rem; }
+  .experience { min-width: 0; }
+  .experience-summary { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; list-style: none; }
+  .experience-summary::-webkit-details-marker { display: none; }
+  .experience-image { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius-panel); background: var(--surface); }
+  .experience-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .experience-image img { transition: transform var(--dur-base) var(--ease-enter); }
+  .experience-image-placeholder { display: flex; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--ink-muted); font-size: var(--text-meta); }
+  .experience-image-placeholder svg { width: 3rem; height: 3rem; }
+  .experience-achievement { margin-top: 1rem; color: var(--ink); font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; overflow-wrap: anywhere; }
+  .experience-event { margin-top: 0.25rem; color: var(--ink); overflow-wrap: anywhere; }
+  .experience-date { margin-top: 0.25rem; color: var(--ink-muted); font-size: var(--text-meta); }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .experience-summary:hover .experience-image img { transform: scale(1.025); }
+  }
+  .experience-story { display: grid; gap: 1rem; min-width: 0; margin-top: 1rem; overflow-wrap: anywhere; }
+  .experience-story h3 { font-family: var(--font-display); font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.2; }
+  .experience-story-meta { color: var(--ink-muted); }
+  .experience-photos { position: relative; }
+  .experience-photo-list { display: grid; gap: 1rem; }
+  .experience-photo-list figure { min-width: 0; }
+  .experience-photo-list img { display: block; width: 100%; height: min(55vw, 22rem); min-height: 12rem; object-fit: contain; border-radius: var(--radius-panel); background: var(--paper); }
+  .experience-photo-list figcaption { margin-top: 0.4rem; color: var(--ink-muted); font-size: var(--text-meta); }
+  .experience-photo-controls:not([hidden]) { display: flex; justify-content: center; margin-top: 0.5rem; }
+  .experience-photo-controls button { position: absolute; top: calc(clamp(12rem, 55vw, 22rem) / 2); display: grid; width: 2.75rem; height: 2.75rem; place-items: center; transform: translateY(-50%); border: 1px solid var(--rule); border-radius: 50%; background: var(--surface); color: var(--ink); cursor: pointer; }
+  .experience-photo-controls [data-photo-prev] { left: 0.5rem; }
+  .experience-photo-controls [data-photo-next] { right: 0.5rem; }
+  .experience-photo-controls button svg { width: 1.25rem; height: 1.25rem; }
+  .experience-photo-controls button:hover:not(:disabled) { color: var(--accent); }
+  .experience-photo-controls button:disabled { color: var(--ink-muted); opacity: 0.6; cursor: default; }
+  .experience-photo-controls span { color: var(--ink-muted); font-size: var(--text-meta); }
+  .experience-facts { display: grid; gap: 0.75rem; }
+  .experience-facts dt { color: var(--ink-muted); font-size: var(--text-meta); }
+  .experience-dialog { position: fixed; inset: 0; width: min(90vw, 40rem); max-height: min(85dvh, 50rem); margin: auto; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius-panel); background: var(--surface); color: var(--ink); padding: 0; }
+  .experience-dialog::backdrop { background: rgb(0 0 0 / 0.65); }
+  .experience-dialog-scroll { max-height: calc(min(85dvh, 50rem) - 1.5rem); margin: 0.75rem 0.5rem 0.75rem 0; overflow-y: auto; overscroll-behavior: contain; padding: 0.5rem clamp(1rem, 4vw, 1.5rem) 0.5rem; scrollbar-width: thin; scrollbar-color: var(--ink-muted) transparent; }
+  .experience-dialog-scroll > .experience-story { margin-top: 0; }
+  .experience-dialog-scroll .experience-story h3 { padding-right: 3rem; }
+  .experience-close { position: absolute; top: 0.85rem; right: 1rem; z-index: 1; display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border-radius: 50%; background: transparent; color: var(--ink); text-shadow: 0 0 0.3rem var(--surface), 0 0 0.6rem var(--surface); font-size: 1.75rem; cursor: pointer; }
+  .experience-close:hover { color: var(--accent); }
+}
+
 /* Open groups keep technology logos and names together without table rows. */
 @layer components {
   .tech-groups { display: grid; gap: 2rem; }

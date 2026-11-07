@@ -3,6 +3,8 @@
 @layer base {
   html {
     scroll-padding-top: var(--nav-offset);
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-muted) transparent;
   }
 
   body {
