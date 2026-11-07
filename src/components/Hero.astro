@@ -32,8 +32,8 @@ const { showExplore } = Astro.props;
 	</div>
 	{showExplore && (
 		<div class="hero-explore animate-in fade-in duration-400 ease-enter delay-240 fill-mode-backwards">
-			<a href="#featured-heading" aria-label="Scroll to explore featured capstone">
-				Scroll to explore <span aria-hidden="true">&#8595;</span>
+			<a href="#selected-works-heading" aria-label="Scroll to explore selected works" class="group">
+				Scroll to explore <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-enter motion-safe:group-hover:translate-y-1 motion-safe:group-focus-visible:translate-y-1">&#8595;</span>
 			</a>
 		</div>
 	)}

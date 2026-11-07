@@ -1,6 +1,6 @@
 ---
-import { nav, profileLinks, site } from '../lib/site';
-import { profileIcons } from '../lib/profile-icons';
+import { Icon } from 'astro-icon/components';
+import { profileLinks, site } from '../lib/site';
 
 const year = new Date().getFullYear();
 const profiles = profileLinks.filter((profile) => profile.real);
@@ -12,11 +12,6 @@ const profiles = profileLinks.filter((profile) => profile.real);
 			<div class="footer-copy">
 				<p class="footer-name" translate="no">{site.name}</p>
 				<p class="footer-message">Thanks for stopping by.</p>
-				<nav aria-label="Footer">
-					<ul class="footer-nav">
-						{nav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
-					</ul>
-				</nav>
 			</div>
 		</div>
 		<div class="footer-bottom">
@@ -25,7 +20,7 @@ const profiles = profileLinks.filter((profile) => profile.real);
 				{profiles.map((profile) => (
 					<li>
 						<a href={profile.href} target={profile.external ? '_blank' : undefined} rel={profile.external ? 'noopener noreferrer' : undefined}>
-							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d={profileIcons[profile.key as keyof typeof profileIcons]} /></svg>
+							<Icon name={`simple-icons:${profile.key}`} aria-hidden="true" focusable="false" />
 							<span class="sr-only">{profile.label}{profile.external && ' (opens in a new tab)'}</span>
 						</a>
 					</li>

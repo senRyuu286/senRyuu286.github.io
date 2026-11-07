@@ -1,35 +1,32 @@
 ---
 // src/pages/index.astro
 import { getEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/ui/Button.astro';
 import Chip from '../components/ui/Chip.astro';
 import EducationCertificates from '../components/EducationCertificates.astro';
 import ContactForm from '../components/ContactForm.astro';
-import RouteSpine from '../components/RouteSpine.astro';
-import RouteStop from '../components/RouteStop.astro';
-import { journey } from '../lib/journey';
 import Hero from '../components/Hero.astro';
 import ScreenshotFrame from '../components/ScreenshotFrame.astro';
 import TechStack from '../components/TechStack.astro';
 import { isUrl, profileLinks, site } from '../lib/site';
-import { currentlyLearning, skillGroups, skillIcons } from '../lib/skills';
+import { skillGroups, skillIcons } from '../lib/skills';
 
-// The featured capstone comes from src/content/projects/capstone.md.
+// The featured capstone comes from src/content/projects/capstone.json.
 const capstone = await getEntry('projects', 'capstone');
 
 // GitHub and demo links appear on Home only when they are real web addresses. Placeholders stay off this page.
 const capstoneLinks = capstone
 	? [
-			{ label: 'View code on GitHub', value: capstone.data.github },
-			{ label: 'Open live demo', value: capstone.data.demo },
-		].filter((link): link is { label: string; value: string } => link.value !== undefined && isUrl(link.value))
+			{ label: 'GitHub', value: capstone.data.github, icon: 'arrow' },
+			{ label: `Try ${capstone.data.title}`, value: capstone.data.demo, icon: 'external' },
+		].flatMap((link) => link.value && isUrl(link.value) ? [{ ...link, value: link.value }] : [])
 	: [];
 ---
 
 <BaseLayout
 	title={`${site.name} | Information Technology student`}
-	description={site.bioSentence}
+	description="Justin Ramas is an Information Technology student exploring web development and building projects."
 	preloadDisplayFont
 	includePerson
 >
@@ -38,34 +35,30 @@ const capstoneLinks = capstone
 
 	{
 		capstone && (
-			<section aria-labelledby="featured-heading" class="mt-16">
-				<h2 id="featured-heading">Featured capstone</h2>
-				<article
-					class="mt-4 grid gap-6 rounded-panel border border-rule bg-surface p-4 sm:p-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
-					data-card
-				>
-					<div>
-						<h3 class="font-display text-body font-bold wrap-break-word">{capstone.data.title}</h3>
-						<p class="mt-2">{capstone.data.summary}</p>
-						<ul class="mt-4 flex flex-wrap gap-2" aria-label="Stack">
-							{capstone.data.stack.map((item) => (
-								<li class="max-w-full min-w-0">
-									<Chip icon={skillIcons[item]}>{item}</Chip>
-								</li>
-							))}
+			<section aria-labelledby="selected-works-heading" class="selected-works mt-16">
+				<h2 id="selected-works-heading">Selected works</h2>
+				<article class="selected-work" data-selected-work>
+					<div class="selected-work-copy">
+						<h3>{capstone.data.title}</h3>
+						{capstone.data.subtitle && <p class="selected-work-subtitle">{capstone.data.subtitle}</p>}
+						{capstone.data.role && <p class="selected-work-role"><span>Role:</span> {capstone.data.role}</p>}
+						<ul class="selected-work-stack" aria-label="Stack">
+							{capstone.data.stack.map((item) => <li><Chip icon={skillIcons[item]}>{item}</Chip></li>)}
 						</ul>
-						<div class="mt-6 flex flex-wrap gap-3">
-							<Button href={`/work/${capstone.id}/`} variant="secondary">
-								Read the case study
-							</Button>
-							{capstoneLinks.map((link) => (
-								<Button href={link.value} variant="secondary">
-									{link.label}
-								</Button>
-							))}
-						</div>
+						<p class="selected-work-summary">{capstone.data.summary}</p>
+						{capstoneLinks.length > 0 && (
+							<div class="selected-work-links">
+								{capstoneLinks.map((link) => (
+									<a href={link.value} target="_blank" rel="noopener noreferrer" class="group">
+										{link.label}
+										{link.icon === 'arrow' ? <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-enter motion-safe:group-hover:translate-x-1 motion-safe:group-focus-visible:translate-x-1">&#8594;</span> : <svg class="transition-transform duration-200 ease-enter motion-safe:group-hover:translate-x-1 motion-safe:group-focus-visible:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 14v5H5V5h5"></path></svg>}
+										<span class="sr-only"> (opens in a new tab)</span>
+									</a>
+								))}
+							</div>
+						)}
 					</div>
-					<ScreenshotFrame class="self-start" />
+					<ScreenshotFrame />
 				</article>
 			</section>
 		)
@@ -74,37 +67,39 @@ const capstoneLinks = capstone
 	<section aria-labelledby="tech-stack-heading" class="mt-16">
 		<h2 id="tech-stack-heading">Tech stack</h2>
 		<TechStack groups={skillGroups} class="mt-4" />
-		<p class="mt-6"><a href="/#about">See my learning journey</a></p>
-		<p class="mt-2 text-meta text-ink-muted">Logos from Simple Icons. Trademarks belong to their owners.</p>
 	</section>
 
-	<section id="about" aria-labelledby="about-heading" class="mt-20 border-t border-rule pt-10">
-		<h2 id="about-heading">About me</h2>
-		<p class="mt-4">I am <span translate="no">{site.name}</span>, a BSIT student at {site.school}, building {site.focusArea}.</p>
-		<p class="mt-3">{site.bio}</p>
-		<div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-			<section aria-labelledby="journey-heading">
-				<h3 id="journey-heading" class="font-display text-body font-bold">Learning journey</h3>
-				<RouteSpine as="ol" data-journey class="mt-6">
-					{journey.map((stop, index) => <RouteStop as="li" n={index + 1}><p class="font-display font-bold">{stop.title}</p><p class="text-meta text-ink-muted">{stop.period}</p><p class="mt-1">{stop.detail}</p></RouteStop>)}
-				</RouteSpine>
-			</section>
-			<section aria-labelledby="learning-heading">
-				<h3 id="learning-heading" class="font-display text-body font-bold">Currently learning</h3>
-				<ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1">{currentlyLearning.map((item) => <li>{item}</li>)}</ul>
-			</section>
-		</div>
-	</section>
-	<EducationCertificates class="mt-20 border-t border-rule pt-10" />
-	<section id="contact" aria-labelledby="contact-heading" class="mt-20 border-t border-rule pt-10">
-		<div class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-			<div>
-				<h2 id="contact-heading">Contact</h2>
-				<p class="mt-3">Send me a message and I will reply as soon as I can.</p>
-				<h3 id="profiles-heading" class="mt-8 font-display text-body font-bold">Find me online</h3>
-				<ul class="mt-3 flex flex-wrap gap-x-6">{profileLinks.filter((profile) => profile.external).map((profile) => <li>{profile.real ? <a href={profile.href} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">{profile.label}<span class="sr-only"> (opens in a new tab)</span></a> : <span>{profile.text}</span>}</li>)}</ul>
+	<EducationCertificates class="mt-20" />
+	<section id="contact" aria-labelledby="contact-heading" class="contact-section mt-20">
+		<div class="contact-layout">
+			<div class="contact-form-card">
+				<h2 id="contact-heading">Let’s build something meaningful.</h2>
+				<p class="contact-intro">I’m currently learning and exploring opportunities. Feel free to reach out about collaborations or projects.</p>
+				<ContactForm />
 			</div>
-			<ContactForm />
+			<div class="contact-side">
+				<div class="contact-art">
+					<img src="/contact-illustration-v2.png" alt="" width="1312" height="1199" loading="lazy" />
+				</div>
+				<div class="contact-details">
+					<h3 id="profiles-heading" class="sr-only">Find me online</h3>
+					<ul>
+						{profileLinks.map((profile) => (
+							<li class="contact-detail">
+								<span class="contact-detail-icon"><Icon name={`simple-icons:${profile.key}`} aria-hidden="true" focusable="false" /></span>
+								<div>
+									<p class="contact-detail-label">{profile.label}</p>
+									{profile.real ? <a href={profile.href} target="_blank" rel="noopener noreferrer">{profile.key === 'github' ? 'SenRyuu286' : site.name}<span class="sr-only"> ({profile.label}, opens in a new tab)</span></a> : <span>{profile.text}</span>}
+								</div>
+							</li>
+						))}
+						<li class="contact-detail">
+							<span class="contact-detail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11s-8-6-8-11a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>
+							<div><p class="contact-detail-label">Location</p><p>Cebu, Philippines</p></div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</section>
 	</div>

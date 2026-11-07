@@ -1,6 +1,5 @@
 ---
-// src/components/TechStack.astro
-import Chip from './ui/Chip.astro';
+import { Icon } from 'astro-icon/components';
 import { skillIcons, type SkillGroup } from '../lib/skills';
 
 interface Props {
@@ -11,22 +10,21 @@ interface Props {
 const { groups, class: className } = Astro.props;
 ---
 
-<!-- One row per group: the group name on the left and its chips on the right. On phones the name sits above the chips. -->
-<ul class:list={['border-b border-rule', className]} data-stack>
-	{
-		groups.map((group) => (
-			<li class="grid gap-3 border-t border-rule py-5 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-6" data-stack-group>
-				<h3 class="font-display text-body font-bold wrap-break-word">{group.name}</h3>
-				{group.items.length > 0 && (
-					<ul class="flex flex-wrap gap-2">
-						{group.items.map((item) => (
-							<li class="max-w-full min-w-0">
-								<Chip icon={skillIcons[item]}>{item}</Chip>
-							</li>
-						))}
-					</ul>
-				)}
-			</li>
-		))
-	}
+<ul class:list={['tech-groups', className]} data-stack>
+	{groups.map((group) => (
+		<li class="tech-group" data-stack-group>
+			<h3>{group.name}</h3>
+			{group.items.length > 0 && (
+				<ul class="tech-items">
+					{group.items.map((item) => (
+						<li class="tech-item">
+							{skillIcons[item] && <Icon name={skillIcons[item]} aria-hidden="true" focusable="false" />}
+							<span>{item}</span>
+						</li>
+					))}
+				</ul>
+			)}
+		</li>
+	))}
 </ul>
+<p class="mt-6 text-[0.6rem] text-ink-muted">Logos are from <a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer" class="text-inherit no-underline hover:text-accent">Simple Icons<span class="sr-only"> (opens in a new tab)</span></a>. Trademarks belong to their respective owners.</p>

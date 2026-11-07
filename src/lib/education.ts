@@ -1,19 +1,19 @@
 // src/lib/education.ts
-import { site } from './site';
-
 export interface EducationEntry {
   school: string;
   program: string;
   period: string;
-  highlights: string[];
+  status: string;
+  major: string;
 }
 
 /** Shown on Home under "Education". Anything in [BRACKETS] is a placeholder (see file 07). */
 export const education: EducationEntry[] = [
   {
-    school: site.school,
+    school: 'University of San Jose-Recoletos',
     program: 'Bachelor of Science in Information Technology',
-    period: '[PERIOD]',
-    highlights: ['[EDUCATION HIGHLIGHT]'],
+    period: '2023 to Present',
+    status: 'Currently enrolled',
+    major: 'Web Application Development and Mobile Application Development',
   },
 ];

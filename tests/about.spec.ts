@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('the learning journey is an ordered list with at least three stops', async ({ page }) => {
-  await page.goto('/#about');
-  const journey = page.locator('ol[data-journey]');
-  await expect(journey).toHaveCount(1);
-  expect(await journey.locator(':scope > li').count()).toBeGreaterThanOrEqual(3);
+test('About section and links are removed from every page', async ({ page }) => {
+  for (const path of ['/', '/work/']) {
+    await page.goto(path);
+    await expect(page.locator('#about, a[href="/#about"], a[href="#about"]')).toHaveCount(0);
+  }
 });

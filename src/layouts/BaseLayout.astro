@@ -57,6 +57,7 @@ const personJson = includePerson
 		<meta property="og:site_name" content={site.name} />
 		{ogImage && <meta property="og:image" content={ogImage} />}
 		<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+		{ogImage && <meta name="twitter:image" content={ogImage} />}
 		{includePerson && <script type="application/ld+json" set:html={personJson} />}
 		{
 			analytics && (
@@ -77,7 +78,7 @@ const personJson = includePerson
 			Skip to main content
 		</a>
 		<Header />
-		<main id="main" tabindex="-1" class:list={["mx-auto w-full flex-1 focus:outline-none", includePerson ? "home-main" : "max-w-5xl px-4 py-12 sm:px-6"]}>
+		<main id="main" tabindex="-1" class:list={["mx-auto w-full min-w-0 flex-1 focus:outline-none", includePerson ? "home-main" : "max-w-5xl px-4 py-12 sm:px-6"]}>
 			<slot />
 		</main>
 		<Footer />

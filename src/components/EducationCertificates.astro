@@ -1,5 +1,5 @@
 ---
-// src/components/EducationCertificates.astro
+// Certificates come from the same collection as the Work page.
 import { getCollection } from 'astro:content';
 import { education } from '../lib/education';
 import { isUrl } from '../lib/site';
@@ -9,78 +9,80 @@ interface Props {
 }
 
 const { class: className } = Astro.props;
-
-// Certificates come from src/content/certificates, the same files the Work list reads.
-// Home shows the first four. The Work page has them all.
 const certificates = await getCollection('certificates');
-const shown = certificates.slice(0, 4);
-const hasMore = certificates.length > shown.length;
+// An explicit badge ID can be used when the certificate has no Credly URL.
+const badgeIdFromUrl = (value: string | undefined): string | undefined => {
+	if (!value || !isUrl(value)) return undefined;
+	try {
+		const url = new URL(value);
+		if (url.hostname !== 'www.credly.com' && url.hostname !== 'credly.com') return undefined;
+		return /^\/badges\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:\/|$)/i.exec(url.pathname)?.[1];
+	} catch {
+		return undefined;
+	}
+};
+const entries = certificates.map(({ data }) => {
+	const badgeId = data.credlyBadgeId ?? badgeIdFromUrl(data.credentialUrl);
+	const verifyUrl = data.credentialUrl && isUrl(data.credentialUrl)
+		? data.credentialUrl
+		: badgeId ? `https://www.credly.com/badges/${badgeId}/public_url` : undefined;
+	return { data, badgeId, verifyUrl };
+});
 ---
 
 <section aria-labelledby="education-heading" class={className} data-education-certificates>
 	<h2 id="education-heading">Education and certificates</h2>
-	<div class:list={['mt-6 grid gap-10', certificates.length > 0 && 'md:grid-cols-2']}>
-		<div class="min-w-0" data-education>
-			<h3 class="font-display text-body font-bold">Education</h3>
-			<ul class="mt-4 border-b border-rule">
-				{
-					education.map((entry) => (
-						<li class="border-t border-rule py-5">
-							<p class="font-bold wrap-break-word">{entry.school}</p>
-							<p class="wrap-break-word">{entry.program}</p>
-							<p class="text-meta text-ink-muted">{entry.period}</p>
-							{entry.highlights.length > 0 && (
-								<ul class="mt-3 list-disc space-y-1 pl-5">
-									{entry.highlights.map((item) => (
-										<li class="wrap-break-word">{item}</li>
-									))}
-								</ul>
-							)}
-						</li>
-					))
-				}
-			</ul>
-		</div>
-		{
-			certificates.length > 0 && (
-				<div class="min-w-0" data-certificates>
-					<h3 class="font-display text-body font-bold">Certificates</h3>
-					<ul class="mt-4 border-b border-rule">
-						{shown.map(({ data }) => (
-							<li class="flex gap-4 border-t border-rule py-5" data-certificate>
-								{data.image && (
-									<img
-										src={data.image}
-										alt={data.imageAlt ?? `Certificate: ${data.title}`}
-										width="112"
-										height="84"
-										loading="lazy"
-										class="h-21 w-28 shrink-0 rounded-control border border-rule bg-surface object-contain"
-									/>
-								)}
-								<div class="min-w-0">
-									<p class="font-bold wrap-break-word">{data.title}</p>
-									<p class="text-meta text-ink-muted wrap-break-word">
-										{data.issuer}, {data.year}
-									</p>
-									{data.credentialUrl && isUrl(data.credentialUrl) && (
-										<p class="mt-2">
-											<a href={data.credentialUrl} target="_blank" rel="noopener noreferrer">
-												Verify credential
-											</a>
-										</p>
-									)}
-								</div>
-							</li>
-						))}
-					</ul>
-					{hasMore && (
-						<p class="mt-4">
-							<a href="/work/">See all certificates on the Work page</a>
-						</p>
-					)}
-				</div>
-			)
-		}
+	<div class="education-block" data-education>
+		<h3>Education</h3>
+		<ul class="education-list">
+			{education.map((entry) => (
+				<li class="education-entry">
+					<div>
+						<p class="education-school">{entry.school}</p>
+						<p class="education-program">{entry.program}</p>
+						<p class="education-period">{entry.period}</p>
+						<p class="education-status">{entry.status}</p>
+						<p class="education-major">Major: {entry.major}</p>
+					</div>
+				</li>
+			))}
+		</ul>
 	</div>
+	{entries.length > 0 && (
+		<div class="certificates-block" data-certificates>
+			<h3>Certifications</h3>
+			<div class="certificates-content" data-certificate-carousel role="region" aria-label="Certifications">
+				<ul class="certificate-list" data-certificate-list aria-label="Certificate list">
+					{entries.map(({ data, verifyUrl }) => (
+						<li class="certificate-entry motion-safe:data-[active]:animate-in motion-safe:data-[active]:fade-in motion-safe:data-[active]:slide-in-from-bottom-1 motion-safe:data-[active]:duration-200 motion-safe:data-[active]:ease-enter" data-certificate>
+							<div class="certificate-copy">
+								<p class="certificate-title">{data.title}</p>
+								<p class="certificate-issuer">{data.issuer}</p>
+								<p class="certificate-meta">Issued {data.year}</p>
+								{verifyUrl && (
+									<p class="certificate-link"><a class="group" href={verifyUrl} target="_blank" rel="noopener noreferrer">Verify credential <svg class="transition-transform duration-200 ease-enter motion-safe:group-hover:translate-x-1 motion-safe:group-focus-visible:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 14v5H5V5h5"></path></svg><span class="sr-only"> (opens in a new tab)</span></a></p>
+								)}
+							</div>
+							{data.image && (verifyUrl ? (
+								<a class="certificate-badge" href={verifyUrl} target="_blank" rel="noopener noreferrer" aria-label={`Verify ${data.title} (opens in a new tab)`}>
+									<img src={data.image} alt="" width="150" height="150" loading="lazy" />
+								</a>
+							) : <img class="certificate-badge" src={data.image} alt={data.imageAlt ?? ''} width="150" height="150" loading="lazy" />)}
+						</li>
+					))}
+				</ul>
+				{entries.length > 1 && (
+					<div class="certificate-controls" data-certificate-controls hidden>
+						<button type="button" data-certificate-prev aria-label="Previous certificate">Previous</button>
+						<span data-certificate-position aria-live="polite"></span>
+						<button type="button" data-certificate-next aria-label="Next certificate">Next</button>
+					</div>
+				)}
+			</div>
+		</div>
+	)}
 </section>
+
+<script>
+	import '../scripts/certificate-carousel';
+</script>

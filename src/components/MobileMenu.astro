@@ -1,10 +1,10 @@
 ---
 // src/components/MobileMenu.astro
+import { Icon } from 'astro-icon/components';
 interface Page {
 	label: string;
 	href: string;
 	current: boolean;
-	parent: boolean;
 }
 
 interface Profile {
@@ -15,7 +15,7 @@ interface Profile {
 	href: string;
 	real: boolean;
 	external: boolean;
-	/** SVG path data for a 24px filled icon. */
+	/** Icon name in the installed Simple Icons collection. */
 	icon: string;
 }
 
@@ -52,8 +52,7 @@ const { pages, profiles } = Astro.props;
 						<a
 							href={page.href}
 							aria-current={page.current ? 'page' : undefined}
-							data-parent={page.parent || undefined}
-							class="flex min-h-11 items-center border-l-2 border-transparent px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper aria-[current=page]:border-accent aria-[current=page]:font-semibold data-parent:border-ink-muted"
+							class="flex min-h-11 items-center border-l-2 border-transparent px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper aria-[current=page]:border-accent aria-[current=page]:font-semibold"
 						>
 							{page.label}
 						</a>
@@ -72,17 +71,13 @@ const { pages, profiles } = Astro.props;
 								rel={profile.external ? 'noopener noreferrer' : undefined}
 								class="flex min-h-11 items-center gap-3 px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper"
 							>
-								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5 shrink-0">
-									<path d={profile.icon} />
-								</svg>
+								<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5 shrink-0" />
 								{profile.label}
 								{profile.external && <span class="sr-only"> (opens in a new tab)</span>}
 							</a>
 						) : (
 							<span class="flex min-h-11 items-center gap-3 px-3 text-ink-muted">
-								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5 shrink-0 opacity-50">
-									<path d={profile.icon} />
-								</svg>
+								<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5 shrink-0 opacity-50" />
 								{profile.text}
 							</span>
 						)}

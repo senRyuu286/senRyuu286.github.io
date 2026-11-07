@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 // Add every new page here as it is built.
-const pages = ['/', '/work/', '/work/capstone/', '/404.html'];
+const pages = ['/', '/work/', '/404.html'];
 const schemes = ['light', 'dark'] as const;
 
 for (const scheme of schemes) {

@@ -7,17 +7,17 @@ import { site } from '../lib/site';
 
 const action = `https://formspree.io/f/${site.formspreeId}`;
 const success = 'Message sent. I’ll reply as soon as I can.';
-const failure = `Your message did not send. Check your connection and try again, or email me at ${site.email}.`;
+const failure = 'Your message did not send. Check your connection and try again.';
 ---
 
 <form id="contact-form" action={action} method="POST" data-success={success} data-failure={failure} class="max-w-xl">
 	<div>
-		<Label for="contact-name" required>Name</Label>
+		<Label for="contact-name">Name</Label>
 		<Input id="contact-name" name="name" autocomplete="name" enterkeyhint="next" required aria-describedby="contact-name-error" />
 		<p id="contact-name-error" data-error-for="name" class="mt-1 min-h-6 text-meta text-error"></p>
 	</div>
 	<div class="mt-4">
-		<Label for="contact-email" required>Email</Label>
+		<Label for="contact-email">Email</Label>
 		<Input
 			id="contact-email"
 			name="email"
@@ -31,7 +31,7 @@ const failure = `Your message did not send. Check your connection and try again,
 		<p id="contact-email-error" data-error-for="email" class="mt-1 min-h-6 text-meta text-error"></p>
 	</div>
 	<div class="mt-4">
-		<Label for="contact-message" required>Message</Label>
+		<Label for="contact-message">Message</Label>
 		<Textarea id="contact-message" name="message" required aria-describedby="contact-message-error" />
 		<p id="contact-message-error" data-error-for="message" class="mt-1 min-h-6 text-meta text-error"></p>
 	</div>
@@ -41,9 +41,9 @@ const failure = `Your message did not send. Check your connection and try again,
 		<label>Leave this field empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
 	</div>
 
-	<Button type="submit" class="mt-4 min-w-44" data-contact-submit>Send message</Button>
-	<!-- The status keeps space for the failure message in the narrower homepage column. -->
-	<p role="status" data-contact-status class="mt-4 flex min-h-32 items-start gap-2 wrap-anywhere">
+	<Button type="submit" class="mt-4 w-full" data-contact-submit>Send message</Button>
+	<!-- Keep the live region present even when it has no message. -->
+	<p role="status" data-contact-status class="contact-status flex items-start gap-2 wrap-anywhere">
 		<svg
 			data-status-icon
 			aria-hidden="true"

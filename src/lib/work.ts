@@ -40,8 +40,8 @@ export async function getWorkItems(): Promise<WorkItem[]> {
         status: data.status,
         tags: data.tags,
         details: [data.summary],
-        href: `/work/${id}/`,
-        external: false,
+        href: [data.demo, data.github].find((url): url is string => url !== undefined && isUrl(url)),
+        external: true,
       }),
     ),
     ...certificates.map(({ id, data }) =>

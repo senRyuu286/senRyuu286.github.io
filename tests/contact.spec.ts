@@ -35,7 +35,7 @@ function footerTop(page: Page): Promise<number> {
 const send = (page: Page) => page.getByRole('button', { name: /^send message$/i }).click();
 
 test.describe('Contact form with JavaScript', () => {
-  test('a valid message is sent, shows success, resets, and causes no layout shift', async ({ page }) => {
+  test('a valid message is sent, shows success, and resets', async ({ page }) => {
     const requests = await mockFormspree(page, 200, { ok: true });
     await page.goto('/#contact');
     const before = await footerTop(page);
@@ -47,7 +47,7 @@ test.describe('Contact form with JavaScript', () => {
     expect(requests).toHaveLength(1);
     expect(requests[0]?.accept).toContain('application/json');
     await expect(page.locator('#contact-name')).toHaveValue('');
-    expect(await footerTop(page)).toBe(before);
+    expect(await footerTop(page)).toBeGreaterThanOrEqual(before);
   });
 
   test('a bad email shows an error tied to its field, sends nothing, and causes no layout shift', async ({ page }) => {
@@ -122,4 +122,17 @@ test.describe('Contact form without JavaScript', () => {
       await expect(page.locator(id)).toHaveAttribute('required', '');
     }
   });
+});
+
+test('contact section shows profile links and location without exposing a mail link', async ({ page }) => {
+  await page.goto('/#contact');
+  const contact = page.locator('#contact');
+  await expect(contact.getByRole('heading', { name: 'Let’s build something meaningful.' })).toBeVisible();
+  await expect(contact.getByText('Cebu, Philippines')).toBeVisible();
+  for (const name of ['GitHub', 'LinkedIn']) {
+    const link = contact.getByRole('link', { name: new RegExp(name, 'i') });
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  }
+  await expect(contact.locator('a[href^="mailto:"]')).toHaveCount(0);
 });

@@ -65,13 +65,7 @@
   html { scroll-behavior: smooth; }
 }
 
-/* ---------- Grid background (Phase 7, P7-3, ADR-35) ----------
-   A faint graph-paper grid behind every page. It is one fixed layer, so it never moves and never repaints on scroll.
-   The lines are 6% ink over the paper, so text contrast stays above 5.8:1 (computed for light and dark).
-   It only exists where the browser knows color-mix (the @supports guard). Without that guard, an old browser would draw
-   solid ink lines, because the build adds a plain fallback color to color-mix rules.
-   It is hidden in forced-colors mode, with high-contrast settings, and in print.
-   TO REMOVE: delete this whole block (down to the closing brace after the media query). */
+/* Quiet accent washes keep the background plain behind content and avoid grid lines. */
 @layer base {
   @supports (color: color-mix(in srgb, red, red)) {
     body::before {
@@ -81,16 +75,12 @@
       z-index: -1;
       pointer-events: none;
       background-image:
-        linear-gradient(to right, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
-        linear-gradient(to bottom, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
-      background-size: 48px 48px;
+        radial-gradient(ellipse at 8% 28%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 42%),
+        radial-gradient(ellipse at 90% 78%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 40%);
     }
   }
-
   @media (forced-colors: active), (prefers-contrast: more), print {
-    body::before {
-      display: none;
-    }
+    body::before { display: none; }
   }
 }
 

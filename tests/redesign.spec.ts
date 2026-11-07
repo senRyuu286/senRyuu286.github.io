@@ -1,19 +1,14 @@
 import { expect, test } from '@playwright/test';
 
-test('Home combines the introduction, journey and contact with links to Work', async ({ page }) => {
+test('Home combines the introduction, education and contact with links to Work', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('h1')).toHaveCount(1);
-  await expect(page.locator('#about')).toBeVisible();
-  await expect(page.locator('ol[data-journey] > li')).toHaveCount(3);
+  await expect(page.locator('#about')).toHaveCount(0);
+  await expect(page.locator('[data-education-certificates]')).toBeVisible();
   await expect(page.locator('#contact-form')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Read the case study' })).toHaveAttribute('href', '/work/capstone/');
+  await expect(page.locator('[data-selected-work]')).toBeVisible();
+  await expect(page.locator('a[href^="/work/capstone"]')).toHaveCount(0);
   await expect(page.locator('header a[href="/#contact"]').first()).toHaveAttribute('href', '/#contact');
-});
-
-test('a project detail page renders its Markdown', async ({ page }) => {
-  await page.goto('/work/capstone/');
-  await expect(page.locator('.project-content').getByRole('heading', { name: 'Problem' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Back to all work' })).toHaveAttribute('href', '/work/');
 });
 
 test('the navigation and work list remain usable without JavaScript', async ({ browser }) => {

@@ -1,21 +1,20 @@
 ---
 // src/components/Header.astro
+import { Icon } from 'astro-icon/components';
 import MobileMenu from './MobileMenu.astro';
 import { nav, profileLinks, site } from '../lib/site';
-import { profileIcons } from '../lib/profile-icons';
 
 // "/work/" and "/work" count as the same page. Only an exact match is the current page.
-// A child page (such as /work/capstone/) marks its parent section with data-parent, for a softer visual style only.
 const trim = (path: string) => path.replace(/\/+$/, '') || '/';
 const here = trim(Astro.url.pathname);
 
 const pages = nav.map((item) => {
 	const target = trim(item.href);
 	const isSection = item.href.includes('#');
-	return { label: item.label, href: item.href, current: !isSection && here === target, parent: !isSection && here.startsWith(`${target}/`) };
+	return { label: item.label, href: item.href, current: !isSection && here === target };
 });
 
-const profiles = profileLinks.map((profile) => ({ ...profile, icon: profileIcons[profile.key as keyof typeof profileIcons] }));
+const profiles = profileLinks.map((profile) => ({ ...profile, icon: `simple-icons:${profile.key}` }));
 ---
 
 <!--
@@ -25,12 +24,8 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: profileIcons
 <header class="site-header sticky top-3 z-40 mt-3 w-full max-w-5xl self-center px-4 sm:px-6">
 	<div class="nav-bar relative isolate flex min-h-14 items-center gap-x-2 nav-shell border px-2">
 		<a href="/" translate="no" aria-label={site.name} class="nav-logo inline-flex min-h-11 min-w-11 items-center rounded-control px-1.5 text-ink no-underline">
-			<!-- Logo mark: the letter J in a cobalt square (fixed 32px). The J is outlined from the Archivo font
-			     (SIL Open Font License), so it needs no font file. It uses the color tokens, so dark mode follows by itself. -->
-			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center rounded-control bg-accent">
-				<svg viewBox="0 0 32 32" focusable="false" class="size-8 fill-accent-ink">
-					<path d="M15.89 26Q14.03 26 12.66 25.41Q11.29 24.81 10.55 23.53Q9.8 22.25 9.8 20.22V19.1H14.25V20.03Q14.25 21.08 14.63 21.62Q15 22.17 15.9 22.17Q16.82 22.17 17.2 21.56Q17.58 20.95 17.58 19.73V6H22.2V19.89Q22.2 22.06 21.4 23.41Q20.6 24.76 19.18 25.38Q17.76 26 15.89 26Z"></path>
-				</svg>
+			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center text-accent">
+				<Icon name="jr" class="size-7" aria-hidden="true" focusable="false" />
 			</span>
 			<!-- On phones the name stays in the page for screen readers and is hidden to the eye. -->
 			<span aria-hidden="true" class="nav-name sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
@@ -44,7 +39,6 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: profileIcons
 							<a
 								href={page.href}
 								aria-current={page.current ? 'page' : undefined}
-								data-parent={page.parent || undefined}
 								class="nav-link inline-flex min-h-11 items-center px-3"
 							>
 								{page.label}
@@ -65,9 +59,7 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: profileIcons
 									rel={profile.external ? 'noopener noreferrer' : undefined}
 									class="inline-flex size-11 items-center justify-center rounded-control text-ink-muted no-underline transition-colors duration-200 ease-enter hover:text-accent active:text-accent-active"
 								>
-									<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="size-5">
-										<path d={profile.icon} />
-									</svg>
+									<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5" />
 									<span class="sr-only">
 										{profile.label}
 										{profile.external && ' (opens in a new tab)'}
@@ -75,9 +67,7 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: profileIcons
 								</a>
 							) : (
 								<span data-nav-inert aria-hidden="true" class="inline-flex size-11 items-center justify-center text-ink-muted opacity-50">
-									<svg viewBox="0 0 24 24" fill="currentColor" focusable="false" class="size-5">
-										<path d={profile.icon} />
-									</svg>
+									<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5" />
 								</span>
 							)}
 						</li>

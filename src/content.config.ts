@@ -4,9 +4,11 @@ import { z } from 'astro/zod';
 
 // Years, statuses, and links are plain text so placeholders like [YEAR] are allowed for now.
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  loader: glob({ pattern: '**/*.json', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
+    subtitle: z.string().optional(),
+    role: z.string().optional(),
     summary: z.string(),
     stack: z.array(z.string()),
     year: z.string(),
@@ -26,6 +28,7 @@ const certificates = defineCollection({
     status: z.string(),
     tags: z.array(z.string()),
     credentialUrl: z.string().optional(),
+    credlyBadgeId: z.uuid().optional(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
   }),

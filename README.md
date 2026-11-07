@@ -52,10 +52,11 @@ launch-tests/                  The launch gate
 
 ## Editing content
 
-- **Site facts** (name, school, links, service codes): `src/lib/site.ts`
+- **Site facts** (name, links, service codes): `src/lib/site.ts`
+- **Education** (school, program, period, status, major): `src/lib/education.ts`
 - **Skills and learning journey:** `src/lib/skills.ts` and `src/lib/journey.ts`
-- **Work list:** add one file to `src/content/projects/`, `certificates/`, or `activities/`. Copy an existing file and change its fields. Project files are Markdown and become pages at `/work/<file name>/`.
-- **Project detail:** write the full case study in the Markdown body. For external links, use the `github` and `demo` fields; Markdown body links do not automatically open in a new tab.
+- **Work list:** add one file to `src/content/projects/`, `certificates/`, or `activities/`. Copy an existing file and change its fields. All entries are JSON files. Projects appear in the Work list; the capstone also appears in Selected works. Use the `github` and `demo` fields for external links.
+- **Credly badges:** put the public badge URL in the certificate’s `credentialUrl`, or add the badge UUID as `credlyBadgeId`. Add its badge image URL or a local path in `image` to show the badge without the Credly embed. The badge must be public for visitors to verify it. `status` appears in the Work list; `tags` appear there and are searchable.
 
 Anything written as `[LIKE THIS]` is an unfinished placeholder. `pnpm test:launch` lists every one that is left.
 

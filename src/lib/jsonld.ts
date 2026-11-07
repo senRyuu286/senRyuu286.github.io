@@ -1,4 +1,5 @@
 import { isUrl, site } from './site';
+import { education } from './education';
 
 /** True for values still written as [PLACEHOLDERS]. */
 export function isPlaceholder(value: string): boolean {
@@ -13,8 +14,8 @@ export function personJsonLd(siteUrl: string): Record<string, unknown> {
     url: siteUrl,
   };
   if (!isPlaceholder(site.name)) data.name = site.name;
-  if (!isPlaceholder(site.bioSentence)) data.description = site.bioSentence;
-  if (!isPlaceholder(site.school)) data.affiliation = { '@type': 'EducationalOrganization', name: site.school };
+  const school = education.find((entry) => !isPlaceholder(entry.school))?.school;
+  if (school) data.affiliation = { '@type': 'EducationalOrganization', name: school };
   const sameAs = [site.linkedin, site.github].filter((link) => isUrl(link));
   if (sameAs.length > 0) data.sameAs = sameAs;
   return data;

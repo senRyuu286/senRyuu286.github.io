@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 // Add every new page here as it is built.
-const pages = ['/', '/work/', '/work/capstone/', '/404.html'];
+const pages = ['/', '/work/', '/404.html'];
 const schemes = ['light', 'dark'] as const;
 
 const DESKTOP = { width: 1024, height: 768 };
@@ -26,7 +26,7 @@ test.describe('Navigation on a desktop screen', () => {
 
   test('shows the links and hides the menu button', async ({ page }) => {
     await page.goto('/');
-    for (const label of ['Work', 'About', 'Contact']) {
+    for (const label of ['Work', 'Contact']) {
       await expect(banner(page).getByRole('link', { name: label, exact: true })).toBeVisible();
     }
     await expect(menuButton(page)).toBeHidden();
@@ -55,12 +55,6 @@ test.describe('Navigation on a desktop screen', () => {
       expect(marked.map((text) => text.trim())).toEqual(label ? [label] : []);
     });
   }
-
-  test('a case study page marks Work as the parent section, not as the current page', async ({ page }) => {
-    await page.goto('/work/capstone/');
-    await expect(banner(page).locator('a[aria-current="page"]:visible')).toHaveCount(0);
-    await expect(banner(page).locator('a[data-parent]:visible')).toHaveText('Work');
-  });
 
   test('the bar stays 12px from the top, before and after scrolling', async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 400 });
@@ -100,7 +94,7 @@ test.describe('Navigation on a desktop screen', () => {
 
   test('links have 44px tall targets', async ({ page }) => {
     await page.goto('/');
-    for (const label of ['Work', 'About', 'Contact']) {
+    for (const label of ['Work', 'Contact']) {
       const box = await banner(page).getByRole('link', { name: label, exact: true }).boundingBox();
       expect(box?.height, label).toBeGreaterThanOrEqual(44);
     }
@@ -160,7 +154,7 @@ test.describe('Navigation on a phone', () => {
 
     await menuButton(page).click();
     await expect(panel(page)).toBeVisible();
-    for (const label of ['Work', 'About', 'Contact']) {
+    for (const label of ['Work', 'Contact']) {
       await expect(panelLink(page, label)).toBeVisible();
     }
 
@@ -202,7 +196,7 @@ test.describe('Navigation on a phone', () => {
     await expect(panel(page)).toBeVisible();
     // Stop the page from leaving (after the menu is open), so the test can look at the menu itself.
     await page.evaluate(() => window.addEventListener('click', (event) => event.preventDefault(), true));
-    await panelLink(page, 'About').click();
+    await panelLink(page, 'Contact').click();
     await expect(panel(page)).toBeHidden();
   });
 
@@ -222,7 +216,7 @@ test.describe('Navigation on a phone', () => {
     await page.goto('/work/');
     await menuButton(page).click();
     await expect(panelLink(page, 'Work')).toHaveAttribute('aria-current', 'page');
-    await expect(panelLink(page, 'About')).not.toHaveAttribute('aria-current', 'page');
+    await expect(panelLink(page, 'Contact')).not.toHaveAttribute('aria-current', 'page');
   });
 
   test('menu rows and the button have 44px tall targets', async ({ page }) => {
@@ -230,7 +224,7 @@ test.describe('Navigation on a phone', () => {
     const button = await menuButton(page).boundingBox();
     expect(button?.height).toBeGreaterThanOrEqual(44);
     await menuButton(page).click();
-    for (const label of ['Work', 'About', 'Contact']) {
+    for (const label of ['Work', 'Contact']) {
       const box = await panelLink(page, label).boundingBox();
       expect(box?.height, label).toBeGreaterThanOrEqual(44);
     }
