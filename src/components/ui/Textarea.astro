@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'textarea'>;
+
+const { class: className, rows = 5, ...rest } = Astro.props;
+---
+
+<textarea
+  rows={rows}
+  class:list={[
+    'block min-h-32 w-full resize-y rounded-control border border-ink-muted bg-surface px-3 py-2 text-body text-ink',
+    'placeholder:text-ink-muted',
+    'transition-colors duration-120 ease-enter',
+    'hover:border-ink',
+    'disabled:cursor-not-allowed disabled:border-rule disabled:bg-paper disabled:text-ink-muted',
+    'aria-invalid:border-error',
+    className,
+  ]}
+  {...rest}><slot /></textarea>

@@ -1,0 +1,77 @@
+@keyframes field-shake {
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes status-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+[data-contact-submit][aria-disabled="true"] {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  cursor: progress;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--dur-base);
+    animation-timing-function: var(--ease-enter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  @supports (animation-timeline: view()) and (timeline-scope: --hero-name) and (animation-range: exit 0% exit 100%) {
+    body:has(.hero-name) .nav-name {
+      animation: nav-name-reveal 1ms steps(1, end) both !important;
+      animation-timeline: --hero-name !important;
+      animation-range: exit 0% exit 100% !important;
+    }
+  }
+
+  .nav-logo .nav-logo-mark {
+    transform: none !important;
+  }
+
+  .nav-link:not([aria-current="page"]):not([aria-current="location"])::after {
+    transform: scaleX(0) !important;
+  }
+
+  .btn-lift {
+    transform: none !important;
+  }
+
+  .chip {
+    transform: none !important;
+  }
+
+  .field-shake,
+  .status-pop {
+    animation: none !important;
+  }
+}

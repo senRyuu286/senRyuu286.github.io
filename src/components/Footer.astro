@@ -1,0 +1,32 @@
+---
+import { Icon } from 'astro-icon/components';
+import { profileLinks, site } from '../lib/site';
+
+const year = new Date().getFullYear();
+const profiles = profileLinks.filter((profile) => profile.real);
+---
+
+<footer class="portfolio-footer">
+	<div class="footer-inner">
+		<div class="footer-main">
+			<div class="footer-copy">
+				<p class="footer-name" translate="no">{site.name}</p>
+				<p class="footer-message">Thanks for stopping by.</p>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<p>© {year} <span translate="no">{site.name}</span></p>
+			<ul class="footer-social" aria-label="Find me online">
+				{profiles.map((profile) => (
+					<li>
+						<a href={profile.href} target={profile.external ? '_blank' : undefined} rel={profile.external ? 'noopener noreferrer' : undefined}>
+							<Icon name={`simple-icons:${profile.key}`} aria-hidden="true" focusable="false" />
+							<span class="sr-only">{profile.label}{profile.external && ' (opens in a new tab)'}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</div>
+	<img class="footer-illustration" src="/footer-landscape.png" alt="" width="2172" height="724" loading="lazy" />
+</footer>

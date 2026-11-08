@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+import MobileMenu from './MobileMenu.astro';
+import { nav, profileLinks, site } from '../lib/site';
+
+const trim = (path: string) => path.replace(/\/+$/, '') || '/';
+const here = trim(Astro.url.pathname);
+
+const pages = nav.map((item) => {
+	const target = trim(item.href);
+	const isSection = item.href.includes('#');
+	return { label: item.label, href: item.href, current: !isSection && here === target };
+});
+
+const profiles = profileLinks.map((profile) => ({ ...profile, icon: `simple-icons:${profile.key}` }));
+---
+
+<header class="site-header sticky top-3 z-40 mt-3 w-full max-w-5xl self-center px-4 sm:px-6">
+	<div class="nav-bar relative isolate flex min-h-14 items-center gap-x-2 nav-shell border px-2">
+		<a href="/" translate="no" aria-label={site.name} class="nav-logo inline-flex min-h-11 min-w-11 items-center rounded-control px-1.5 text-ink no-underline">
+			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center text-accent">
+				<Icon name="jr" class="size-7" aria-hidden="true" focusable="false" />
+			</span>
+			<span aria-hidden="true" class="nav-name sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
+		</a>
+
+		<nav aria-label="Main" class="flex min-w-0 flex-1 items-center">
+			<ul class="ml-2 hidden items-center md:flex">
+				{
+					pages.map((page) => (
+						<li>
+							<a
+								href={page.href}
+								aria-current={page.current ? 'page' : undefined}
+								class="nav-link inline-flex min-h-11 items-center px-3"
+							>
+								{page.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+
+			<ul class="ml-auto hidden items-center md:flex">
+				{
+					profiles.map((profile) => (
+						<li>
+							{profile.real ? (
+								<a
+									href={profile.href}
+									target={profile.external ? '_blank' : undefined}
+									rel={profile.external ? 'noopener noreferrer' : undefined}
+									class="inline-flex size-11 items-center justify-center rounded-control text-ink-muted no-underline transition-colors duration-200 ease-enter hover:text-accent active:text-accent-active"
+								>
+									<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5" />
+									<span class="sr-only">
+										{profile.label}
+										{profile.external && ' (opens in a new tab)'}
+									</span>
+								</a>
+							) : (
+								<span data-nav-inert aria-hidden="true" class="inline-flex size-11 items-center justify-center text-ink-muted opacity-50">
+									<Icon name={profile.icon} aria-hidden="true" focusable="false" class="size-5" />
+								</span>
+							)}
+						</li>
+					))
+				}
+			</ul>
+
+			<MobileMenu pages={pages} profiles={profiles} />
+		</nav>
+	</div>
+</header>
+<script>
+	const header = document.querySelector('.site-header');
+	const updateHeader = () => {
+		header?.toggleAttribute('data-scrolled', window.scrollY > 8);
+	};
+	updateHeader();
+	window.addEventListener('scroll', updateHeader, { passive: true });
+
+	const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.site-header nav a[href*="#"]'))
+		.flatMap((link) => {
+			const url = new URL(link.href, window.location.href);
+			if (url.pathname !== window.location.pathname || !url.hash) return [];
+			const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+			const section = target?.closest('section');
+			return section ? [{ link, section }] : [];
+		});
+	const updateCurrentSection = () => {
+		const line = Math.max((header?.getBoundingClientRect().bottom ?? 0) + 16, window.innerHeight * 0.25);
+		for (const { link, section } of sectionLinks) {
+			const bounds = section.getBoundingClientRect();
+			if (bounds.top <= line && bounds.bottom > line) link.setAttribute('aria-current', 'location');
+			else link.removeAttribute('aria-current');
+		}
+	};
+	if (sectionLinks.length) {
+		updateCurrentSection();
+		window.addEventListener('scroll', updateCurrentSection, { passive: true });
+		window.addEventListener('resize', updateCurrentSection);
+	}
+</script>

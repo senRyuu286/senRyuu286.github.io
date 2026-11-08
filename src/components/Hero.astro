@@ -1,0 +1,41 @@
+---
+import Button from './ui/Button.astro';
+import PortraitFrame from './PortraitFrame.astro';
+import { site } from '../lib/site';
+
+interface Props { showExplore: boolean; }
+const { showExplore } = Astro.props;
+---
+
+<section data-hero class="hero-panel">
+	<div class="hero-inner">
+	<h1 class="hero-name animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter" translate="no" aria-label={site.name}>
+		<svg viewBox="0 0 1000 110" aria-hidden="true" focusable="false"><text x="10" y="92" textLength="980" lengthAdjust="spacingAndGlyphs">{site.name.toUpperCase()}</text></svg>
+	</h1>
+	<div class="hero-content">
+		<div class="hero-intro animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter delay-80 fill-mode-backwards">
+			<p>Hey there! I’m an Information Technology student curious about how the web works and building projects along the way.</p>
+			<div class="hero-actions">
+				<Button href="/#works">View my work</Button>
+				<Button href="/#contact" variant="secondary">Contact me</Button>
+			</div>
+		</div>
+		<PortraitFrame />
+		<section class="hero-interests animate-in fade-in slide-in-from-bottom-2 duration-400 ease-enter delay-160 fill-mode-backwards" aria-labelledby="hero-interests-heading">
+			<h2 id="hero-interests-heading">Areas of Interest</h2>
+			<ul>
+				<li>Full-stack development</li>
+				<li>Mobile development</li>
+				<li>Software development</li>
+			</ul>
+		</section>
+	</div>
+	{showExplore && (
+		<div class="hero-explore animate-in fade-in duration-400 ease-enter delay-240 fill-mode-backwards">
+			<a href="#works" aria-label="Scroll to explore selected works" class="group">
+				Scroll to explore <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-enter motion-safe:group-hover:translate-y-1 motion-safe:group-focus-visible:translate-y-1">&#8595;</span>
+			</a>
+		</div>
+	)}
+	</div>
+</section>

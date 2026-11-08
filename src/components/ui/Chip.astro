@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  class?: string;
+  icon?: string;
+}
+
+const { class: className, icon } = Astro.props;
+---
+
+<span class:list={['chip inline-flex max-w-full items-center gap-2 rounded-pill border px-3 py-1 text-meta wrap-anywhere', className]}>
+	{icon && <Icon name={icon} class="size-4 shrink-0 text-ink-muted" aria-hidden="true" focusable="false" />}
+	<span class="min-w-0"><slot /></span>
+</span>

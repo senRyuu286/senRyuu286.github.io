@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+import { skillIcons, type SkillGroup } from '../lib/skills';
+
+interface Props {
+	groups: SkillGroup[];
+	class?: string;
+}
+
+const { groups, class: className } = Astro.props;
+---
+
+<ul class:list={['tech-groups', className]} data-stack>
+	{groups.map((group) => (
+		<li class="tech-group" data-stack-group>
+			<h3>{group.name}</h3>
+			{group.items.length > 0 && (
+				<ul class="tech-items">
+					{group.items.map((item) => (
+						<li class="tech-item">
+							{skillIcons[item] && <Icon name={skillIcons[item]} aria-hidden="true" focusable="false" />}
+							<span>{item}</span>
+						</li>
+					))}
+				</ul>
+			)}
+		</li>
+	))}
+</ul>
+<p class="mt-6 text-[0.6rem] text-ink-muted">Logos are from <a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer" class="text-inherit no-underline hover:text-accent">Simple Icons<span class="sr-only"> (opens in a new tab)</span></a>. Trademarks belong to their respective owners.</p>

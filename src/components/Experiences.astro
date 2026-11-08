@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import { isUrl } from '../lib/site';
+
+const activities = await getCollection('activities');
+---
+
+{activities.length > 0 && (
+  <section class="experiences mt-20" aria-labelledby="experiences-heading">
+    <h2 id="experiences-heading">Beyond the Classroom</h2>
+    <div class="experience-gallery">
+      {activities.map(({ data }, index) => (
+        <article class="experience" data-experience>
+          <details data-experience-details>
+            <summary class="experience-summary">
+              <span class="experience-image">
+                {data.image ? <img src={data.image} alt={data.imageAlt ?? ''} loading="lazy" /> : <span class="experience-image-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="8" width="38" height="32" rx="3"/><circle cx="17" cy="18" r="3"/><path d="m8 35 10-10 7 7 5-5 10 8"/></svg><span>Photo Coming Soon</span></span>}
+              </span>
+              <span class="experience-achievement">{data.achievement || data.role}</span>
+              <span class="experience-event">{data.title}</span>
+              {(data.date || data.year) && <span class="experience-date">{data.date || data.year}</span>}
+            </summary>
+            <div class="experience-story" data-experience-story>
+              <h3 id={`experience-title-${index}`}>{data.title}</h3>
+              <p class="experience-story-meta">{data.achievement || data.role}{(data.date || data.year) && ` · ${data.date || data.year}`}</p>
+              {(data.image || (data.images && data.images.length > 0)) && <div class="experience-photos" role="region" aria-label={`Photos from ${data.title}`} data-experience-photos>
+                <div class="experience-photo-list">
+                  {data.image && <figure data-experience-photo><img src={data.image} alt={data.imageAlt ?? ''} loading="lazy" /></figure>}
+                  {data.images?.map((photo) => <figure data-experience-photo><img src={photo.src} alt={photo.alt} loading="lazy" />{photo.caption && <figcaption>{photo.caption}</figcaption>}</figure>)}
+                </div>
+                <div class="experience-photo-controls" data-photo-controls hidden>
+                  <button type="button" data-photo-prev aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg></button>
+                  <span data-photo-position aria-live="polite"></span>
+                  <button type="button" data-photo-next aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></button>
+                </div>
+              </div>}
+              {data.summary && data.summary.split(/\n\s*\n/).map((paragraph) => <p>{paragraph}</p>)}
+              {data.takeaway && <p>{data.takeaway}</p>}
+              <dl class="experience-facts">
+                <div><dt>Role</dt><dd>{data.role}</dd></div>
+                <div><dt>Organizer</dt><dd>{data.organization}</dd></div>
+                {data.location && <div><dt>Location</dt><dd>{data.location}</dd></div>}
+                {data.collaborators && <div><dt>Team</dt><dd>{data.collaborators}</dd></div>}
+              </dl>
+              {data.link && isUrl(data.link) && <a href={data.link} target="_blank" rel="noopener noreferrer">Visit Event or Project <span class="sr-only">(opens in a new tab)</span> ↗</a>}
+            </div>
+          </details>
+          <dialog class="experience-dialog" aria-labelledby={`experience-title-${index}`} data-experience-dialog>
+            <button type="button" class="experience-close" data-experience-close aria-label="Close experience">×</button>
+            <div class="experience-dialog-scroll" data-experience-dialog-content></div>
+          </dialog>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
+
+<script>
+  import '../scripts/experiences';
+</script>

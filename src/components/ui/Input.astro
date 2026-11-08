@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'input'>;
+
+const { class: className, type = 'text', ...rest } = Astro.props;
+---
+
+<input
+  type={type}
+  class:list={[
+    'block min-h-11 w-full rounded-control border border-ink-muted bg-surface px-3 py-2 text-body text-ink',
+    'placeholder:text-ink-muted',
+    'transition-colors duration-120 ease-enter',
+    'hover:border-ink',
+    'disabled:cursor-not-allowed disabled:border-rule disabled:bg-paper disabled:text-ink-muted',
+    'aria-invalid:border-error',
+    className,
+  ]}
+  {...rest}
+/>

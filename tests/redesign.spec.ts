@@ -1,0 +1,23 @@
+import { expect, test } from '@playwright/test';
+
+test('Home combines the introduction, education and contact with links to Work', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('h1')).toHaveCount(1);
+  await expect(page.locator('#about')).toHaveCount(0);
+  await expect(page.locator('[data-education-certificates]')).toBeVisible();
+  await expect(page.locator('#contact-form')).toBeVisible();
+  await expect(page.locator('[data-selected-work]')).toBeVisible();
+  await expect(page.locator('a[href^="/work/capstone"]')).toHaveCount(0);
+  await expect(page.locator('header a[href="/#contact"]').first()).toHaveAttribute('href', '/#contact');
+});
+
+test('the navigation and selected works remain usable without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 700 } });
+  const page = await context.newPage();
+  await page.goto('/');
+  await page.locator('[data-nav-menu] summary').click();
+  await expect(page.locator('[data-nav-panel] a[href="/#contact"]')).toBeVisible();
+  await expect(page.locator('[data-nav-panel] a[href="/#works"]')).toBeVisible();
+  await expect(page.locator('[data-selected-work]').first()).toBeVisible();
+  await context.close();
+});

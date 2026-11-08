@@ -1,0 +1,32 @@
+{
+  "title": "SCS Days Computer Quiz Bowl 2024",
+  "organization": "University of San Jose-Recoletos",
+  "role": "Team Member",
+  "tags": ["[TAG]"],
+  "achievement": "Champion",
+  "date": "August, 2024",
+  "location": "USJR-R Basak Campus, Pardo, Cebu City, Cebu",
+  "collaborators": "",
+  "takeaway": "",
+  "image": "/events/scs-days/1.jpg",
+  "imageAlt": "SCS Days participants standing together on stage",
+  "link": "",
+  "images": [
+    {
+      "src": "/events/scs-days/2.jpg",
+      "alt": "Quiz bowl participants raising their answer boards"
+    },
+    {
+      "src": "/events/scs-days/3.jpg",
+      "alt": "A group of participants posing together in the venue"
+    },
+    {
+      "src": "/events/scs-days/4.jpg",
+      "alt": "Quiz bowl participants seated at computers"
+    },
+    {
+      "src": "/events/scs-days/5.jpg",
+      "alt": "Quiz bowl participants celebrating at their computers"
+    }
+  ]
+}

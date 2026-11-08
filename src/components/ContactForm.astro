@@ -1,0 +1,64 @@
+---
+import Button from './ui/Button.astro';
+import Input from './ui/Input.astro';
+import Label from './ui/Label.astro';
+import Textarea from './ui/Textarea.astro';
+import { site } from '../lib/site';
+
+const action = `https://formspree.io/f/${site.formspreeId}`;
+const success = 'Message sent. I’ll reply as soon as I can.';
+const failure = 'Your message did not send. Check your connection and try again.';
+---
+
+<form id="contact-form" action={action} method="POST" data-success={success} data-failure={failure} class="max-w-xl">
+	<div>
+		<Label for="contact-name">Name</Label>
+		<Input id="contact-name" name="name" autocomplete="name" enterkeyhint="next" required aria-describedby="contact-name-error" />
+		<p id="contact-name-error" data-error-for="name" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+	<div class="mt-4">
+		<Label for="contact-email">Email</Label>
+		<Input
+			id="contact-email"
+			name="email"
+			type="email"
+			autocomplete="email"
+			enterkeyhint="next"
+			spellcheck={false}
+			required
+			aria-describedby="contact-email-error"
+		/>
+		<p id="contact-email-error" data-error-for="email" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+	<div class="mt-4">
+		<Label for="contact-message">Message</Label>
+		<Textarea id="contact-message" name="message" required aria-describedby="contact-message-error" />
+		<p id="contact-message-error" data-error-for="message" class="mt-1 min-h-6 text-meta text-error"></p>
+	</div>
+
+	<div class="hidden" aria-hidden="true">
+		<label>Leave this field empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+	</div>
+
+	<Button type="submit" class="mt-4 w-full" data-contact-submit>Send message</Button>
+	<p role="status" data-contact-status class="contact-status flex items-start gap-2 wrap-anywhere">
+		<svg
+			data-status-icon
+			aria-hidden="true"
+			focusable="false"
+			viewBox="0 0 20 20"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="square"
+			class="mt-0.5 hidden size-5 shrink-0 text-accent"
+		>
+			<path d="M4 10.5 8 14.5 16 5.5"></path>
+		</svg>
+		<span data-status-text></span>
+	</p>
+</form>
+
+<script>
+	import '../scripts/contact-form';
+</script>

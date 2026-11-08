@@ -1,0 +1,22 @@
+{
+  "title": "Veritas",
+  "category": "Capstone Project",
+  "image": "/projects/veritas/veritas-cover.png",
+  "imageAlt": "Veritas logo and illustrated credential verification journey",
+  "subtitle": "Blockchain-Anchored Academic Credential Verification for Philippine Universities",
+  "summary": "A credential verification platform for Philippine universities. Graduates own their academic records, and employers can confirm they are real in seconds, with no account needed.",
+  "role": "Blockchain & Full-Stack Developer",
+  "stack": ["PHP", "Laravel", "Python", "FastAPI", "Solidity"],
+  "year": "2026",
+  "status": "Ongoing",
+  "tags": [
+    "Blockchain",
+    "EdTech",
+    "Credential Verification",
+    "AI-Assisted Workflow",
+    "Data Privacy",
+    "Capstone"
+  ],
+  "github": "https://github.com/senRyuu286/veritas",
+  "demo": "[LIVE DEMO LINK]"
+}

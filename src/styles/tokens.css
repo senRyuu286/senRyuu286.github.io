@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/archivo-variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("/fonts/atkinson-hyperlegible-next-variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --paper: #EDEFF1;
+  --surface: #F6F7F8;
+  --ink: #1B2230;
+  --ink-muted: #4A5568;
+  --rule: #C9CED6;
+  --error: #B42318;
+  --accent: #2447E0;
+  --accent-ink: #F6F7F8;
+  --signal: #F4C20D;
+  --signal-ink: #15202E;
+
+  --accent-hover: color-mix(in srgb, var(--accent) 88%, var(--ink));
+  --accent-active: color-mix(in srgb, var(--accent) 76%, var(--ink));
+
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+
+  --nav-offset: 5.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12161D;
+    --surface: #1A1F29;
+    --ink: #E4E8EE;
+    --ink-muted: #A3ADBB;
+    --rule: #2E3644;
+    --error: #FF8A80;
+    --accent: #7F9BFF;
+    --accent-ink: #12161D;
+  }
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-error: var(--error);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+}
+
+@theme static {
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+
+  --text-*: initial;
+  --text-sign: clamp(2.75rem, 8vw, 6rem);
+  --text-sign--line-height: 1.05;
+  --text-h1: clamp(2rem, 4vw, 3rem);
+  --text-h1--line-height: 1.1;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 1.2;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.5;
+  --text-meta: 0.875rem;
+  --text-meta--line-height: 1.5;
+
+  --radius-*: initial;
+  --radius-control: 4px;
+  --radius-panel: 12px;
+  --radius-pill: 9999px;
+
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.3, 1.4, 0.5, 1);
+}

@@ -1,0 +1,14 @@
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  reporter: 'list',
+  use: { baseURL: 'http://localhost:4321' },
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: {
+    command: 'pnpm build && pnpm preview',
+    url: 'http://localhost:4321',
+    reuseExistingServer: true,
+    timeout: 120_000,
+  },
+});
