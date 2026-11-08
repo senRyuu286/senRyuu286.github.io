@@ -51,8 +51,9 @@ const entries = certificates.map(({ data }) => {
 			<h3>Certifications</h3>
 			<div class="certificates-content" data-certificate-carousel role="region" aria-label="Certifications">
 				<ul class="certificate-list" data-certificate-list aria-label="Certificate list">
-					{entries.map(({ data, verifyUrl }) => (
-						<li class="certificate-entry motion-safe:data-[active]:animate-in motion-safe:data-[active]:fade-in motion-safe:data-[active]:slide-in-from-bottom-1 motion-safe:data-[active]:duration-200 motion-safe:data-[active]:ease-enter" data-certificate>
+					{entries.map(({ data, verifyUrl }, index) => (
+						<li id={`certificate-${index + 1}`} class="certificate-entry" data-certificate>
+							<div class="certificate-details">
 							<div class="certificate-copy">
 								<p class="certificate-title">{data.title}</p>
 								<p class="certificate-issuer">{data.issuer}</p>
@@ -66,21 +67,41 @@ const entries = certificates.map(({ data }) => {
 									<img src={data.image} alt="" width="150" height="150" loading="lazy" />
 								</a>
 							) : <img class="certificate-badge" src={data.image} alt={data.imageAlt ?? ''} width="150" height="150" loading="lazy" />)}
+							</div>
+							{entries.length > 1 && <nav class="certificate-controls" aria-label={`Certificate ${index + 1} of ${entries.length}`}>
+								{index > 0 ? <a href={`#certificate-${index}`} aria-label="Previous certificate">Previous</a> : <span aria-hidden="true">Previous</span>}
+								<span>{index + 1} / {entries.length}</span>
+								{index < entries.length - 1 ? <a href={`#certificate-${index + 2}`} aria-label="Next certificate">Next</a> : <span aria-hidden="true">Next</span>}
+							</nav>}
 						</li>
 					))}
 				</ul>
-				{entries.length > 1 && (
-					<div class="certificate-controls" data-certificate-controls hidden>
-						<button type="button" data-certificate-prev aria-label="Previous certificate">Previous</button>
-						<span data-certificate-position aria-live="polite"></span>
-						<button type="button" data-certificate-next aria-label="Next certificate">Next</button>
-					</div>
-				)}
 			</div>
 		</div>
 	)}
 </section>
 
 <script>
-	import '../scripts/certificate-carousel';
+	const list = document.querySelector<HTMLElement>('[data-certificate-list]');
+	if (list && CSS.supports('selector(.certificate-list:has(> .certificate-entry:target))')) {
+		const slides = Array.from(list.querySelectorAll<HTMLElement>('[data-certificate]'));
+		const initial = slides.find((slide) => `#${slide.id}` === window.location.hash) ?? slides[0];
+		if (initial) {
+			initial.dataset.active = '';
+			list.dataset.controlled = '';
+			list.addEventListener('click', (event) => {
+				if (!(event.target instanceof Element) || !(event instanceof MouseEvent) || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+				const link = event.target.closest<HTMLAnchorElement>('.certificate-controls a');
+				const target = slides.find((slide) => `#${slide.id}` === link?.getAttribute('href'));
+				if (!link || !target) return;
+				event.preventDefault();
+				slides.forEach((slide) => { delete slide.dataset.active; });
+				target.dataset.active = '';
+				const direction = link.getAttribute('aria-label');
+				const controls = target.querySelector<HTMLElement>('.certificate-controls');
+				const nextFocus = Array.from(controls?.querySelectorAll<HTMLAnchorElement>('a') ?? []).find((item) => item.getAttribute('aria-label') === direction) ?? controls?.querySelector<HTMLAnchorElement>('a');
+				nextFocus?.focus({ preventScroll: true });
+			});
+		}
+	}
 </script>

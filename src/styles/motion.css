@@ -47,7 +47,7 @@
   }
 
   @supports (animation-timeline: view()) and (timeline-scope: --hero-name) and (animation-range: exit 0% exit 100%) {
-    body:has(.hero-name) .nav-name {
+    body:has(.hero-name) .site-header[data-enhanced] .nav-name {
       animation: nav-name-reveal 1ms steps(1, end) both !important;
       animation-timeline: --hero-name !important;
       animation-range: exit 0% exit 100% !important;

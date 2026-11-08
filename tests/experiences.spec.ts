@@ -62,15 +62,24 @@ test('keeps the close button available while the modal content scrolls', async (
   await expect.poll(() => scroller.evaluate((element) => element.scrollTop)).toBe(0);
 });
 
-test('experience details work without JavaScript on a small screen', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 700 } });
-  const page = await context.newPage();
-  await page.goto('/');
-  const entry = page.locator('[data-experience]').filter({ hasText: 'CESAFI Computer Quiz Bowl 2026' });
-  await entry.locator('summary').click();
-  await expect(entry.locator('[data-experience-story]')).toBeVisible();
-  await expect(entry.locator('[data-experience-photo]')).toHaveCount(4);
-  for (const photo of await entry.locator('[data-experience-photo]').all()) await expect(photo).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
-  await context.close();
-});
+for (const width of [320, 1440]) {
+  test(`experience cards are static without JavaScript at ${width}px`, async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 900 } });
+    const page = await context.newPage();
+    await page.goto('/');
+    const entry = page.locator('[data-experience]').first();
+    await expect(entry.locator('[data-experience-static]')).toBeVisible();
+    const achievement = await entry.locator('[data-experience-static] .experience-achievement').boundingBox();
+    const event = await entry.locator('[data-experience-static] .experience-event').boundingBox();
+    const date = await entry.locator('[data-experience-static] .experience-date').boundingBox();
+    expect(achievement && event && date).toBeTruthy();
+    expect(event!.y).toBeGreaterThanOrEqual(achievement!.y + achievement!.height);
+    expect(date!.y).toBeGreaterThanOrEqual(event!.y + event!.height);
+    await expect(entry.locator('[data-experience-details]')).toBeHidden();
+    await expect(entry.locator('[data-experience-static] :is(a, button, summary, [tabindex])')).toHaveCount(0);
+    await entry.locator('[data-experience-static]').click();
+    await expect(entry.locator('[data-experience-details]')).toBeHidden();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
+    await context.close();
+  });
+}

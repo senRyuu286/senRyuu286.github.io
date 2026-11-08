@@ -53,6 +53,7 @@ const activities = defineCollection({
     image: z.string().optional(),
     imageAlt: z.string().optional(),
     link: z.string().optional(),
+    thumbnail: z.string().optional(),
     images: z.array(z.object({
       src: z.string(),
       alt: z.string(),

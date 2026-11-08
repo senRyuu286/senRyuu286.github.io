@@ -11,10 +11,20 @@ const activities = await getCollection('activities');
     <div class="experience-gallery">
       {activities.map(({ data }, index) => (
         <article class="experience" data-experience>
-          <details data-experience-details>
+          <div data-experience-static>
+            <div class="experience-card">
+              <span class="experience-image">
+                {data.image ? <img src={data.thumbnail ?? data.image} alt={data.imageAlt ?? ''} loading="lazy" decoding="async" /> : <span class="experience-image-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="8" width="38" height="32" rx="3"/><circle cx="17" cy="18" r="3"/><path d="m8 35 10-10 7 7 5-5 10 8"/></svg><span>Photo Coming Soon</span></span>}
+              </span>
+              <p class="experience-achievement">{data.achievement || data.role}</p>
+              <p class="experience-event">{data.title}</p>
+              {(data.date || data.year) && <p class="experience-date">{data.date || data.year}</p>}
+            </div>
+          </div>
+          <details data-experience-details hidden>
             <summary class="experience-summary">
               <span class="experience-image">
-                {data.image ? <img src={data.image} alt={data.imageAlt ?? ''} loading="lazy" /> : <span class="experience-image-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="8" width="38" height="32" rx="3"/><circle cx="17" cy="18" r="3"/><path d="m8 35 10-10 7 7 5-5 10 8"/></svg><span>Photo Coming Soon</span></span>}
+                {data.image ? <img src={data.thumbnail ?? data.image} alt={data.imageAlt ?? ''} loading="lazy" decoding="async" /> : <span class="experience-image-placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="8" width="38" height="32" rx="3"/><circle cx="17" cy="18" r="3"/><path d="m8 35 10-10 7 7 5-5 10 8"/></svg><span>Photo Coming Soon</span></span>}
               </span>
               <span class="experience-achievement">{data.achievement || data.role}</span>
               <span class="experience-event">{data.title}</span>

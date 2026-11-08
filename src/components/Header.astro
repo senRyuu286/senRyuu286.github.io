@@ -21,7 +21,7 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: `simple-icon
 			<span aria-hidden="true" class="nav-logo-mark grid size-8 shrink-0 place-items-center text-accent">
 				<Icon name="jr" class="size-7" aria-hidden="true" focusable="false" />
 			</span>
-			<span aria-hidden="true" class="nav-name sr-only font-display text-h2 font-bold md:not-sr-only md:block md:max-w-56 md:truncate">{site.name}</span>
+			<span aria-hidden="true" class="nav-name font-display text-h2 font-bold">{site.name}</span>
 		</a>
 
 		<nav aria-label="Main" class="flex min-w-0 flex-1 items-center">
@@ -78,8 +78,8 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: `simple-icon
 		header?.toggleAttribute('data-scrolled', window.scrollY > 8);
 	};
 	updateHeader();
+	header?.setAttribute('data-enhanced', '');
 	window.addEventListener('scroll', updateHeader, { passive: true });
-
 	const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.site-header nav a[href*="#"]'))
 		.flatMap((link) => {
 			const url = new URL(link.href, window.location.href);

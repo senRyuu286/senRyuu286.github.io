@@ -256,6 +256,31 @@ test.describe('Navigation with JavaScript off', () => {
   });
 });
 
+test('navigation stays solid with a static name without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: DESKTOP, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  await page.goto('/');
+  const bar = page.locator('.nav-shell');
+  await expect(bar).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(page.locator('.nav-name')).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 300));
+  await expect(bar).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(page.locator('.nav-name')).toBeVisible();
+  await expect(page.locator('.nav-logo').getByText('Justin Ramas', { exact: true })).toHaveCount(1);
+  await context.close();
+});
+
+test('navigation uses the scroll state with JavaScript', async ({ page }) => {
+  await page.goto('/');
+  const header = page.locator('.site-header');
+  await expect(header).toHaveAttribute('data-enhanced', '');
+  await expect(header).not.toHaveAttribute('data-scrolled');
+  await page.evaluate(() => window.scrollTo(0, 300));
+  await expect(header).toHaveAttribute('data-scrolled', '');
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(header).not.toHaveAttribute('data-scrolled');
+});
+
 test.describe('Navigation on the smallest phone (320px)', () => {
   test.use({ viewport: SMALLEST_PHONE });
 

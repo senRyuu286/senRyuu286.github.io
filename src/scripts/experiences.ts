@@ -45,4 +45,9 @@ document.querySelectorAll<HTMLElement>('[data-experience]').forEach((entry) => {
     details.append(story);
     summary.focus();
   });
+  const staticCard = entry.querySelector<HTMLElement>('[data-experience-static]');
+  if (staticCard) {
+    staticCard.hidden = true;
+    details.hidden = false;
+  }
 });

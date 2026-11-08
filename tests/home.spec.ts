@@ -43,25 +43,14 @@ test.describe('Home hero', () => {
     expect(portrait!.y + portrait!.height).toBeLessThanOrEqual(intro!.y);
   });
 
-  test('navigation becomes frosted after scrolling', async ({ page }) => {
-    await page.goto('/');
-    const header = page.locator('.site-header');
-    await expect(header).not.toHaveAttribute('data-scrolled');
-    await page.evaluate(() => window.scrollTo(0, 300));
-    await expect(header).toHaveAttribute('data-scrolled', '');
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await expect(header).not.toHaveAttribute('data-scrolled');
-  });
-
-  test('shows the navigation name after the hero name passes without JavaScript', async ({ browser }) => {
+  test('keeps the navigation name visible without JavaScript', async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.setViewportSize({ width: 1024, height: 768 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     const name = page.locator('.nav-name');
-    await expect(name).toBeHidden();
-    await expect(name).toHaveCSS('max-width', '0px');
+    await expect(name).toBeVisible();
     await page.evaluate(() => window.scrollTo(0, 500));
     await expect(name).toBeVisible();
     await context.close();

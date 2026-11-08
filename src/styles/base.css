@@ -82,16 +82,17 @@
 }
 
 @layer base {
-  .nav-shell { border-color: transparent; background: transparent; }
-  .nav-panel { background: var(--surface); }
-  .site-header[data-scrolled] .nav-shell {
-    border-color: var(--rule);
-    border-radius: var(--radius-panel);
-    background: var(--surface);
+  .nav-shell { border-color: var(--rule); border-radius: var(--radius-panel); background: var(--surface); }
+  .nav-name { display: block; max-width: min(45vw, 14rem); overflow: hidden; margin-inline-start: 0.75rem; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 47.999rem) {
+    .site-header[data-enhanced] .nav-name { display: none; }
   }
+  .site-header[data-enhanced] .nav-shell { border-color: transparent; border-radius: 0; background: transparent; }
+  .site-header[data-enhanced][data-scrolled] .nav-shell { border-color: var(--rule); border-radius: var(--radius-panel); background: var(--surface); }
+  .nav-panel { background: var(--surface); }
   @supports (backdrop-filter: blur(1px)) and (color: color-mix(in srgb, red, red)) {
-    .site-header[data-scrolled] .nav-shell { background: transparent; }
-    .site-header[data-scrolled] .nav-shell::before {
+    .site-header[data-enhanced][data-scrolled] .nav-shell { background: transparent; }
+    .site-header[data-enhanced][data-scrolled] .nav-shell::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -106,7 +107,7 @@
     }
   }
   @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-    .site-header[data-scrolled] .nav-shell, .nav-panel { background: var(--surface); backdrop-filter: none; }
-    .site-header[data-scrolled] .nav-shell::before { display: none; }
+    .site-header[data-enhanced][data-scrolled] .nav-shell, .nav-panel { background: var(--surface); backdrop-filter: none; }
+    .site-header[data-enhanced][data-scrolled] .nav-shell::before { display: none; }
   }
 }
