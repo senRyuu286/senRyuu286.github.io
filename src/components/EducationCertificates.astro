@@ -1,5 +1,4 @@
 ---
-// Certificates come from the same collection as the Work page.
 import { getCollection } from 'astro:content';
 import { education } from '../lib/education';
 import { isUrl } from '../lib/site';
@@ -10,7 +9,6 @@ interface Props {
 
 const { class: className } = Astro.props;
 const certificates = await getCollection('certificates');
-// An explicit badge ID can be used when the certificate has no Credly URL.
 const badgeIdFromUrl = (value: string | undefined): string | undefined => {
 	if (!value || !isUrl(value)) return undefined;
 	try {

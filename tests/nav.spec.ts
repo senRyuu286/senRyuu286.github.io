@@ -1,7 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-// Add every new page here as it is built.
 const pages = ['/', '/404.html'];
 const schemes = ['light', 'dark'] as const;
 
@@ -14,7 +13,6 @@ const menuButton = (page: Page) => page.locator('[data-nav-menu] summary');
 const panel = (page: Page) => page.locator('[data-nav-panel]');
 const panelLink = (page: Page, name: string) => panel(page).getByRole('link', { name, exact: true });
 
-/** A computed style of the bar's ::after underline, read from the browser. */
 function underlineTransform(page: Page, label: string): Promise<string> {
   return banner(page)
     .getByRole('link', { name: label, exact: true })
@@ -203,7 +201,6 @@ test.describe('Navigation on a phone', () => {
     await page.goto('/');
     await menuButton(page).click();
     await expect(panel(page)).toBeVisible();
-    // Stop the page from leaving (after the menu is open), so the test can look at the menu itself.
     await page.evaluate(() => window.addEventListener('click', (event) => event.preventDefault(), true));
     await panelLink(page, 'Contact').click();
     await expect(panel(page)).toBeHidden();
@@ -214,7 +211,6 @@ test.describe('Navigation on a phone', () => {
     await menuButton(page).click();
     await expect(panel(page)).toBeVisible();
     await page.setViewportSize(DESKTOP);
-    // Wait for the wide layout to draw, so the browser sees the screen size change.
     await expect(menuButton(page)).toBeHidden();
     await page.setViewportSize(PHONE);
     await expect(menuButton(page)).toBeVisible();
@@ -308,7 +304,6 @@ test.describe('Profile icons in the bar', () => {
 
 for (const scheme of schemes) {
   test.describe(`Navigation accessibility (${scheme} mode)`, () => {
-    // Reduced motion keeps the menu animation from affecting contrast checks.
     test.beforeEach(async ({ page }) => {
       await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
     });

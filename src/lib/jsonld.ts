@@ -1,12 +1,10 @@
 import { isUrl, site } from './site';
 import { education } from './education';
 
-/** True for values still written as [PLACEHOLDERS]. */
 export function isPlaceholder(value: string): boolean {
   return value.trim().startsWith('[');
 }
 
-/** Builds Person structured data from real details only. Anything still a placeholder is left out. */
 export function personJsonLd(siteUrl: string): Record<string, unknown> {
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',

@@ -1,7 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Launch gate. Run with: pnpm test:launch (close pnpm dev first).
-// It checks the built site for leftover placeholders and missing launch pieces.
 export default defineConfig({
   testDir: './launch-tests',
   reporter: 'list',

@@ -1,8 +1,3 @@
-/**
- * Mobile menu helpers. The menu is a native <details> element, so it already
- * opens and closes without this script. This only adds the extras people expect:
- * Escape, outside click, closing after a link, and closing when the screen grows.
- */
 const menu = document.querySelector<HTMLDetailsElement>('[data-nav-menu]');
 
 if (menu) {
@@ -27,7 +22,6 @@ if (menu) {
     }
   });
 
-  // Rotating a tablet past 768px hides the menu, so do not leave it open behind the scenes.
   window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
     if (event.matches) menu.open = false;
   });

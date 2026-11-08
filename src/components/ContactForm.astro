@@ -36,13 +36,11 @@ const failure = 'Your message did not send. Check your connection and try again.
 		<p id="contact-message-error" data-error-for="message" class="mt-1 min-h-6 text-meta text-error"></p>
 	</div>
 
-	<!-- Spam trap: people never see it, but bots often fill it in. -->
 	<div class="hidden" aria-hidden="true">
 		<label>Leave this field empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
 	</div>
 
 	<Button type="submit" class="mt-4 w-full" data-contact-submit>Send message</Button>
-	<!-- Keep the live region present even when it has no message. -->
 	<p role="status" data-contact-status class="contact-status flex items-start gap-2 wrap-anywhere">
 		<svg
 			data-status-icon

@@ -1,4 +1,3 @@
-/* src/styles/motion.css */
 @keyframes field-shake {
   25% {
     transform: translateX(-4px);
@@ -20,19 +19,12 @@
   }
 }
 
-/* While the form sends, the button stays calm: no hover color, no press color, and a busy cursor. The label already
-   says "Sending…". This rule sits outside any layer on purpose, so it beats the hover and active utilities. */
 [data-contact-submit][aria-disabled="true"] {
   background-color: var(--accent);
   border-color: var(--accent);
   cursor: progress;
 }
 
-/* ---------- Page transitions (Phase 6, Milestone 8) ---------- */
-/* Moving between pages crossfades for 200ms in browsers that support it (Chrome, Edge, Safari 18.2 and later).
-   Other browsers change page instantly, as before. Reduced motion switches the whole thing off.
-   The header fades with the page. Since P7-4 it has no layer of its own: a separate layer switches off the blur of the glass nav.
-   TO TURN PAGE TRANSITIONS OFF: delete this whole block (down to the closing brace before the reduced-motion block). */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
@@ -54,7 +46,6 @@
     scroll-behavior: auto !important;
   }
 
-  /* This is a discrete visibility change, not motion. */
   @supports (animation-timeline: view()) and (timeline-scope: --hero-name) and (animation-range: exit 0% exit 100%) {
     body:has(.hero-name) .nav-name {
       animation: nav-name-reveal 1ms steps(1, end) both !important;
@@ -63,8 +54,6 @@
     }
   }
 
-  /* Navigation: no movement. The logo stays still and a hover or focus underline does not appear.
-     Colors still change, and the current-page underline (not a hover effect) stays. */
   .nav-logo .nav-logo-mark {
     transform: none !important;
   }
@@ -73,17 +62,14 @@
     transform: scaleX(0) !important;
   }
 
-  /* Buttons keep their color change but do not move. */
   .btn-lift {
     transform: none !important;
   }
 
-  /* Chips keep their border color change but do not move. */
   .chip {
     transform: none !important;
   }
 
-  /* Contact: no shake and no pop. The red border, the error text, and the message itself still carry the meaning. */
   .field-shake,
   .status-pop {
     animation: none !important;

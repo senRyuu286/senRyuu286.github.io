@@ -116,7 +116,6 @@ async function box(locator: import('@playwright/test').Locator) {
     await page.mouse.move(x, y);
     await expect.poll(() => css(button, 'transform')).toBe('matrix(1, 0, 0, 1, 0, -2)');
 
-    // A real hand never rests perfectly still. Nudge the mouse along the bottom edge and check each time.
     const samples: string[] = [];
     for (let step = 1; step <= 10; step += 1) {
       await page.mouse.move(x + step, y);

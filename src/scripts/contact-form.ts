@@ -1,13 +1,11 @@
 type Field = HTMLInputElement | HTMLTextAreaElement;
 
-// Short on purpose, so each message fits on one line and the page never shifts.
 const ERROR_TEXT: Record<string, string> = {
   name: 'Enter your name.',
   email: 'Enter a valid email address.',
   message: 'Write a message.',
 };
 
-/** Field names Formspree reports in a validation error, or null if the reply has none. */
 function serverFieldNames(data: unknown): string[] | null {
   if (typeof data !== 'object' || data === null || !('errors' in data) || !Array.isArray(data.errors)) {
     return null;
@@ -19,11 +17,6 @@ function serverFieldNames(data: unknown): string[] | null {
   );
 }
 
-/**
- * Plays a one-shot CSS animation again, even if it is still running.
- * Remove the class, read a layout value (this makes the browser apply the removal now), then add the class back.
- * Reading offsetWidth costs almost nothing here: the form is tiny and this runs at most once per button press.
- */
 function replay(element: HTMLElement, className: string): void {
   element.classList.remove(className);
   void element.offsetWidth;
@@ -42,8 +35,6 @@ function init(): void {
 
   const fields = Array.from(form.querySelectorAll<Field>('input[required], textarea[required]'));
 
-  // The script shows its own messages, so switch off the browser's pop-up bubbles.
-  // Without JavaScript the bubbles still work, because this line never runs.
   form.noValidate = true;
 
   function errorSlot(field: Field): HTMLElement | null {
@@ -62,7 +53,6 @@ function init(): void {
     field.removeAttribute('aria-invalid');
   }
 
-  /** True when the field is fine. Shows its error and returns false when it is not. */
   function checkField(field: Field): boolean {
     const blank = field.value.trim() === '';
     if (!blank && field.validity.valid) {
@@ -73,10 +63,6 @@ function init(): void {
     return false;
   }
 
-  /**
-   * Writes the message once and plays the pop. The pop only changes how the box looks, never its text,
-   * so a screen reader hears the message one time. Only the text span changes, so the check mark survives.
-   */
   function setStatus(message: string, tone: Tone): void {
     statusText!.textContent = message;
     statusIcon!.classList.toggle('hidden', tone !== 'success');
@@ -90,7 +76,6 @@ function init(): void {
   let sending = false;
 
   for (const field of fields) {
-    // Once a field shows an error, re-check it while the person types so the error clears at once.
     field.addEventListener('input', () => {
       if (field.getAttribute('aria-invalid') === 'true') checkField(field);
     });
@@ -103,14 +88,12 @@ function init(): void {
     setStatus('', 'none');
     const invalid = fields.filter((field) => !checkField(field));
     if (invalid.length > 0) {
-      // One short shake per field that needs fixing. Only a Send attempt shakes, never typing or leaving a field.
       invalid.forEach((field) => replay(field, 'field-shake'));
       invalid[0]?.focus();
       return;
     }
 
     sending = true;
-    // aria-disabled (not disabled) keeps keyboard focus on the button while sending.
     submit.setAttribute('aria-disabled', 'true');
     submit.textContent = 'Sending…';
 

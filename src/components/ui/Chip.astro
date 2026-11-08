@@ -1,13 +1,8 @@
 ---
-// src/components/ui/Chip.astro
 import { Icon } from 'astro-icon/components';
 
-// A small label pill, for example one technology in a tech stack, with an optional logo.
-// It is not a link or a button: no cursor change, no focus stop. On a mouse it lifts 2px as a small reward.
-// The logo is decoration (the name next to it says the same thing), so it is hidden from screen readers.
 interface Props {
   class?: string;
-  /** An astro-icon name, for example "simple-icons:python" or "java" (see src/lib/skills.ts). */
   icon?: string;
 }
 

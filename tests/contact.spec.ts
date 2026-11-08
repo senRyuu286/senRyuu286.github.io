@@ -3,7 +3,6 @@ import { expect, test, type Page } from '@playwright/test';
 const SUCCESS = 'Message sent. I’ll reply as soon as I can.';
 const FAILURE_START = 'Your message did not send.';
 
-/** Answers every Formspree request with a fixed reply, so tests never use your real submissions. */
 async function mockFormspree(page: Page, status: number, body: unknown) {
   const requests: Array<{ accept: string | undefined }> = [];
   await page.route('https://formspree.io/**', async (route) => {
@@ -24,7 +23,6 @@ async function fill(page: Page, name: string, email: string, message: string) {
   await page.locator('#contact-message').fill(message);
 }
 
-/** Where the footer sits on the whole page. If it moves, the layout shifted. */
 function footerTop(page: Page): Promise<number> {
   return page.evaluate(() => {
     const footer = document.querySelector('footer');

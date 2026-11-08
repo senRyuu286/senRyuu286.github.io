@@ -1,5 +1,4 @@
 ---
-// src/components/MobileMenu.astro
 import { Icon } from 'astro-icon/components';
 interface Page {
 	label: string;
@@ -10,12 +9,10 @@ interface Page {
 interface Profile {
 	key: string;
 	label: string;
-	/** What to show while the link is still a placeholder, such as [LINKEDIN LINK]. */
 	text: string;
 	href: string;
 	real: boolean;
 	external: boolean;
-	/** Icon name in the installed Simple Icons collection. */
 	icon: string;
 }
 
@@ -27,13 +24,11 @@ interface Props {
 const { pages, profiles } = Astro.props;
 ---
 
-<!-- Native <details>: opens and closes with no JavaScript. site-nav.ts adds Escape and outside click. -->
 <details data-nav-menu class="group ml-auto md:hidden">
 	<summary
 		class="inline-flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-control px-3 font-semibold text-ink transition-colors duration-120 ease-enter select-none hover:text-accent active:bg-paper [&::-webkit-details-marker]:hidden"
 	>
 		<span class="sr-only">Menu</span>
-		<!-- Three bars that turn into a cross while the menu is open. -->
 		<span aria-hidden="true" class="relative block h-3.5 w-4.5">
 			<span class="absolute top-0 left-0 h-0.5 w-full rounded-full bg-current transition-transform duration-200 ease-enter group-open:translate-y-1.5 group-open:rotate-45"></span>
 			<span class="absolute top-1.5 left-0 h-0.5 w-full rounded-full bg-current transition-opacity duration-200 ease-enter group-open:opacity-0"></span>

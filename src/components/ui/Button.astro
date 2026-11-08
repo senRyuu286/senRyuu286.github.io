@@ -1,12 +1,10 @@
 ---
-// src/components/ui/Button.astro
 import type { HTMLAttributes } from 'astro/types';
 
 type Variant = 'primary' | 'secondary';
 
 interface Props extends Omit<HTMLAttributes<'button'>, 'class'> {
   variant?: Variant;
-  /** If set, the component renders a link instead of a button. */
   href?: string;
   class?: string;
 }
@@ -23,7 +21,6 @@ const variants: Record<Variant, string> = {
     'border-ink-muted bg-transparent text-ink hover:border-ink hover:bg-surface active:bg-rule',
 };
 
-// External links always open in a new tab with rel="noopener noreferrer" (project rule).
 const isExternal = href !== undefined && /^https?:\/\//.test(href);
 ---
 

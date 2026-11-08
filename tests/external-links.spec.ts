@@ -1,9 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Add every new page here as it is built.
 const pages = ['/', '/404.html'];
 
-/** Returns the address of every external link missing target="_blank" or rel="noopener noreferrer". */
 async function findBadExternalLinks(page: Page): Promise<string[]> {
   return page.$$eval('a[href]', (elements) =>
     (elements as HTMLAnchorElement[])
@@ -25,7 +23,6 @@ for (const path of pages) {
   });
 }
 
-// Proves the checker works even while no real external links exist yet.
 test('the checker catches an unsafe external link and accepts a safe one', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => {

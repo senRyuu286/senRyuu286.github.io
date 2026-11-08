@@ -6,7 +6,6 @@ const FAILURE = 'Your message did not send. Check your connection and try again.
 
 type Mock = { status?: number; body?: unknown; gate?: Promise<void>; abort?: boolean };
 
-/** Answers every Formspree request with a fixed reply. Tests never send a real message. */
 async function mockFormspree(page: Page, mock: Mock = {}) {
   const requests: string[] = [];
   await page.route('https://formspree.io/**', async (route) => {
@@ -35,7 +34,6 @@ async function fill(page: Page, name = 'Test Person', email = 'test@example.com'
 const send = (page: Page) => page.getByRole('button', { name: /^send message$/i }).click();
 const status = (page: Page) => page.locator('[data-contact-status]');
 
-/** Waits for fonts and for every running animation to finish, so measurements are steady. */
 async function settle(page: Page) {
   await page.evaluate(() => document.fonts.ready.then(() => true));
   await page.evaluate(() => Promise.allSettled(document.getAnimations().map((a) => a.finished)).then(() => true));
@@ -43,7 +41,6 @@ async function settle(page: Page) {
 
 type Win = Window & { __anims: string[]; __texts: string[] };
 
-/** Records every CSS animation that starts, as "name:who". Lets tests count shakes and pops without racing the clock. */
 async function recordAnimations(page: Page) {
   await page.evaluate(() => {
     const log: string[] = [];
@@ -63,7 +60,6 @@ async function recordAnimations(page: Page) {
 const started = (page: Page, name: string) =>
   page.evaluate((n) => (window as unknown as Win).__anims.filter((a) => a.startsWith(`${n}:`)).sort(), name);
 
-/** Where things sit on the whole page. If any of this moves, the layout shifted. */
 function positions(page: Page) {
   return page.evaluate(() => {
     const top = (selector: string) => {
@@ -78,7 +74,6 @@ function positions(page: Page) {
   });
 }
 
-/** The keyframes of a named animation as written in the site's CSS: which properties, and how many steps. */
 function keyframesOf(page: Page, name: string) {
   return page.evaluate((n) => {
     for (const sheet of Array.from(document.styleSheets)) {
@@ -97,7 +92,6 @@ function keyframesOf(page: Page, name: string) {
   }, name);
 }
 
-/** The color a token resolves to, so a test can compare against it without hard-coding hex values. */
 function tokenColor(page: Page, token: string, property: 'color' | 'backgroundColor') {
   return page.evaluate(
     ([t, p]) => {
@@ -131,7 +125,6 @@ test.describe('Contact interactions: the shake', () => {
     await page.goto('/#contact');
     await recordAnimations(page);
 
-    // Tab through the empty fields without sending: nothing shakes and nothing is marked invalid.
     await page.locator('#contact-name').focus();
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
@@ -140,7 +133,6 @@ test.describe('Contact interactions: the shake', () => {
     expect(await started(page, 'field-shake')).toEqual([]);
     await expect(page.locator('[aria-invalid="true"]')).toHaveCount(0);
 
-    // Send once, then fix the name by typing: the error clears and there is no second shake.
     await send(page);
     await expect.poll(() => started(page, 'field-shake')).toHaveLength(3);
     await page.locator('#contact-name').pressSequentially('Ana');
@@ -207,7 +199,6 @@ test.describe('Contact interactions: sending', () => {
     const button = page.locator('[data-contact-submit]');
     const idle = await button.boundingBox();
 
-    // Idle: a mouse lifts the button 2px (the Phase 6 button feel).
     await button.hover();
     await expect.poll(() => css(button, 'transform')).toBe('matrix(1, 0, 0, 1, 0, -2)');
 
@@ -216,12 +207,10 @@ test.describe('Contact interactions: sending', () => {
     await expect(button).toHaveAttribute('aria-disabled', 'true');
     expect((await button.boundingBox())?.width).toBe(idle?.width);
 
-    // Busy: the mouse is still on it, but it does not lift, keeps its resting color, and shows a busy cursor.
     await expect.poll(() => css(button, 'transform')).toBe('none');
     await expect.poll(() => css(button, 'background-color')).toBe(await tokenColor(page, '--accent', 'backgroundColor'));
     expect(await css(button, 'cursor')).toBe('progress');
 
-    // A second click and the Enter key both do nothing.
     await button.click({ force: true });
     await page.locator('#contact-email').press('Enter');
     await page.waitForTimeout(250);
@@ -260,11 +249,9 @@ test.describe('Contact interactions: success', () => {
     await mockFormspree(page);
     await page.goto('/#contact');
     await recordAnimations(page);
-    // Counts how many times the message text is written. A screen reader announces each write.
     await page.evaluate(() => {
       const box = document.querySelector('[data-contact-status]')!;
       const texts: string[] = [];
-      // The observer reports a batch of changes at once, so count each written piece of text, not each batch.
       new MutationObserver((records) => {
         for (const record of records) {
           const pieces = record.type === 'characterData' ? [record.target] : Array.from(record.addedNodes);
@@ -294,7 +281,6 @@ test.describe('Contact interactions: success', () => {
     for (const id of ['#contact-name', '#contact-email', '#contact-message']) {
       await expect(page.locator(id)).toHaveValue('');
     }
-    // Focus stays on the button that was pressed, so a keyboard user keeps their place.
     await expect(page.locator('[data-contact-submit]')).toBeFocused();
   });
 
@@ -469,7 +455,6 @@ test.describe('Contact interactions: layout stability', () => {
   test('focus goes to the first invalid field, stays below the sticky bar, and shows its ring', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 700 });
     await page.goto('/#contact');
-    // Scroll so the Name field sits under the sticky bar while the Send button is still on screen.
     await page.evaluate(() => {
       const top = document.querySelector('#contact-name')!.getBoundingClientRect().top + window.scrollY;
       window.scrollTo(0, top - 10);

@@ -2,7 +2,6 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// Years, statuses, and links are plain text so placeholders like [YEAR] are allowed for now.
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/projects' }),
   schema: z.object({

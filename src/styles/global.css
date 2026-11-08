@@ -1,7 +1,5 @@
-/* src/styles/global.css */
 @import "tailwindcss";
 @import "tw-animate-css";
-/* Order matters: tokens.css holds the @theme blocks and comes first. motion.css is last, so reduced motion wins. */
 @import "./tokens.css";
 @import "./base.css";
 @import "./components.css";

@@ -1,9 +1,5 @@
 import { expect, test, type Browser, type Page } from '@playwright/test';
 
-/**
- * Cross-page transitions are a Chromium and Safari feature. These tests run in Chromium.
- * The browser fires "pageswap" on the page being left. If it carries a viewTransition, the crossfade ran.
- */
 async function newPage(browser: Browser, reducedMotion: 'no-preference' | 'reduce') {
   const context = await browser.newContext({ reducedMotion });
   const page = await context.newPage();
@@ -17,7 +13,6 @@ async function newPage(browser: Browser, reducedMotion: 'no-preference' | 'reduc
 
 const usedTransition = (page: Page) => page.evaluate(() => sessionStorage.getItem('last-swap-used-transition'));
 
-/** Reads one CSS rule from the site's own style sheets, looking inside media queries too. */
 function findRule(page: Page, selector: string) {
   return page.evaluate((wanted) => {
     const walk = (rules: CSSRuleList, inside: string[]): { text: string; media: string[]; props: Record<string, string> } | null => {
@@ -104,7 +99,6 @@ test.describe('Page transitions', () => {
     expect(rule?.media.join(' ')).toContain('no-preference');
     expect(rule?.props['animation-duration']).toBe('var(--dur-base)');
     expect(rule?.props['animation-timing-function']).toBe('var(--ease-enter)');
-    // The build may write the token as "200ms" or ".2s". Both are the same duration, so compare in milliseconds.
     const token = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--dur-base').trim());
     const ms = token.endsWith('ms') ? parseFloat(token) : parseFloat(token) * 1000;
     expect(ms).toBe(200);

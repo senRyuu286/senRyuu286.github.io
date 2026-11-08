@@ -30,7 +30,7 @@ test.describe('Selected works', () => {
       await page.setViewportSize(size);
       await page.goto('/');
       const shot = page.locator('[data-card-screenshot]');
-      await expect(shot.locator('img')).toHaveAttribute('src', '/veritas-cover.png');
+      await expect(shot.locator('img')).toHaveAttribute('src', '/projects/veritas/veritas-cover.png');
       const area = await box(shot);
       expect(area.width / area.height).toBeCloseTo(1.6, 1);
     });
@@ -43,7 +43,6 @@ test.describe('Selected works', () => {
     const hrefs = await links.evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
     for (const href of hrefs) {
       if (/^https?:\/\//.test(href)) {
-        // Real external links must open safely in a new tab.
         const link = card(page).locator(`a[href="${href}"]`);
         await expect(link).toHaveAttribute('target', '_blank');
         await expect(link).toHaveAttribute('rel', 'noopener noreferrer');

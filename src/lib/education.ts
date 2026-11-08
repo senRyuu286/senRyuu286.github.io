@@ -1,4 +1,3 @@
-// src/lib/education.ts
 export interface EducationEntry {
   school: string;
   program: string;
@@ -7,7 +6,6 @@ export interface EducationEntry {
   major: string;
 }
 
-/** Shown on Home under "Education". Anything in [BRACKETS] is a placeholder (see file 07). */
 export const education: EducationEntry[] = [
   {
     school: 'University of San Jose-Recoletos',

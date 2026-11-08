@@ -2,24 +2,20 @@ import { expect, test, type Page } from '@playwright/test';
 
 const SITE = 'https://senryuu286.github.io';
 
-// Matches unfinished placeholders such as [MY NAME] or [CONFIRM: availability, for example ...].
 const PLACEHOLDER = /\[[A-Z][^\]]*\]/g;
 
-/** Reads every <loc> address from a sitemap file. */
 async function locs(page: Page, path: string): Promise<string[]> {
   const response = await page.request.get(path);
   expect(response.ok(), `${path} should exist`).toBe(true);
   return [...(await response.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1] ?? '');
 }
 
-/** Every page in the sitemap, as paths, plus the 404 page. */
 async function pagePaths(page: Page): Promise<string[]> {
   const sitemaps = await locs(page, '/sitemap-index.xml');
   const urls = (await Promise.all(sitemaps.map((loc) => locs(page, new URL(loc).pathname)))).flat();
   return [...urls.map((url) => new URL(url).pathname), '/404.html'];
 }
 
-/** Text a visitor or a search tool can see: page text, title, meta tags, link addresses, form address, JSON-LD. */
 function visibleStrings(page: Page): Promise<string[]> {
   return page.evaluate(() => {
     const parts: string[] = [document.title, document.body.innerText];
