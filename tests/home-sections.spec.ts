@@ -26,12 +26,11 @@ test.describe('Selected works', () => {
   });
 
   for (const size of [SMALLEST_PHONE, TABLET, DESKTOP]) {
-    test(`shows the illustration placeholder at a 16:10 ratio at ${size.width}px`, async ({ page }) => {
+    test(`shows the Veritas cover at a 16:10 ratio at ${size.width}px`, async ({ page }) => {
       await page.setViewportSize(size);
       await page.goto('/');
       const shot = page.locator('[data-card-screenshot]');
-      await expect(shot).toContainText('Illustration placeholder');
-      await expect(shot.locator('img')).toHaveAttribute('src', '/project-preview-placeholder.png');
+      await expect(shot.locator('img')).toHaveAttribute('src', '/veritas-cover.png');
       const area = await box(shot);
       expect(area.width / area.height).toBeCloseTo(1.6, 1);
     });

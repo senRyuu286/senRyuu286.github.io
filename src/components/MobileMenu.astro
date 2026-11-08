@@ -52,7 +52,7 @@ const { pages, profiles } = Astro.props;
 						<a
 							href={page.href}
 							aria-current={page.current ? 'page' : undefined}
-							class="flex min-h-11 items-center border-l-2 border-transparent px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper aria-[current=page]:border-accent aria-[current=page]:font-semibold"
+							class="flex min-h-11 items-center border-l-2 border-transparent px-3 text-ink no-underline transition-colors duration-120 ease-enter hover:bg-paper active:bg-paper aria-[current=page]:border-accent aria-[current=page]:font-semibold aria-[current=location]:border-accent aria-[current=location]:font-semibold"
 						>
 							{page.label}
 						</a>

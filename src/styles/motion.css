@@ -69,7 +69,7 @@
     transform: none !important;
   }
 
-  .nav-link:not([aria-current="page"])::after {
+  .nav-link:not([aria-current="page"]):not([aria-current="location"])::after {
     transform: scaleX(0) !important;
   }
 

@@ -6,15 +6,27 @@
   "achievement": "Champion",
   "date": "August, 2024",
   "location": "USJR-R Basak Campus, Pardo, Cebu City, Cebu",
-  "collaborators": "Alliyana Rose Garcia",
-  "takeaway": "Winning the quiz bowl with Alliyana was a moment I still look back on fondly. It was a fun way to challenge what I knew and share the achievement with a teammate.",
+  "collaborators": "",
+  "takeaway": "",
   "image": "/events/scs-days/1.jpg",
   "imageAlt": "SCS Days participants standing together on stage",
   "link": "",
   "images": [
-    { "src": "/events/scs-days/2.jpg", "alt": "Quiz bowl participants raising their answer boards" },
-    { "src": "/events/scs-days/3.jpg", "alt": "A group of participants posing together in the venue" },
-    { "src": "/events/scs-days/4.jpg", "alt": "Quiz bowl participants seated at computers" },
-    { "src": "/events/scs-days/5.jpg", "alt": "Quiz bowl participants celebrating at their computers" }
+    {
+      "src": "/events/scs-days/2.jpg",
+      "alt": "Quiz bowl participants raising their answer boards"
+    },
+    {
+      "src": "/events/scs-days/3.jpg",
+      "alt": "A group of participants posing together in the venue"
+    },
+    {
+      "src": "/events/scs-days/4.jpg",
+      "alt": "Quiz bowl participants seated at computers"
+    },
+    {
+      "src": "/events/scs-days/5.jpg",
+      "alt": "Quiz bowl participants celebrating at their computers"
+    }
   ]
 }

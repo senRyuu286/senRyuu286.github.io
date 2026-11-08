@@ -24,6 +24,20 @@ function underlineTransform(page: Page, label: string): Promise<string> {
 test.describe('Navigation on a desktop screen', () => {
   test.use({ viewport: DESKTOP });
 
+  test('highlights the section in view and clears the highlight between sections', async ({ page }) => {
+    await page.goto('/');
+    const work = banner(page).locator('a.nav-link[href="/#works"]');
+    const contact = banner(page).locator('a.nav-link[href="/#contact"]');
+    await expect(work).not.toHaveAttribute('aria-current', 'location');
+    await page.locator('#works').evaluate((heading) => heading.scrollIntoView({ behavior: 'instant' }));
+    await expect(work).toHaveAttribute('aria-current', 'location');
+    await expect(contact).not.toHaveAttribute('aria-current', 'location');
+    await page.locator('#tech-stack-heading').evaluate((heading) => heading.scrollIntoView({ behavior: 'instant' }));
+    await expect(work).not.toHaveAttribute('aria-current', 'location');
+    await page.locator('#contact').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
+    await expect(contact).toHaveAttribute('aria-current', 'location');
+  });
+
   test('shows the links and hides the menu button', async ({ page }) => {
     await page.goto('/');
     for (const label of ['Work', 'Contact']) {

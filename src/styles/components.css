@@ -37,9 +37,12 @@
   }
 
   /* The current page keeps its underline. */
-  .nav-link[aria-current="page"]::after {
+  .nav-link[aria-current="page"]::after,
+  .nav-link[aria-current="location"]::after {
     transform: scaleX(1);
   }
+
+  .nav-link[aria-current="location"] { color: var(--accent); }
 
   .nav-link:focus-visible::after {
     transform: scaleX(1);
@@ -393,6 +396,7 @@
   .selected-work { display: grid; gap: 2rem; margin-top: 2rem; }
   .selected-work + .selected-work { margin-top: 4rem; }
   .selected-work-copy { min-width: 0; }
+  .selected-work-category { margin-bottom: 0.5rem; color: var(--ink-muted); font-size: var(--text-meta); font-weight: 600; overflow-wrap: anywhere; }
   .selected-work h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; overflow-wrap: anywhere; }
   .selected-work-subtitle { margin-top: 0.35rem; color: var(--accent); font-weight: 600; overflow-wrap: anywhere; }
   .selected-work-role { margin-top: 0.75rem; color: var(--ink-muted); font-size: var(--text-meta); overflow-wrap: anywhere; }

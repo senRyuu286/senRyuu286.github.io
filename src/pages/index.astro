@@ -39,6 +39,7 @@ const projects = (await getCollection('projects')).sort((a, b) =>
 					return (
 				<article class="selected-work" data-selected-work>
 					<div class="selected-work-copy">
+						{capstone.data.category && <p class="selected-work-category">{capstone.data.category}</p>}
 						<h3>{capstone.data.title}</h3>
 						{capstone.data.subtitle && <p class="selected-work-subtitle">{capstone.data.subtitle}</p>}
 						{capstone.data.role && <p class="selected-work-role"><span>Role:</span> {capstone.data.role}</p>}
@@ -58,7 +59,7 @@ const projects = (await getCollection('projects')).sort((a, b) =>
 							</div>
 						)}
 					</div>
-					<ScreenshotFrame />
+					<ScreenshotFrame image={capstone.data.image} imageAlt={capstone.data.imageAlt} />
 				</article>
 					);
 				})}

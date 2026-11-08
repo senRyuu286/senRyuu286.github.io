@@ -86,4 +86,26 @@ const profiles = profileLinks.map((profile) => ({ ...profile, icon: `simple-icon
 	};
 	updateHeader();
 	window.addEventListener('scroll', updateHeader, { passive: true });
+
+	const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.site-header nav a[href*="#"]'))
+		.flatMap((link) => {
+			const url = new URL(link.href, window.location.href);
+			if (url.pathname !== window.location.pathname || !url.hash) return [];
+			const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+			const section = target?.closest('section');
+			return section ? [{ link, section }] : [];
+		});
+	const updateCurrentSection = () => {
+		const line = Math.max((header?.getBoundingClientRect().bottom ?? 0) + 16, window.innerHeight * 0.25);
+		for (const { link, section } of sectionLinks) {
+			const bounds = section.getBoundingClientRect();
+			if (bounds.top <= line && bounds.bottom > line) link.setAttribute('aria-current', 'location');
+			else link.removeAttribute('aria-current');
+		}
+	};
+	if (sectionLinks.length) {
+		updateCurrentSection();
+		window.addEventListener('scroll', updateCurrentSection, { passive: true });
+		window.addEventListener('resize', updateCurrentSection);
+	}
 </script>

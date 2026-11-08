@@ -6,12 +6,15 @@
   "achievement": "Seminifinalist",
   "date": "June, 2026",
   "location": "Virtual Presentation",
-  "collaborators": "Shane Castillo | Jhaiross Debalucos | Erving Argawanon",
-  "takeaway": "Reaching the semifinals with my team was a rewarding experience. The competition gave me a chance to think about AI beyond the technical side and consider how ideas could address real business needs.",
-  "image": "/events/lambo/1.png",
+  "collaborators": "",
+  "takeaway": "",
+  "image": "/events/lambo/1.webp",
   "imageAlt": "Team introduction graphic with portraits of the four LAMBO competition participants",
   "link": "",
   "images": [
-    { "src": "/events/lambo/2.jpg", "alt": "Official LAMBO 2026 team entry graphic listing the team members" }
+    {
+      "src": "/events/lambo/2.webp",
+      "alt": "Official LAMBO 2026 team entry graphic listing the team members"
+    }
   ]
 }
